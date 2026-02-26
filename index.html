@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tanaya — Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- =========================
+       LOCK SCREEN
+  ========================== -->
+  <section id="lockscreen" class="lockscreen" aria-label="Lock screen">
+    <div class="lockscreen-center">
+      <!-- Time -->
+      <div class="lockscreen-timeblock">
+        <div id="lockClock" class="lockscreen-clock">6:56</div>
+        <div id="lockDate" class="lockscreen-date">Saturday, February 21</div>
+      </div>
+
+      <!-- Login -->
+      <div class="lockscreen-loginblock">
+        <img
+          class="lockscreen-avatar"
+          src="assets/user.jpg"
+          alt="User avatar"
+          onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22rgba(255,255,255,.12)%22/></svg>';"
+        />
+        <div class="lockscreen-username">Tanaya's Portfolio</div>
+
+        <form id="unlockForm" class="lockscreen-form" autocomplete="off">
+          <div class="lockscreen-passwordRow">
+            <div class="lockscreen-inputWrap">
+              <input
+                id="passwordInput"
+                class="lockscreen-password"
+                type="password"
+                inputmode="none"
+                autocomplete="new-password"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-label="Password"
+                readonly
+                size="6"
+              />
+              <span class="lockscreen-caret" id="passwordCaret"></span>
+            </div>
+
+            <button class="lockscreen-enter" type="submit" aria-label="Enter">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <path d="M5.5 1L10 5.5L5.5 10M10 5.5H1" stroke="#FE5BAC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="lockscreen-hint">Touch ID or Enter Password</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       DESKTOP
+  ========================== -->
+  <main id="desktop" class="desktop is-hidden" aria-label="Desktop">
+    <section class="desktop-surface" id="desktopSurface">
+
+      <!-- 12 Desktop icons -->
+      <button class="desktop-icon" type="button" data-project="1">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 1</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="2">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 2</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="3">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 3</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="4">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 4</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="5">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 5</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="6">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 6</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="7">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 7</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="8">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 8</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="9">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 9</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="10">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 10</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="11">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 11</span>
+      </button>
+
+      <button class="desktop-icon" type="button" data-project="12">
+        <img class="desktop-icon-img" alt="" draggable="false" />
+        <span class="desktop-icon-label">Project 12</span>
+      </button>
+    </section>
+
+    <!-- Dock (4 icons, now also open windows) -->
+    <nav class="dock" aria-label="Dock">
+      <div class="dock-tray" id="dockTray">
+
+        <div class="dock-item">
+          <div class="dock-tooltip">About</div>
+          <button class="dock-app" type="button" aria-label="About" data-window="dock-about"></button>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-tooltip">Contact</div>
+          <button class="dock-app" type="button" aria-label="Contact" data-window="dock-contact"></button>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-tooltip">Resume</div>
+          <button class="dock-app" type="button" aria-label="Resume" data-window="dock-resume"></button>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-tooltip">Index</div>
+          <button class="dock-app" type="button" aria-label="Index" data-window="dock-index"></button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Window -->
+    <section id="windowLayer" class="window-layer is-hidden" aria-label="Window layer">
+      <div class="window" id="mainWindow" role="dialog" aria-modal="true" aria-labelledby="windowTitle">
+        <div class="window-bar" id="windowBar">
+          <div class="window-controls">
+            <button class="window-dot dot--red"    data-action="close" aria-label="Close"></button>
+            <button class="window-dot dot--yellow" data-action="min"   aria-label="Restore"></button>
+            <button class="window-dot dot--green"  data-action="max"   aria-label="Maximize"></button>
+          </div>
+
+          <div id="windowTitle" class="window-title">Project</div>
+          <div class="window-barRight"></div>
+        </div>
+
+        <div class="window-content">
+          <iframe
+            id="projectFrame"
+            class="window-frame"
+            title="Window content"
+            src=""
+            loading="eager"
+          ></iframe>
+
+          <div id="windowBlank" class="window-placeholder">
+            <div>
+              <div class="window-placeholderTitle">Blank window</div>
+              <div class="window-placeholderText">
+                Create the page the window is trying to load.<br/>
+                Projects: <code>projects/&lt;number&gt;/index.html</code><br/>
+                Dock: <code>dock/&lt;name&gt;/index.html</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="window-layer-backdrop" data-action="close" aria-label="Close window"></button>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

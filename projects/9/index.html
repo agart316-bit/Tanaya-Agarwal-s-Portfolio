@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArtsyDesign.co</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <div class="viewport">
+    <main class="journal" id="journal">
+      <section class="panel panel--hero">
+        <div class="image-slot image-slot--hero">
+          <img src="project-9-1.jpg" alt="Stationery brand composition on white background" />
+        </div>
+        <h1>ARTSYDESIGN.CO</h1>
+        <p class="meta meta--row">
+          <span><strong>Year :</strong> 2020</span>
+          <span><strong>Skills :</strong> Illustration, Adobe, Production</span>
+        </p>
+        <p class="meta"><strong>Medium :</strong> A5 book designed using Adobe Illustrator &amp; Photoshop</p>
+      </section>
+
+      <section class="panel panel--pink">
+        <figure class="feature feature--wide">
+          <figcaption>[ caption ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-9-2.jpg" alt="Notebook and stationery flat lay" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--white">
+        <div class="copy copy--section">
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+        </div>
+      </section>
+
+      <section class="panel panel--blue">
+        <figure class="supply">
+          <figcaption>[ caption ]</figcaption>
+          <div class="image-slot image-slot--square">
+            <img src="project-9-3.jpg" alt="Gift set with notebook and stationery" />
+          </div>
+        </figure>
+        <figure class="supply">
+          <figcaption>[ caption ]</figcaption>
+          <div class="image-slot image-slot--square">
+            <img src="project-9-4.jpg" alt="Stationery in open presentation box" />
+          </div>
+        </figure>
+        <figure class="supply">
+          <figcaption>[ caption ]</figcaption>
+          <div class="image-slot image-slot--square">
+            <img src="project-9-5.jpg" alt="Pastel pens and stationery arrangement" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--end"></section>
+    </main>
+  </div>
+
+  <script>
+    const journal = document.getElementById("journal");
+    const BASE_WIDTH = 312;
+    const TARGET_RATIO = 0.65;
+    const MIN_ZOOM = 0.8;
+    const MAX_ZOOM = 2.5;
+    const REVEAL_SELECTOR = "h1, .meta, .copy p, figcaption, .image-slot";
+
+    function fitJournal() {
+      if (!journal) return;
+      const effectiveWidth = Math.min(window.innerWidth, 1400);
+      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+    }
+
+    function setupReveals() {
+      const panels = document.querySelectorAll(".panel");
+      panels.forEach((panel) => {
+        const items = panel.querySelectorAll(REVEAL_SELECTOR);
+        items.forEach((item, i) => {
+          item.classList.add("reveal-item");
+          if (item.matches(".image-slot")) {
+            item.classList.add("reveal-image");
+          } else if (item.matches("figcaption")) {
+            item.classList.add("reveal-caption");
+          } else {
+            item.classList.add("reveal-text");
+          }
+          item.style.setProperty("--reveal-delay", `${i * 70}ms`);
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
+    }
+
+    window.addEventListener("resize", fitJournal);
+    window.addEventListener("load", () => {
+      fitJournal();
+      setupReveals();
+    });
+    fitJournal();
+  </script>
+</body>
+</html>

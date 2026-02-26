@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Men Of Platinum</title>
+  <link rel="stylesheet" href="style.css?v=4" />
+</head>
+<body>
+  <div class="viewport">
+    <main class="journal" id="journal">
+      <section class="panel panel--hero">
+        <div class="image-slot image-slot--hero">
+          <img src="project-3-1.png" alt="Men of Platinum hero visual" />
+        </div>
+
+        <h1>MEN OF PLATINUM</h1>
+        <p class="meta">Year : 2025 &nbsp;&nbsp;&nbsp; Skills : Illustration, Adobe, Production</p>
+        <p class="meta">Medium : A5 book designed using Adobe Illustrator &amp; Photoshop</p>
+
+        <div class="copy copy--hero">
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+        </div>
+      </section>
+
+      <section class="panel panel--carousel">
+        <div class="split-slider reveal-carousel" id="menuSlider" aria-label="Project image carousel">
+
+          <!-- Left column -->
+          <div class="split-col split-col--left">
+            <div class="split-track" id="trackLeft">
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-2.png" alt="Slide 1 left" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-4.png" alt="Slide 2 left" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-7.png" alt="Slide 3 left" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-9.png" alt="Slide 4 left" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-3.png" alt="Slide 5 left" /></div></div>
+            </div>
+          </div>
+
+          <!-- Right column -->
+          <div class="split-col split-col--right">
+            <div class="split-track" id="trackRight">
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-11.png" alt="Slide 1 right" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-5.png" alt="Slide 2 right" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-8.png" alt="Slide 3 right" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-10.png" alt="Slide 4 right" /></div></div>
+              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-3-12.png" alt="Slide 5 right" /></div></div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="menu-slider-controls" aria-label="Carousel controls">
+            <button class="menu-arrow" id="menuPrev" type="button" aria-label="Previous slide">
+              <span aria-hidden="true">&#8592;</span>
+            </button>
+            <button class="menu-arrow" id="menuNext" type="button" aria-label="Next slide">
+              <span aria-hidden="true">&#8594;</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="panel panel--bottom">
+        <div class="copy copy--bottom">
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.</p>
+        </div>
+
+        <figure class="solo-figure">
+          <div class="image-slot image-slot--solo">
+            <video src="project-3-13.mp4" aria-label="Men of Platinum closing video" autoplay muted loop playsinline preload="metadata"></video>
+          </div>
+        </figure>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const journal = document.getElementById("journal");
+    const BASE_WIDTH = 312;
+    const TARGET_RATIO = 0.65;
+    const MIN_ZOOM = 0.8;
+    const MAX_ZOOM = 2.5;
+
+    function fitJournal() {
+      if (!journal) return;
+      const effectiveWidth = Math.min(window.innerWidth, 1400);
+      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+    }
+
+    function setupReveals() {
+      const revealSelector = "h1, .meta, .copy p, .image-slot:not(.image-slot--split), .reveal-carousel, .menu-slider-controls";
+      const revealItems = document.querySelectorAll(revealSelector);
+
+      revealItems.forEach((item, i) => {
+        item.classList.add("reveal-item");
+        if (item.matches(".image-slot") || item.matches(".reveal-carousel")) {
+          item.classList.add("reveal-image");
+        } else {
+          item.classList.add("reveal-text");
+        }
+        item.style.setProperty("--reveal-delay", `${i * 70}ms`);
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      revealItems.forEach((item) => observer.observe(item));
+    }
+
+    function setupMenuSlider() {
+      const prevBtn = document.getElementById("menuPrev");
+      const nextBtn = document.getElementById("menuNext");
+      const trackLeft = document.getElementById("trackLeft");
+      const trackRight = document.getElementById("trackRight");
+      if (!prevBtn || !nextBtn || !trackLeft || !trackRight) return;
+
+      const TOTAL = trackLeft.children.length;
+      let index = 0;
+      let isAnimating = false;
+
+      function slideTo(newIndex, withTransition) {
+        const cellH = trackLeft.children[0].offsetHeight;
+        const offset = -newIndex * cellH;
+        const easing = "cubic-bezier(0.77, 0, 0.175, 1)";
+        const dur = "700ms";
+
+        trackLeft.style.transition = withTransition ? `transform ${dur} ${easing}` : "none";
+        trackLeft.style.transform = `translateY(${offset}px)`;
+
+        // Right column moves opposite, anchored to valid rows (no blank space).
+        const rightOffset = -offset - (TOTAL - 1) * cellH;
+        trackRight.style.transition = withTransition ? `transform ${dur} ${easing} 60ms` : "none";
+        trackRight.style.transform = `translateY(${rightOffset}px)`;
+      }
+
+      function move(dir) {
+        if (isAnimating) return;
+        isAnimating = true;
+        index = ((index + dir) % TOTAL + TOTAL) % TOTAL;
+        slideTo(index, true);
+        setTimeout(() => { isAnimating = false; }, 800);
+      }
+
+      prevBtn.addEventListener("click", (e) => { e.preventDefault(); move(-1); });
+      nextBtn.addEventListener("click", (e) => { e.preventDefault(); move(1); });
+
+      window.addEventListener("resize", () => slideTo(index, false));
+      slideTo(0, false);
+    }
+
+    function setupSoloVideoAspectRatio() {
+      const soloSlot = document.querySelector(".image-slot--solo");
+      const soloVideo = soloSlot?.querySelector("video");
+      if (!soloSlot || !soloVideo) return;
+
+      const applyRatio = () => {
+        if (!soloVideo.videoWidth || !soloVideo.videoHeight) return;
+        soloSlot.style.aspectRatio = `${soloVideo.videoWidth} / ${soloVideo.videoHeight}`;
+      };
+
+      if (soloVideo.readyState >= 1) {
+        applyRatio();
+      } else {
+        soloVideo.addEventListener("loadedmetadata", applyRatio, { once: true });
+      }
+    }
+
+    window.addEventListener("resize", fitJournal);
+    window.addEventListener("load", () => {
+      fitJournal();
+      setupMenuSlider();
+      setupSoloVideoAspectRatio();
+      setupReveals();
+    });
+    fitJournal();
+  </script>
+</body>
+</html>

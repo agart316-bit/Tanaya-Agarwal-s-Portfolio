@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Journals</title>
+  <link rel="stylesheet" href="style.css?v=5" />
+</head>
+<body>
+  <div class="viewport">
+    <main class="journal" id="journal">
+      <section class="panel panel--hero">
+        <div class="image-slot image-slot--hero">
+          <img src="project-1-0.jpeg" alt="Dream Journals hero image" />
+        </div>
+        <h1>DREAM JOURNALS</h1>
+        <p class="meta">Year : 2020 &nbsp;&nbsp;&nbsp; Skills : Illustration, Adobe, Production</p>
+        <p class="meta">Medium : A5 book designed using Adobe Illustrator &amp; Photoshop</p>
+      </section>
+
+      <section class="panel panel--pink">
+        <div class="intro-grid">
+          <div class="copy copy--intro">
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+          </div>
+
+          <div class="stacked">
+            <figure>
+              <figcaption>[ option ]</figcaption>
+              <div class="image-slot image-slot--stack">
+                <img src="project-1-1.jpg" alt="Dream Journals concept image 1" />
+              </div>
+            </figure>
+            <figure>
+              <figcaption>[ option ]</figcaption>
+              <div class="image-slot image-slot--stack">
+                <img src="project-1-2.jpeg" alt="Dream Journals concept image 2" />
+              </div>
+            </figure>
+          </div>
+        </div>
+
+        <figure class="feature feature--left">
+          <figcaption>[ option 1 ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-1-3.JPG" alt="Dream Journals spread image 1" />
+          </div>
+        </figure>
+
+        <figure class="feature feature--right">
+          <figcaption>[ option 2 ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-1-4.jpeg" alt="Dream Journals spread image 2" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--white">
+        <div class="image-slot image-slot--planner">
+          <img src="project-1-.JPG" alt="Dream Journals planner page" />
+        </div>
+        <p class="copy copy--single">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra inceptos himenaeos.</p>
+      </section>
+
+      <section class="panel panel--blue">
+        <figure class="supply">
+          <figcaption>[ option ]</figcaption>
+          <div class="image-slot image-slot--square">
+            <img src="project-1-5.jpg" alt="Dream Journals stationery image 1" />
+          </div>
+        </figure>
+        <figure class="supply">
+          <figcaption>[ option ]</figcaption>
+          <div class="image-slot image-slot--square">
+            <img src="project-1-6.jpg" alt="Dream Journals stationery image 2" />
+          </div>
+        </figure>
+        <figure class="supply">
+          <figcaption>[ option ]</figcaption>
+          <div class="image-slot image-slot--square">
+            <img src="project-1-7.jpg" alt="Dream Journals stationery image 3" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--end">
+        <div class="flipbook-wrap is-hidden">
+          <a
+            href="https://online.flippingbook.com/view/685099698/"
+            class="fbo-embed"
+            data-fbo-id="4f0096167e"
+            data-fbo-ratio="3:2"
+            data-fbo-lightbox="yes"
+            data-fbo-width="100%"
+            data-fbo-height="auto"
+            data-fbo-version="1"
+            style="max-width:100%;display:block;"
+          >August</a>
+          <script async defer src="https://online.flippingbook.com/EmbedScriptUrl.aspx?m=redir&hid=685099698"></script>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const journal = document.getElementById("journal");
+    const BASE_WIDTH = 312;
+    const TARGET_RATIO = 0.65;
+    const MIN_ZOOM = 0.8;
+    const MAX_ZOOM = 2.5;
+    const REVEAL_SELECTOR = "h1, .meta, .copy p, figcaption, .image-slot";
+
+    function fitJournal() {
+      if (!journal) return;
+      const effectiveWidth = Math.min(window.innerWidth, 1400);
+      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+    }
+
+    function setupReveals() {
+      const panels = document.querySelectorAll(".panel");
+      panels.forEach((panel) => {
+        const items = panel.querySelectorAll(REVEAL_SELECTOR);
+        items.forEach((item, i) => {
+          item.classList.add("reveal-item");
+          if (item.matches(".image-slot")) {
+            item.classList.add("reveal-image");
+          } else if (item.matches("figcaption")) {
+            item.classList.add("reveal-caption");
+          } else {
+            item.classList.add("reveal-text");
+          }
+          item.style.setProperty("--reveal-delay", `${i * 70}ms`);
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
+    }
+
+    window.addEventListener("resize", fitJournal);
+    window.addEventListener("load", () => {
+      fitJournal();
+      setupReveals();
+    });
+    fitJournal();
+  </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: #ffffff;
+}
+
+body {
+  background: #ffffff;
+  min-height: 100vh;
+  font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
+  color: #1f1f1f;
+  overflow-x: hidden;
+}
+
+.viewport {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #ffffff;
+}
+
+.journal {
+  width: 312px;
+  background: #ffffff;
+  border: 0;
+  will-change: transform;
+}
+
+.panel {
+  width: 100%;
+  position: relative;
+}
+
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120vw;
+  background: inherit;
+  pointer-events: none;
+}
+
+.panel::before {
+  right: 100%;
+}
+
+.panel::after {
+  left: 100%;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 34px), 0) scale(var(--reveal-scale, 1));
+  filter: blur(var(--reveal-blur, 0));
+  transition-property: transform, opacity, filter;
+  transition-duration: var(--reveal-duration, 1.05s);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity, filter;
+}
+
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+.reveal-text {
+  --reveal-y: 30px;
+  --reveal-duration: 1s;
+}
+
+.reveal-image {
+  --reveal-y: 52px;
+  --reveal-scale: 1.015;
+  --reveal-blur: 4px;
+  --reveal-duration: 1.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-item,
+  .reveal-item.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+.panel--hero {
+  background: #ffffff;
+  padding: 18px 20px 24px;
+}
+
+h1 {
+  margin: 14px 0 10px;
+  text-align: center;
+  font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+  font-size: 31px;
+  line-height: 0.9;
+  letter-spacing: -0.15em;
+  font-weight: 400;
+}
+
+.meta {
+  margin: 0;
+  text-align: center;
+  font-size: 8.4px;
+  line-height: 1.35;
+}
+
+.copy {
+  margin: 0;
+  font-size: 7.1px;
+  line-height: 1.45;
+}
+
+.copy p {
+  margin: 0 0 10px;
+}
+
+.copy p:last-child {
+  margin-bottom: 0;
+}
+
+.copy--hero {
+  margin-top: 28px;
+}
+
+/* ─── SPLIT SLIDER CAROUSEL ─── */
+.panel--carousel {
+  background: #7e7e7e;
+  padding: 20px;
+  overflow: visible;
+}
+
+.split-slider {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* The visible window — shows exactly one row */
+.split-col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.split-col--left  { left: 0; }
+.split-col--right { left: 50%; }
+
+/* The scrolling strip */
+.split-track {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+/* Reverse stack so right side can move downward while staying in-bounds */
+#trackRight {
+  flex-direction: column-reverse;
+}
+
+/* Each cell is exactly the height of the visible window */
+.split-cell {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+/* Height of the whole component — controls how tall each "row" is */
+.split-slider {
+  height: 200px;
+}
+
+.split-col,
+.split-cell {
+  height: 200px;
+}
+
+/* Thin divider line between columns */
+.split-col--right {
+  border-left: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Arrow controls — positioned left/right edges, vertically centred */
+.menu-slider-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.menu-arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.menu-arrow:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: scale(1.08);
+}
+
+.menu-arrow:active {
+  transform: scale(0.96);
+}
+
+/* Image slot for split carousel cells — full bleed, no gap */
+.image-slot--split {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+  overflow: hidden;
+  background: #000;
+}
+
+.image-slot--split img,
+.image-slot--split video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.panel--bottom {
+  background: #ffffff;
+  padding: 24px 20px 40px;
+}
+
+.copy--bottom {
+  margin-bottom: 28px;
+}
+
+.solo-figure {
+  width: 54%;
+  margin: 0 auto;
+}
+
+.image-slot {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000000;
+}
+
+.image-slot img,
+.image-slot video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.image-slot--hero {
+  aspect-ratio: 1.37 / 0.92;
+}
+
+.image-slot--solo {
+  aspect-ratio: 0.67 / 1;
+}
+
+.image-slot--solo video {
+  object-fit: contain;
+}
