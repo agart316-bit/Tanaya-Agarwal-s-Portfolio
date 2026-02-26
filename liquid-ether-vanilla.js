@@ -208,21 +208,21 @@
     /* --- options --- */
     var opts = Object.assign({
       mouseForce:        20,
-      cursorSize:        100,
+      cursorSize:        85,
       isViscous:         false,
       viscous:           30,
       iterationsViscous: 32,
-      iterationsPoisson: 32,
+      iterationsPoisson: 25,
       dt:                0.014,
       BFECC:             true,
       resolution:        0.5,
       isBounce:          false,
-      colors:            ['#5227FF', '#FF9FFC', '#B19EEF'],
+      colors:            ['#41051dff', '#ff9fc2ff', '#992d68ff'],
       autoDemo:          true,
-      autoSpeed:         0.5,
-      autoIntensity:     2.2,
+      autoSpeed:         0.3,
+      autoIntensity:     1,
       takeoverDuration:  0.25,
-      autoResumeDelay:   1000,
+      autoResumeDelay:   3000,
       autoRampDuration:  0.6,
     }, userOpts || {});
 

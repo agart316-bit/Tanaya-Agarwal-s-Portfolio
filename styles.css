@@ -195,7 +195,7 @@ body {
 ========================================================= */
 .desktop {
   position: fixed; inset: 0;
-  background: #0a0a0f; /* deep dark fallback while WebGL loads */
+  background: #000000; /* deep dark fallback while WebGL loads */
   animation: fadeIn 500ms ease both;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
