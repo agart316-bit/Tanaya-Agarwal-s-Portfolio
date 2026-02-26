@@ -102,7 +102,7 @@ function initLiquidEther() {
   if (!bg || typeof LiquidEther === "undefined") return;
 
   liquidEther = new LiquidEther(bg, {
-    colors: ['#860136', '#ff89b4', '#ec419f'],
+    colors: ['#ef2475', '#ffa4dbff', '#ff72a1ff'],
     mouseForce: 20,
     cursorSize: 85,
     resolution: 0.5,
