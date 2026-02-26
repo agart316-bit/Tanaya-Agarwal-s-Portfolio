@@ -2,6 +2,7 @@
    Mac Desktop Portfolio — script.js
    - Lock screen auto-type dots + blinking caret
    - Smooth float-up unlock
+   - Liquid Ether WebGL background (initialised on unlock)
    - Draggable icons
    - Dock magnification
    - Window open / close / maximise / restore
@@ -91,6 +92,33 @@ passwordInput.addEventListener("input", () => {
 });
 
 /* =========================================================
+   LIQUID ETHER — initialise once on first unlock
+========================================================= */
+let liquidEther = null;
+
+function initLiquidEther() {
+  if (liquidEther) return; // already running
+  const bg = document.getElementById("liquidEtherBg");
+  if (!bg || typeof LiquidEther === "undefined") return;
+
+  liquidEther = new LiquidEther(bg, {
+    colors: ['#5227FF', '#FF9FFC', '#B19EEF'],
+    mouseForce: 20,
+    cursorSize: 100,
+    resolution: 0.5,
+    dt: 0.014,
+    BFECC: true,
+    autoDemo: true,
+    autoSpeed: 0.5,
+    autoIntensity: 2.2,
+    takeoverDuration: 0.25,
+    autoResumeDelay: 1000,
+    autoRampDuration: 0.6,
+  });
+  liquidEther.start();
+}
+
+/* =========================================================
    UNLOCK
 ========================================================= */
 unlockForm.addEventListener("submit", e => {
@@ -105,6 +133,13 @@ lockscreen.addEventListener("click", e => {
 
 function unlock(){
   desktop.classList.remove("is-hidden");
+
+  // Kick off the WebGL background as soon as desktop is visible
+  // Use rAF so the element has been painted and has a real size
+  requestAnimationFrame(() => {
+    requestAnimationFrame(initLiquidEther);
+  });
+
   lockscreen.classList.add("is-unlocking");
   hideCaret();
   lockscreen.addEventListener("transitionend", () => {
@@ -357,7 +392,6 @@ const ICON_POSITIONS = [
 
 function layoutIconsInitial(){
   desktopIcons.forEach((icon, i) => {
-    // only set initial position once (so dragging doesn't get overwritten)
     if (icon.dataset.positioned === "1") return;
 
     const pos = ICON_POSITIONS[i] || { x: 60, y: 60 };
@@ -475,7 +509,7 @@ dockItems.forEach((item, idx) => {
 dockTray?.addEventListener("mouseleave", resetDockMag);
 
 /* =========================================================
-   DOCK ICONS — open dock windows (NEW)
+   DOCK ICONS — open dock windows
 ========================================================= */
 const DOCK_WINDOWS = {
   "dock-about":   { title: "About",   src: "dock/about/index.html" },
