@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <div class="viewport">
+    <main class="about-sheet" id="aboutSheet">
+      <section class="about-hero">
+        <img class="name-mark" src="./Name.png" alt="Tanaya Agarwal" />
+        <p class="about-copy">
+          Creative design student at Parsons School of Design with a multidisciplinary background spanning branding, visual storytelling, digital content, and self-initiated ventures. Interested in design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of evolving into a creative director. Comfortable collaborating across design, branding, and front-end-adjacent creative teams.
+        </p>
+      </section>
+
+      <section class="about-roles" aria-label="Roles">
+        <div class="roles-marquee">
+          <div class="roles-track">
+            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
+            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
+            <span class="role-item">Art Director</span><span class="role-sep">|</span>
+            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
+            <span class="role-item">Photographer</span><span class="role-sep">|</span>
+            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
+            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
+            <span class="role-item">Art Director</span><span class="role-sep">|</span>
+            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
+            <span class="role-item">Photographer</span><span class="role-sep">|</span>
+          </div>
+          <div class="roles-track" aria-hidden="true">
+            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
+            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
+            <span class="role-item">Art Director</span><span class="role-sep">|</span>
+            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
+            <span class="role-item">Photographer</span><span class="role-sep">|</span>
+            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
+            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
+            <span class="role-item">Art Director</span><span class="role-sep">|</span>
+            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
+            <span class="role-item">Photographer</span><span class="role-sep">|</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-collage">
+        <figure class="polaroid">
+          <img src="./tanaya.JPG" alt="Portrait of Tanaya" />
+          <button class="polaroid-cta" id="polaroidCta" type="button">Click me!</button>
+        </figure>
+        <article class="note note--skills">
+          <img class="note-image" src="./sticky-3.png" alt="Skills sticky note" />
+        </article>
+
+        <article class="note note--about">
+          <img class="note-image" src="./sticky-1.png" alt="About me sticky note" />
+        </article>
+
+        <article class="note note--education">
+          <img class="note-image" src="./sticky-2.png" alt="Education sticky note" />
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const aboutSheet = document.getElementById("aboutSheet");
+    const aboutRoles = document.querySelector(".about-roles");
+    const polaroidEl = document.querySelector(".polaroid");
+    const noteSequence = [
+      document.querySelector(".note--about"),
+      document.querySelector(".note--skills"),
+      document.querySelector(".note--education")
+    ].filter(Boolean);
+    const BASE_WIDTH = 312;
+    const TARGET_RATIO = 0.65;
+    const MIN_ZOOM = 0.8;
+    const MAX_ZOOM = 2.5;
+    let noteStage = 0;
+
+    function renderNotes() {
+      noteSequence.forEach((note, index) => {
+        note.classList.toggle("is-visible", index < noteStage);
+      });
+    }
+
+    function advanceNotes() {
+      noteStage = (noteStage + 1) % 4;
+      renderNotes();
+    }
+
+    function fitAboutSheet() {
+      if (!aboutSheet) return;
+      const effectiveWidth = Math.min(window.innerWidth, 1400);
+      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+      const clampedZoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+      aboutSheet.style.zoom = clampedZoom;
+      aboutSheet.style.setProperty("--about-zoom", clampedZoom);
+
+      // Keep the marquee strip full-bleed to viewport edges despite sheet zoom.
+      if (aboutRoles) {
+        const stripWidth = window.innerWidth / clampedZoom;
+        const sideOffset = (BASE_WIDTH - stripWidth) / 2;
+        aboutRoles.style.width = `${stripWidth}px`;
+        aboutRoles.style.marginLeft = `${sideOffset}px`;
+        aboutRoles.style.marginRight = `${sideOffset}px`;
+      }
+    }
+
+    window.addEventListener("resize", fitAboutSheet);
+    window.addEventListener("load", () => {
+      fitAboutSheet();
+      renderNotes();
+    });
+    polaroidEl?.addEventListener("click", advanceNotes);
+    fitAboutSheet();
+    renderNotes();
+  </script>
+</body>
+</html>

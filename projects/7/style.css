@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
 *,
 *::before,
 *::after {
@@ -60,57 +62,137 @@ body {
   left: 100%;
 }
 
+:root {
+  --reveal-ease: cubic-bezier(0.11, 0.82, 0.39, 0.92);
+  --text-reveal-duration: 0.6s;
+  --image-reveal-duration: 1.3s;
+  --image-reveal-lag: 0.5s;
+}
+
+body:not(.loaded) .panel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.loaded .panel {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.24s var(--reveal-ease);
+}
+
 .reveal-item {
   opacity: 0;
-  transform: translate3d(0, var(--reveal-y, 34px), 0) scale(var(--reveal-scale, 1));
-  filter: blur(var(--reveal-blur, 0));
-  transition-property: transform, opacity, filter;
-  transition-duration: var(--reveal-duration, 1.05s);
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity, filter;
 }
 
+.reveal-item.revealed,
 .reveal-item.is-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0);
 }
 
-.reveal-text {
-  --reveal-y: 30px;
-  --reveal-duration: 1s;
+.reveal-clip {
+  overflow: hidden;
 }
 
-.reveal-caption {
-  --reveal-y: 18px;
-  --reveal-duration: 0.85s;
+.reveal-line {
+  display: block;
+  width: 100%;
+  transform: translateY(var(--reveal-start-y, -100%)) rotate(var(--reveal-start-rot, 0deg));
+  transition: transform var(--text-reveal-duration) var(--reveal-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform;
+}
+
+.reveal-angled .reveal-line {
+  --reveal-start-y: -120%;
+  --reveal-start-rot: -1deg;
+}
+
+.reveal-item.revealed .reveal-line,
+.reveal-item.is-visible .reveal-line {
+  transform: translateY(0) rotate(0deg);
+}
+
+.reveal-text-raw {
+  transform: translateY(-100%);
+  transition: transform var(--text-reveal-duration) var(--reveal-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform;
+}
+
+.reveal-text-raw.revealed,
+.reveal-text-raw.is-visible {
+  transform: translateY(0);
 }
 
 .reveal-image {
-  --reveal-y: 52px;
-  --reveal-scale: 1.015;
-  --reveal-blur: 4px;
-  --reveal-duration: 1.18s;
+  overflow: hidden;
 }
 
+.reveal-image img,
+.reveal-image video {
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  transform: scale(1.5);
+  transform-origin: center center;
+  transition:
+    clip-path var(--image-reveal-duration) var(--reveal-ease),
+    transform var(--image-reveal-duration) var(--reveal-ease);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--image-reveal-lag));
+  will-change: clip-path, transform;
+}
+
+.reveal-image.revealed img,
+.reveal-image.revealed video,
+.reveal-image.is-visible img,
+.reveal-image.is-visible video {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transform: scale(1);
+}
+
+.reveal-list-reverse li span {
+  display: inline-block;
+  transform: translateY(-100%);
+  transition: transform var(--text-reveal-duration) var(--reveal-ease);
+}
+
+.reveal-list-reverse:hover li:nth-child(1) span { transition-delay: 0.70s; transform: translateY(0); }
+.reveal-list-reverse:hover li:nth-child(2) span { transition-delay: 0.65s; transform: translateY(0); }
+.reveal-list-reverse:hover li:nth-child(3) span { transition-delay: 0.60s; transform: translateY(0); }
+.reveal-list-reverse:hover li:nth-child(4) span { transition-delay: 0.55s; transform: translateY(0); }
+.reveal-list-reverse:hover li:nth-child(5) span { transition-delay: 0.50s; transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
+  body .panel {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: none !important;
+  }
+
   .reveal-item,
+  .reveal-item.revealed,
   .reveal-item.is-visible {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    transition: none;
+    opacity: 1 !important;
+  }
+
+  .reveal-line,
+  .reveal-text-raw {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .reveal-image img,
+  .reveal-image video {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
 h1 {
   margin: 0;
   text-align: center;
-  font-family: "Helvetica", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   font-size: 31px;
   line-height: 0.9;
-  letter-spacing: -0.15em;
+  letter-spacing: 0;
   font-weight: 400;
   text-transform: uppercase;
 }

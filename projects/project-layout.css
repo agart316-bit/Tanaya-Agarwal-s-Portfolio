@@ -1,0 +1,146 @@
+:root {
+  --portfolio-journal-width: 360px;
+  --portfolio-hero-image-gap: 18px;
+  --portfolio-title-gap: 10px;
+  --portfolio-meta-gap: 6px;
+  --portfolio-copy-gap: 16px;
+  --portfolio-copy-line-gap: 10px;
+  --portfolio-caption-gap: 8px;
+  --portfolio-block-gap: 18px;
+}
+
+.journal {
+  width: var(--portfolio-journal-width) !important;
+}
+
+.panel--hero {
+  padding-top: 24px !important;
+  padding-bottom: 30px !important;
+}
+
+.panel--hero :is(.image-slot--hero, .cover, .feature--hero) {
+  margin: 0 auto var(--portfolio-hero-image-gap) !important;
+}
+
+.panel--hero h1 {
+  margin: 0 0 var(--portfolio-title-gap) !important;
+}
+
+.panel--hero .meta {
+  margin: 0 !important;
+  white-space: normal !important;
+}
+
+.panel--hero .meta + .meta {
+  margin-top: var(--portfolio-meta-gap) !important;
+}
+
+.meta--row {
+  gap: 16px !important;
+  flex-wrap: wrap;
+}
+
+.panel :is(h1, h2) + .copy,
+.panel :is(.meta) + .copy,
+.panel .copy + :is(figure, .feature, .gallery, .split, .stacked, .triptych-wrap, .pair-grid, .mobile-grid, .stack-item),
+.panel :is(figure, .feature, .gallery, .split, .stacked, .triptych-wrap, .pair-grid, .mobile-grid, .stack-item) + .copy {
+  margin-top: var(--portfolio-block-gap) !important;
+}
+
+.copy p {
+  margin: 0 0 var(--portfolio-copy-line-gap) !important;
+}
+
+.copy p:last-child {
+  margin-bottom: 0 !important;
+}
+
+figcaption {
+  margin: 0 0 var(--portfolio-caption-gap) !important;
+  font-size: 6px !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.2;
+}
+
+/* Bigger, more legible image frames */
+.cover {
+  width: 170px !important;
+}
+
+.supply {
+  width: 132px !important;
+}
+
+.gallery-center {
+  width: 52% !important;
+}
+
+.feature--small,
+.feature--tall,
+.feature--center,
+.feature--video,
+.feature--rack,
+.feature--fabric,
+.feature--single,
+.stack-item {
+  width: 72% !important;
+  max-width: 330px;
+}
+
+.feature--left,
+.feature--right {
+  width: 74% !important;
+  max-width: 340px;
+}
+
+.feature--wide,
+.feature--memory,
+.feature--hero {
+  width: 88% !important;
+  max-width: 520px;
+}
+
+.image-slot--squareish,
+.image-slot--portrait {
+  height: 132px !important;
+}
+
+.split--top,
+.split--bottom {
+  grid-template-columns: 1fr 182px !important;
+}
+
+.split--eat {
+  grid-template-columns: 188px 1fr !important;
+}
+
+.split--laundry {
+  grid-template-columns: 1fr 160px !important;
+}
+
+.mobile-grid {
+  width: 252px !important;
+  gap: 12px !important;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --portfolio-journal-width: 342px;
+  }
+
+  .feature--small,
+  .feature--tall,
+  .feature--center,
+  .feature--video,
+  .feature--rack,
+  .feature--fabric,
+  .feature--single,
+  .stack-item,
+  .feature--left,
+  .feature--right,
+  .feature--wide,
+  .feature--memory,
+  .feature--hero {
+    max-width: 100%;
+  }
+}

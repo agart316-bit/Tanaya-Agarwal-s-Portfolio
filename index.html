@@ -3,11 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tanaya — Portfolio</title>
+  <title>Tanaya Agarwal</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Cursor-replacing tooltip */
+    .cursor-tooltip {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -150%);
+      pointer-events: none;
+      z-index: 9999;
+      background: rgba(20,20,22,0.9);
+      color: #fff;
+      font: 300 15px/1.5 "Bebas Neue", sans-serif;
+      letter-spacing: 0;
+      padding: 6px 8px;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      opacity: 0;
+      transition: opacity 120ms ease;
+      white-space: nowrap;
+    }
+    .cursor-tooltip.is-visible { opacity: 1; }
+
+    /* Hide cursor when showing tooltip over desktop icons */
+    .desktop .desktop-icon.is-hovering,
+    .desktop .desktop-icon.is-hovering * { cursor: none !important; }
+
+    /* Stacked icon hover: keep images 100% opacity and increase tilt */
+    /* If your stacking is done via child images, enforce opacity and transform on hover */
+    .desktop-icon:hover .desktop-icon-img { opacity: 1 !important; }
+
+    /* Optional: if stacked images use a class .stack-img, make them more visible */
+    .desktop-icon:hover .stack-img:nth-child(1) { transform: rotate(-18deg) translate(-6px, -4px) !important; opacity: 1 !important; }
+    .desktop-icon:hover .stack-img:nth-child(2) { transform: rotate(0deg) translate(0, 0) !important; opacity: 1 !important; }
+    .desktop-icon:hover .stack-img:nth-child(3) { transform: rotate(18deg) translate(6px, 4px) !important; opacity: 1 !important; }
+  </style>
 </head>
 
 <body>
+  <div id="cursorTooltip" class="cursor-tooltip" aria-hidden="true"></div>
   <!-- =========================
        LOCK SCREEN
   ========================== -->
@@ -71,65 +107,65 @@
     <section class="desktop-surface" id="desktopSurface">
 
       <!-- 12 Desktop icons -->
-      <button class="desktop-icon" type="button" data-project="1">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 1</span>
-      </button>
+      <a class="desktop-icon" data-project="1" href="projects/1/index.html">
+        <img class="desktop-icon-img" src="assets/projects/1.png" alt="Project 1 icon" draggable="false" />
+        <span class="desktop-icon-label">Dream Journals</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="2">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 2</span>
-      </button>
+      <a class="desktop-icon" data-project="2" href="projects/2/index.html">
+        <img class="desktop-icon-img" src="assets/projects/2.png" alt="Project 2 icon" draggable="false" />
+        <span class="desktop-icon-label">Digital Illustrations</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="3">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 3</span>
-      </button>
+      <a class="desktop-icon" data-project="3" href="projects/3/index.html">
+        <img class="desktop-icon-img" src="assets/projects/3.png" alt="Project 3 icon" draggable="false" />
+        <span class="desktop-icon-label">Men of Platinum</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="4">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 4</span>
-      </button>
+      <a class="desktop-icon" data-project="4" href="projects/4/index.html">
+        <img class="desktop-icon-img" src="assets/projects/4.png" alt="Project 4 icon" draggable="false" />
+        <span class="desktop-icon-label">Paintings</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="5">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 5</span>
-      </button>
+      <a class="desktop-icon" data-project="5" href="projects/5/index.html">
+        <img class="desktop-icon-img" src="assets/projects/5.png" alt="Project 5 icon" draggable="false" />
+        <span class="desktop-icon-label">Pottery</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="6">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 6</span>
-      </button>
+      <a class="desktop-icon" data-project="6" href="projects/6/index.html">
+        <img class="desktop-icon-img" src="assets/projects/6.png" alt="Project 6 icon" draggable="false" />
+        <span class="desktop-icon-label">Black N White</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="7">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 7</span>
-      </button>
+      <a class="desktop-icon" data-project="7" href="projects/7/index.html">
+        <img class="desktop-icon-img" src="assets/projects/7.png" alt="Project 7 icon" draggable="false" />
+        <span class="desktop-icon-label">Now or Never</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="8">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 8</span>
-      </button>
+      <a class="desktop-icon" data-project="8" href="projects/8/index.html">
+        <img class="desktop-icon-img" src="assets/projects/8.png" alt="Project 8 icon" draggable="false" />
+        <span class="desktop-icon-label">3D Installations</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="9">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 9</span>
-      </button>
+      <a class="desktop-icon" data-project="9" href="projects/9/index.html">
+        <img class="desktop-icon-img" src="assets/projects/9.png" alt="Project 9 icon" draggable="false" />
+        <span class="desktop-icon-label">ArtsyDesign.Co</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="10">
-        <img class="desktop-icon-img" alt="" draggable="false" />
-        <span class="desktop-icon-label">Project 10</span>
-      </button>
+      <a class="desktop-icon" data-project="10" href="projects/10/index.html">
+        <img class="desktop-icon-img" src="assets/projects/10.png" alt="Project 10 icon" draggable="false" />
+        <span class="desktop-icon-label">Borges Stories</span>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="11">
-        <img class="desktop-icon-img" alt="" draggable="false" />
+      <a class="desktop-icon" data-project="11" href="projects/11/index.html">
+        <img class="desktop-icon-img" src="assets/projects/11.png" alt="Project 11 icon" draggable="false" />
         <span class="desktop-icon-label">Project 11</span>
-      </button>
+      </a>
 
-      <button class="desktop-icon" type="button" data-project="12">
-        <img class="desktop-icon-img" alt="" draggable="false" />
+      <a class="desktop-icon" data-project="12" href="projects/12/index.html">
+        <img class="desktop-icon-img" src="assets/projects/12.png" alt="Project 12 icon" draggable="false" />
         <span class="desktop-icon-label">Project 12</span>
-      </button>
+      </a>
     </section>
 
     <!-- Dock (4 icons, now also open windows) -->
@@ -142,14 +178,14 @@
         </div>
 
         <div class="dock-item">
-          <div class="dock-tooltip">Contact</div>
-          <button class="dock-app" type="button" aria-label="Contact" data-window="dock-contact"></button>
-        </div>
-
-        <div class="dock-item">
           <div class="dock-tooltip">Resume</div>
           <button class="dock-app" type="button" aria-label="Resume" data-window="dock-resume"></button>
         </div>
+
+        <div class="dock-item">
+          <div class="dock-tooltip">Contact</div>
+          <button class="dock-app" type="button" aria-label="Contact" data-window="dock-contact"></button>
+        </div>        
 
         <div class="dock-item">
           <div class="dock-tooltip">Index</div>
@@ -170,7 +206,31 @@
           </div>
 
           <div id="windowTitle" class="window-title">Project</div>
-          <div class="window-barRight"></div>
+          <div class="window-barRight">
+            <button
+              id="workTab"
+              class="window-workTab"
+              type="button"
+              aria-controls="workPanel"
+              aria-expanded="false"
+            >
+              Work
+            </button>
+            <button
+              id="aboutTab"
+              class="window-workTab"
+              type="button"
+            >
+              About
+            </button>
+            <button
+              id="resumeTab"
+              class="window-workTab"
+              type="button"
+            >
+              Resume
+            </button>
+          </div>
         </div>
 
         <div class="window-content">
@@ -192,6 +252,11 @@
               </div>
             </div>
           </div>
+
+          <aside id="workPanel" class="window-workPanel" aria-label="Work menu" hidden>
+            <div class="work-panel-header">WORKS</div>
+            <div id="workGrid" class="work-grid"></div>
+          </aside>
         </div>
       </div>
 
@@ -204,6 +269,62 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <!-- Liquid Ether vanilla engine -->
   <script src="liquid-ether-vanilla.js"></script>
+  <script>
+    (function() {
+      const tooltip = document.getElementById('cursorTooltip');
+      const desktop = document.getElementById('desktop');
+      if (!tooltip || !desktop) return;
+
+      let rafId = null;
+      const moveTooltip = (x, y) => {
+        tooltip.style.transform = `translate(${x}px, ${y}px)`;
+      };
+
+      const onMouseMove = (e) => {
+        if (!tooltip.classList.contains('is-visible')) return;
+        const x = e.clientX;
+        const y = e.clientY - 12; // lift it slightly above cursor
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => moveTooltip(x, y));
+      };
+
+      const showTooltip = (el) => {
+        const label = el.querySelector('.desktop-icon-label');
+        if (!label) return;
+        tooltip.textContent = label.textContent.trim();
+        tooltip.setAttribute('aria-hidden', 'false');
+        tooltip.classList.add('is-visible');
+        el.classList.add('is-hovering');
+      };
+
+      const hideTooltip = (el) => {
+        tooltip.classList.remove('is-visible');
+        tooltip.setAttribute('aria-hidden', 'true');
+        tooltip.textContent = '';
+        if (el) el.classList.remove('is-hovering');
+      };
+
+      desktop.addEventListener('mousemove', onMouseMove);
+
+      desktop.addEventListener('mouseover', (e) => {
+        const icon = e.target.closest && e.target.closest('.desktop-icon');
+        if (!icon) return;
+        showTooltip(icon);
+      });
+
+      desktop.addEventListener('mouseout', (e) => {
+        const icon = e.target.closest && e.target.closest('.desktop-icon');
+        if (!icon) return;
+        // Only hide when leaving the icon entirely
+        if (!icon.contains(e.relatedTarget)) {
+          hideTooltip(icon);
+        }
+      });
+
+      // Hide tooltip when leaving desktop area
+      desktop.addEventListener('mouseleave', () => hideTooltip());
+    })();
+  </script>
   <!-- Main portfolio script -->
   <script src="script.js"></script>
 </body>

@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
 /* =========================================================
    GLOBAL
 ========================================================= */
 :root {
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-          "Helvetica Neue", sans-serif;
+          "Bebas Neue", sans-serif;
   --ease:     cubic-bezier(.25,.46,.45,.94);
   --ease-out: cubic-bezier(0,.55,.45,1);
   --spring:   cubic-bezier(.34,1.56,.64,1);
@@ -101,7 +103,7 @@ body {
   font-size: 13px;
   font-weight: 400;
   color: #FE5BAC;
-  letter-spacing: .3px;
+  letter-spacing: 0;
   text-shadow: 0 1px 10px rgba(0,0,0,.35);
 }
 
@@ -241,6 +243,7 @@ body {
   background: transparent;
   color: inherit;
   font: inherit;
+  text-decoration: none;
 }
 
 .desktop-icon:focus-visible {
@@ -406,6 +409,7 @@ body {
   cursor: pointer;
   overflow: hidden;
   display: flex;
+  position: relative;
   padding: 0;
   transform-origin: bottom center;
   transition:
@@ -418,6 +422,40 @@ body {
 
 .dock-app:hover { background: rgba(255,255,255,.14); }
 .dock-app:active { filter: brightness(.88); }
+
+.dock-app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(var(--dock-icon-scale, 1));
+  transform-origin: center center;
+  transition: transform 180ms var(--spring), background-image 120ms ease;
+  pointer-events: none;
+}
+
+.dock-app[data-window="dock-about"]::before {
+  background-image: url("assets/about.jpg");
+}
+
+.dock-app[data-window="dock-resume"]::before {
+  background-image: url("assets/resume.png");
+}
+
+.dock-app[data-window="dock-contact"]::before {
+  background-image: url("assets/contact.png");
+}
+
+.dock-app[data-window="dock-contact"]:hover::before,
+.dock-app[data-window="dock-contact"]:active::before {
+  background-image: url("assets/closed-paper-envelope-wax-seal-open-post-letter-broken-stamp-postal-correspondence-mail-back-view-postage-paraffin-postcard-413769871.jpg.webp");
+}
+
+.dock-app[data-window="dock-index"]::before {
+  background-image: url("assets/user.jpg");
+}
 
 /* The magnification scale is set via CSS variable from JS */
 .dock-app { transform: scale(var(--dock-scale, 1)) translateY(calc((var(--dock-scale, 1) - 1) * -8px)); }
@@ -492,9 +530,9 @@ body {
 .window-bar {
   height: 40px;
   display: grid;
-  grid-template-columns: 100px 1fr 100px;
+  grid-template-columns: 100px 1fr auto;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 8px 0 12px;
   background: rgba(255,255,255,.04);
   border-bottom: 1px solid rgba(255,255,255,.07);
   flex-shrink: 0;
@@ -524,10 +562,50 @@ body {
   letter-spacing: .2px;
 }
 
+.window-barRight {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.window-workTab {
+  border: 0;
+  height: 32px;
+  min-width: 84px;
+  padding: 0 14px;
+  border-radius: 16px;
+  background: rgba(58, 58, 62, 0.96);
+  color: rgba(230,230,234,.92);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms var(--spring);
+}
+
+.window-workTab:hover {
+  background: rgba(86, 86, 92, 0.96);
+}
+
+.window-workTab:active {
+  transform: scale(.97);
+}
+
+.window-workTab.is-open {
+  background: rgba(98, 98, 104, 0.96);
+}
+
 .window-content {
   flex: 1;
   overflow: hidden;
   position: relative;
+  isolation: isolate;
 }
 
 .window-frame {
@@ -536,6 +614,7 @@ body {
   border: 0;
   display: block;
   background: #ffffff;
+  transition: filter 220ms ease;
 }
 
 .window-placeholder {
@@ -567,4 +646,194 @@ body {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 12px;
   color: rgba(255,255,255,.75);
+}
+
+.window.is-work-open .window-frame {
+  filter: brightness(.68) saturate(.85);
+}
+
+.window-workPanel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: clamp(272px, 22vw, 350px);
+  background: rgba(254, 91, 172, 0.6);
+  border-left: 1px solid rgba(255,255,255,.25);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: -14px 0 28px rgba(20,20,20,.24);
+  padding: 14px;
+  z-index: 9;
+  transform: translateX(102%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 240ms var(--ease-out),
+    opacity 180ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.window-workPanel[hidden] {
+  display: none;
+}
+
+.window-workPanel.is-open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.work-panel-header {
+  color: #f2f2f2;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 60px;
+  line-height: .78;
+  letter-spacing: 0;
+  margin: 4px 0 12px;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  overflow-y: auto;
+  margin-top: 5px;
+  padding-right: 1px;
+  min-height: 0;
+}
+
+.work-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.work-grid::-webkit-scrollbar-thumb {
+  background: rgba(34,34,34,.32);
+  border-radius: 999px;
+}
+
+.work-card {
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #d7d7d7;
+  color: #363636;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 170ms var(--spring),
+    box-shadow 170ms ease,
+    filter 170ms ease;
+}
+
+.work-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 16px rgba(22,22,22,.22);
+  filter: brightness(1.04);
+}
+
+.work-card:active {
+  transform: translateY(0) scale(.99);
+}
+
+.work-card.is-current {
+  outline: 2px solid rgba(255,255,255,.9);
+  outline-offset: -2px;
+}
+
+.work-card-preview {
+  position: relative;
+  min-height: 84px;
+  flex: 1;
+  border-bottom: 1px solid rgba(0,0,0,.14);
+  background: #ececec;
+  overflow: hidden;
+}
+
+.work-card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  transform: scale(1.35);
+  transition:
+    clip-path 620ms var(--ease-out),
+    transform 620ms var(--ease-out);
+  transition-delay: calc(var(--work-delay, 0ms) + 40ms);
+  will-change: clip-path, transform;
+}
+
+.work-card-fallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: rgba(40,40,40,.72);
+  font-size: 11px;
+  letter-spacing: .08em;
+  font-weight: 600;
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  transform: scale(1.04);
+  transition:
+    clip-path 620ms var(--ease-out),
+    transform 620ms var(--ease-out);
+  transition-delay: calc(var(--work-delay, 0ms) + 40ms);
+  will-change: clip-path, transform;
+}
+
+.work-card-meta {
+  padding: 8px 9px 9px;
+}
+
+.work-card-title {
+  font-size: 14px;
+  color: #3e3e3e;
+  line-height: 1.2;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  display: block;
+  transform: translateY(-120%);
+  transition: transform 430ms var(--ease-out);
+  transition-delay: calc(var(--work-delay, 0ms) + 120ms);
+  will-change: transform;
+}
+
+.work-card-url {
+  display: block;
+  color: rgba(66,66,66,.7);
+  font-size: 10px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  transform: translateY(-140%);
+  transition: transform 430ms var(--ease-out);
+  transition-delay: calc(var(--work-delay, 0ms) + 175ms);
+  will-change: transform;
+}
+
+.window-workPanel.is-open .work-card-preview img,
+.window-workPanel.is-open .work-card-fallback {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transform: scale(1);
+}
+
+.window-workPanel.is-open .work-card-title,
+.window-workPanel.is-open .work-card-url {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-card-preview img,
+  .work-card-fallback,
+  .work-card-title,
+  .work-card-url {
+    transition: none !important;
+    transform: none !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+  }
 }

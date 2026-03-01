@@ -26,12 +26,34 @@ const windowTitle   = document.getElementById("windowTitle");
 const mainWindow    = document.getElementById("mainWindow");
 const projectFrame  = document.getElementById("projectFrame");
 const windowBlank   = document.getElementById("windowBlank");
+const windowContent = mainWindow?.querySelector(".window-content") || null;
+const workTab       = document.getElementById("workTab");
+const aboutTab      = document.getElementById("aboutTab");
+const resumeTab     = document.getElementById("resumeTab");
+const workPanel     = document.getElementById("workPanel");
+const workGrid      = document.getElementById("workGrid");
 
 const surface       = document.getElementById("desktopSurface");
 const desktopIcons  = document.querySelectorAll(".desktop-icon");
 
 const dockItems     = document.querySelectorAll(".dock-item");
 const dockTray      = document.getElementById("dockTray");
+
+const PROJECTS = Array.from(desktopIcons)
+  .map((icon) => {
+    const projectNum = icon.dataset.project ? String(icon.dataset.project) : "";
+    if (!projectNum) return null;
+    const title = icon.querySelector(".desktop-icon-label")?.textContent?.trim() || `Project ${projectNum}`;
+    return {
+      projectNum,
+      title,
+      url: icon.getAttribute("href") || `projects/${projectNum}/index.html`
+    };
+  })
+  .filter(Boolean)
+  .sort((a, b) => Number(a.projectNum) - Number(b.projectNum));
+
+const PROJECTS_BY_NUMBER = new Map(PROJECTS.map((project) => [project.projectNum, project]));
 
 /* =========================================================
    CLOCKS
@@ -152,13 +174,28 @@ function unlock(){
 ========================================================= */
 let isMaximised = false;
 
-function openWindow(title, iframeSrc){
-  windowTitle.textContent = title;
-  windowLayer.classList.remove("is-hidden");
-  isMaximised = false;
+const WINDOW_HEADER_TAB_SOURCES = {
+  about: "dock/about/index.html",
+  resume: "dock/resume/index.html"
+};
 
-  mainWindow.classList.remove("is-maximised", "is-closing");
+function getHeaderTabKeyForSource(src = ""){
+  const normalized = String(src).toLowerCase();
+  if (normalized.includes("/about/") || normalized.includes("dock/about")) return "about";
+  if (normalized.includes("/resume/") || normalized.includes("dock/resume")) return "resume";
+  return null;
+}
 
+function setWindowHeaderTabActive(activeKey){
+  const tabs = { work: workTab, about: aboutTab, resume: resumeTab };
+  Object.entries(tabs).forEach(([key, btn]) => {
+    if(!btn) return;
+    btn.classList.toggle("is-open", key === activeKey);
+  });
+}
+
+function loadWindowContent(title, iframeSrc){
+  if(windowTitle) windowTitle.textContent = title || "Window";
   if(windowBlank) windowBlank.style.display = "grid";
 
   if(projectFrame){
@@ -170,6 +207,17 @@ function openWindow(title, iframeSrc){
       if(windowBlank) windowBlank.style.display = "grid";
     };
   }
+}
+
+function openWindow(title, iframeSrc){
+  windowLayer.classList.remove("is-hidden");
+  isMaximised = false;
+
+  mainWindow.classList.remove("is-maximised", "is-closing");
+  setWorkPanelOpen(false);
+  setActiveWorkProject(null);
+  setWindowHeaderTabActive(getHeaderTabKeyForSource(iframeSrc));
+  loadWindowContent(title, iframeSrc);
 
   void mainWindow.offsetWidth;
   mainWindow.style.animation = "none";
@@ -178,6 +226,9 @@ function openWindow(title, iframeSrc){
 }
 
 function closeWindow(){
+  setWorkPanelOpen(false);
+  setActiveWorkProject(null);
+  setWindowHeaderTabActive(null);
   mainWindow.classList.add("is-closing");
   mainWindow.addEventListener("animationend", () => {
     windowLayer.classList.add("is-hidden");
@@ -211,17 +262,26 @@ windowLayer.addEventListener("click", e => {
 });
 
 document.addEventListener("keydown", e => {
-  if(e.key === "Escape" && !windowLayer.classList.contains("is-hidden")) closeWindow();
+  if(e.key !== "Escape" || windowLayer.classList.contains("is-hidden")) return;
+  if(mainWindow.classList.contains("is-work-open")) {
+    setWorkPanelOpen(false);
+    return;
+  }
+  closeWindow();
 });
 
 /* =========================================================
    DESKTOP ICONS — open project windows
 ========================================================= */
 function openProjectWindow(projectNum){
-  openWindow(`Project ${projectNum}`, `projects/${projectNum}/index.html`);
+  const project = PROJECTS_BY_NUMBER.get(String(projectNum));
+  const title = project?.title || `Project ${projectNum}`;
+  const src = project?.url || `projects/${projectNum}/index.html`;
+  openWindow(title, src);
+  setActiveWorkProject(String(projectNum));
 }
 
-const ICON_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg"];
+const ICON_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg", "PNG", "JPG", "JPEG", "WEBP", "SVG"];
 
 function resolveIconImage(basePath){
   return new Promise((resolve) => {
@@ -284,6 +344,168 @@ function resolveImagePath(src){
 async function resolveManifestStackImages(paths = []){
   const resolved = await Promise.all(paths.map((src) => resolveImagePath(src)));
   return resolved.filter(Boolean);
+}
+
+const WORK_PREVIEW_MANIFEST = {
+  "1": ["projects/1/project-1-0.jpg", "projects/1/project-1-1.jpg", "assets/project-1.png"],
+  "2": ["projects/2/project-2-1.jpg"],
+  "3": ["projects/3/project-3-1.png", "assets/project-3.png"],
+  "4": ["projects/4/project-4-1.jpg"],
+  "5": ["projects/5/project-5-1.JPG", "assets/project-5.png"],
+  "6": ["projects/6/project-6-1.jpg", "assets/project-6.png"],
+  "7": ["projects/7/project-7-1.png", "assets/project-7.png"],
+  "8": ["projects/8/portfolio-8-1.JPG", "assets/project-8.png"],
+  "9": ["projects/9/project-9-1.jpg", "assets/project-9.png"],
+  "10": ["projects/10/project-10-1.png", "assets/project-10.png"],
+  "11": ["assets/desktop-bg.jpg"],
+  "12": ["assets/lockscreen-bg.jpg"]
+};
+
+function setWorkPanelOpen(shouldOpen){
+  if(!mainWindow || !workPanel || !workTab) return;
+  mainWindow.classList.toggle("is-work-open", !!shouldOpen);
+  workPanel.classList.toggle("is-open", !!shouldOpen);
+  workTab.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
+  if(shouldOpen){
+    setWindowHeaderTabActive("work");
+  } else {
+    workTab.classList.remove("is-open");
+  }
+}
+
+function openWindowHeaderTab(tabKey){
+  const src = WINDOW_HEADER_TAB_SOURCES[tabKey];
+  if(!src) return;
+  setWorkPanelOpen(false);
+  setActiveWorkProject(null);
+  setWindowHeaderTabActive(tabKey);
+  loadWindowContent(tabKey === "about" ? "About" : "Resume", src);
+}
+
+function setActiveWorkProject(projectNum){
+  if(!workGrid) return;
+  const normalized = projectNum ? String(projectNum) : null;
+  workGrid.querySelectorAll(".work-card").forEach((card) => {
+    card.classList.toggle("is-current", card.dataset.project === normalized);
+  });
+}
+
+function getProjectPreviewCandidates(projectNum){
+  const base = `projects/${projectNum}/project-${projectNum}-1`;
+  const manifest = WORK_PREVIEW_MANIFEST[projectNum] || [];
+  const candidates = [
+    ...manifest,
+    `${base}.png`,
+    `${base}.jpg`,
+    `${base}.jpeg`,
+    `${base}.JPG`,
+    `${base}.JPEG`,
+    `assets/project-${projectNum}.png`,
+    "assets/desktop-bg.jpg"
+  ];
+  return Array.from(new Set(candidates));
+}
+
+async function resolveFirstImagePath(candidates = []){
+  for (const path of candidates) {
+    const existing = await resolveImagePath(path);
+    if (existing) return existing;
+  }
+  return null;
+}
+
+async function hydrateWorkCardPreview(project, image){
+  const previewSrc = await resolveFirstImagePath(getProjectPreviewCandidates(project.projectNum));
+  if (previewSrc) {
+    image.src = previewSrc;
+    return;
+  }
+
+  const fallback = document.createElement("div");
+  fallback.className = "work-card-fallback";
+  fallback.textContent = "NO PREVIEW";
+  image.replaceWith(fallback);
+}
+
+function createWorkCard(project, index){
+  const card = document.createElement("button");
+  card.className = "work-card";
+  card.type = "button";
+  card.dataset.project = project.projectNum;
+  card.setAttribute("aria-label", `Open ${project.title}`);
+  card.style.setProperty("--work-delay", `${index * 38}ms`);
+
+  const preview = document.createElement("div");
+  preview.className = "work-card-preview";
+
+  const image = document.createElement("img");
+  image.alt = `${project.title} preview`;
+  image.loading = "lazy";
+  image.decoding = "async";
+  preview.appendChild(image);
+
+  const meta = document.createElement("div");
+  meta.className = "work-card-meta";
+
+  const title = document.createElement("span");
+  title.className = "work-card-title";
+  title.textContent = project.title;
+
+  const url = document.createElement("span");
+  url.className = "work-card-url";
+  url.textContent = project.url;
+
+  meta.appendChild(title);
+  meta.appendChild(url);
+  card.append(preview, meta);
+
+  card.addEventListener("click", () => {
+    openProjectWindow(project.projectNum);
+    setWorkPanelOpen(false);
+  });
+
+  void hydrateWorkCardPreview(project, image);
+  return card;
+}
+
+function buildWorkPanel(){
+  if(!workGrid) return;
+  workGrid.innerHTML = "";
+  PROJECTS.forEach((project, index) => {
+    workGrid.appendChild(createWorkCard(project, index));
+  });
+}
+
+function initWorkPanel(){
+  if(!workPanel || !workTab) return;
+
+  workPanel.hidden = false;
+  setWorkPanelOpen(false);
+  buildWorkPanel();
+
+  workTab.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setWorkPanelOpen(!mainWindow.classList.contains("is-work-open"));
+  });
+
+  aboutTab?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openWindowHeaderTab("about");
+  });
+
+  resumeTab?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openWindowHeaderTab("resume");
+  });
+
+  windowContent?.addEventListener("click", (e) => {
+    if (!mainWindow.classList.contains("is-work-open")) return;
+    if (e.target.closest("#workPanel") || e.target.closest("#workTab")) return;
+    setWorkPanelOpen(false);
+  });
 }
 
 function setupStackedProjectIcon(icon, thumb, stackImages){
@@ -401,6 +623,8 @@ function layoutIconsInitial(){
   });
 }
 
+initWorkPanel();
+
 window.addEventListener("load", layoutIconsInitial);
 window.addEventListener("load", setDesktopIconImages);
 
@@ -417,6 +641,13 @@ function onIconPointerDown(e){
   if(e.button !== undefined && e.button !== 0) return;
 
   const icon = e.currentTarget;
+  if (
+    icon.tagName === "A" &&
+    (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+  ) {
+    return;
+  }
+
   desktopIcons.forEach(i => i.classList.remove("is-selected"));
   icon.classList.add("is-selected");
 
@@ -466,6 +697,18 @@ function onPointerUp(){
 desktopIcons.forEach(icon => {
   icon.addEventListener("mousedown", onIconPointerDown);
   icon.addEventListener("touchstart", onIconPointerDown, { passive: false });
+  icon.addEventListener("click", (e) => {
+    const hasModifier = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+    if (icon.tagName === "A" && !hasModifier) {
+      // Keep default desktop behavior (open in in-app window), but preserve link
+      // semantics for context-menu "Open Link in New Tab" and modifier-click.
+      e.preventDefault();
+      if (e.detail === 0) {
+        const projectNum = icon.dataset.project;
+        if (projectNum) openProjectWindow(projectNum);
+      }
+    }
+  });
 });
 
 window.addEventListener("mousemove", onPointerMove);
@@ -489,7 +732,10 @@ function setDockMag(hoveredIndex){
     const dist  = Math.abs(i - hoveredIndex);
     const scale = MAG_SCALES[Math.min(dist, MAG_SCALES.length - 1)];
     const app   = item.querySelector(".dock-app");
-    if(app) app.style.setProperty("--dock-scale", scale);
+    if(app) {
+      app.style.setProperty("--dock-scale", scale);
+      app.style.setProperty("--dock-icon-scale", 1);
+    }
     const extraEachSide = (DOCK_BASE * (scale - 1)) / 2;
     item.style.margin = `0 ${(BASE_MARGIN + extraEachSide).toFixed(1)}px`;
   });
@@ -498,7 +744,10 @@ function setDockMag(hoveredIndex){
 function resetDockMag(){
   dockItems.forEach(item => {
     const app = item.querySelector(".dock-app");
-    if(app) app.style.setProperty("--dock-scale", 1);
+    if(app) {
+      app.style.setProperty("--dock-scale", 1);
+      app.style.setProperty("--dock-icon-scale", 1);
+    }
     item.style.margin = `0 ${BASE_MARGIN}px`;
   });
 }

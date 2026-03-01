@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Borges Stories</title>
   <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="../project-layout.css?v=1" />
 </head>
 <body>
   <div class="viewport">
@@ -129,20 +130,39 @@
       journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
     }
 
+    function prepareRevealText(item) {
+      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
+      if (!supportsLineWrap) {
+        item.classList.add("reveal-text-raw");
+        return;
+      }
+
+      const existingLine = item.firstElementChild;
+      if (existingLine && existingLine.classList.contains("reveal-line")) return;
+
+      item.classList.add("reveal-clip");
+      const line = document.createElement("span");
+      line.className = "reveal-line";
+      while (item.firstChild) line.appendChild(item.firstChild);
+      item.appendChild(line);
+    }
+
     function setupReveals() {
       const panels = document.querySelectorAll(".panel");
       panels.forEach((panel) => {
         const items = panel.querySelectorAll(REVEAL_SELECTOR);
-        items.forEach((item, i) => {
+        items.forEach((item) => {
           item.classList.add("reveal-item");
           if (item.matches(".image-slot")) {
             item.classList.add("reveal-image");
           } else if (item.matches("figcaption")) {
             item.classList.add("reveal-caption");
+            prepareRevealText(item);
           } else {
             item.classList.add("reveal-text");
+            prepareRevealText(item);
           }
-          item.style.setProperty("--reveal-delay", `${i * 70}ms`);
+          item.style.setProperty("--reveal-delay", "0ms");
         });
       });
 
@@ -150,7 +170,7 @@
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
-            entry.target.classList.add("is-visible");
+            entry.target.classList.add("revealed");
             observer.unobserve(entry.target);
           });
         },
@@ -162,6 +182,7 @@
 
     window.addEventListener("resize", fitJournal);
     window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
       fitJournal();
       setupReveals();
     });
