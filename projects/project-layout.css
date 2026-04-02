@@ -7,6 +7,13 @@
   --portfolio-copy-line-gap: 10px;
   --portfolio-caption-gap: 8px;
   --portfolio-block-gap: 18px;
+  --portfolio-end-gap: 40px;
+}
+
+.viewport {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .journal {
@@ -121,6 +128,38 @@ figcaption {
 .mobile-grid {
   width: 252px !important;
   gap: 12px !important;
+}
+
+.panel--end {
+  background: #ffffff !important;
+  min-height: var(--portfolio-end-gap) !important;
+  padding: 0 !important;
+}
+
+.project-pagination {
+  width: 100%;
+  max-width: var(--portfolio-journal-width);
+  margin: 8px auto 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.project-pagination button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  min-width: 70px;
+  font: inherit;
+  line-height: inherit;
+  text-align: center;
+  color: inherit;
+  cursor: pointer;
+}
+
+.project-pagination button:hover {
+  color: #fe5bac;
 }
 
 @media (max-width: 720px) {

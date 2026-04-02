@@ -1,11 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-
 /* =========================================================
    GLOBAL
 ========================================================= */
 :root {
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-          "Bebas Neue", sans-serif;
+  --font: var(--font-system);
   --ease:     cubic-bezier(.25,.46,.45,.94);
   --ease-out: cubic-bezier(0,.55,.45,1);
   --spring:   cubic-bezier(.34,1.56,.64,1);
@@ -39,7 +36,6 @@ body {
   justify-content: flex-start;
   padding-top: 5vh;
   gap: 0;
-  background-color: black;
 
   transform: translateY(0);
   opacity: 1;
@@ -197,7 +193,7 @@ body {
 ========================================================= */
 .desktop {
   position: fixed; inset: 0;
-  background: #000000; /* deep dark fallback while WebGL loads */
+  background: #ffffff; /* deep dark fallback while WebGL loads */
   animation: fadeIn 500ms ease both;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -441,20 +437,19 @@ body {
 }
 
 .dock-app[data-window="dock-resume"]::before {
-  background-image: url("assets/resume.png");
+  background-image: url("assets/resume.jpg");
 }
 
-.dock-app[data-window="dock-contact"]::before {
-  background-image: url("assets/contact.png");
+.dock-app[data-window="dock-recommendations"]::before {
+  background-image: url("assets/recommendations.jpg");
 }
 
-.dock-app[data-window="dock-contact"]:hover::before,
-.dock-app[data-window="dock-contact"]:active::before {
-  background-image: url("assets/closed-paper-envelope-wax-seal-open-post-letter-broken-stamp-postal-correspondence-mail-back-view-postage-paraffin-postcard-413769871.jpg.webp");
+.dock-app[data-window="dock-contacts"]::before {
+  background-image: url("assets/contact.jpg");
 }
 
-.dock-app[data-window="dock-index"]::before {
-  background-image: url("assets/user.jpg");
+.dock-app[data-window="dock-photos"]::before {
+  background-image: url("assets/photos.jpg");
 }
 
 /* The magnification scale is set via CSS variable from JS */
@@ -472,51 +467,74 @@ body {
 .window-layer-backdrop {
   position: absolute; inset: 0;
   border: 0;
-  background: rgba(0,0,0,.20);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(8, 8, 12, 0.24);
+  backdrop-filter: blur(10px) saturate(1.08);
+  -webkit-backdrop-filter: blur(10px) saturate(1.08);
   cursor: default;
 }
 
 .window {
+  --window-offset-x: 0px;
+  --window-offset-y: 0px;
   --w: min(88vw, 1060px);
   --h: min(86vh, 760px);
   width: var(--w);
   height: var(--h);
-  background: rgba(24,24,28,.82);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 14px;
-  backdrop-filter: blur(24px) saturate(1.5);
-  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  background: rgba(36, 36, 42, 0.68);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 20px;
+  backdrop-filter: blur(30px) saturate(1.45);
+  -webkit-backdrop-filter: blur(30px) saturate(1.45);
   box-shadow:
-    0 24px 80px rgba(0,0,0,.60),
-    inset 0 1px 0 rgba(255,255,255,.08);
+    0 30px 88px rgba(0,0,0,.48),
+    0 10px 28px rgba(0,0,0,.26),
+    inset 0 1px 0 rgba(255,255,255,.16);
   position: relative;
   overflow: hidden;
   z-index: 1;
   display: flex;
   flex-direction: column;
+  transform: translate3d(var(--window-offset-x), var(--window-offset-y), 0);
+  scale: 1;
+  will-change: transform, opacity, scale;
+  backface-visibility: hidden;
 
-  animation: winOpen 280ms var(--ease-out) both;
+  animation: winOpen 430ms cubic-bezier(0.22, 1, 0.36, 1) both;
 
   transition:
     width  280ms var(--ease-out),
     height 280ms var(--ease-out),
     border-radius 280ms var(--ease-out),
-    top    280ms var(--ease-out),
-    left   280ms var(--ease-out);
+    transform 90ms linear;
 }
 
 @keyframes winOpen {
-  from { transform: scale(.96) translateY(6px); opacity: 0; }
-  to   { transform: scale(1)   translateY(0);   opacity: 1; }
+  0% {
+    opacity: 0;
+    scale: 0.92;
+    filter: blur(2px);
+  }
+  68% {
+    opacity: 1;
+    scale: 1.015;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+    filter: blur(0);
+  }
 }
 
 .window.is-closing {
   animation: winClose 200ms var(--ease) forwards;
 }
 @keyframes winClose {
-  to { transform: scale(.96) translateY(4px); opacity: 0; }
+  to {
+    opacity: 0;
+    scale: .96;
+    filter: blur(1px);
+  }
 }
 
 .window.is-maximised {
@@ -527,19 +545,39 @@ body {
   border-radius: 0 !important;
 }
 
+.window.is-dragging {
+  transition: none !important;
+}
+
+.window.is-dragging .window-frame {
+  pointer-events: none;
+}
+
 .window-bar {
-  height: 40px;
+  height: 46px;
   display: grid;
-  grid-template-columns: 100px 1fr auto;
+  grid-template-columns: 84px 1fr auto;
+  column-gap: 4px;
   align-items: center;
-  padding: 0 8px 0 12px;
-  background: rgba(255,255,255,.04);
-  border-bottom: 1px solid rgba(255,255,255,.07);
+  padding: 0 10px 0 12px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,.12),
+    rgba(255,255,255,.02)
+  );
+  border-bottom: 1px solid rgba(255,255,255,.12);
   flex-shrink: 0;
-  cursor: default;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }
 
 .window-controls { display: flex; gap: 8px; }
+
+.window.is-dragging .window-bar {
+  cursor: grabbing;
+}
 
 .window-dot {
   width: 12px; height: 12px;
@@ -555,6 +593,14 @@ body {
 .dot--green  { background: #28c840; }
 
 .window-title {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border-radius: 15px;
+  background: rgba(58, 58, 62, 0.96);
   text-align: center;
   font-size: 12.5px;
   font-weight: 500;
@@ -566,39 +612,109 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
-.window-workTab {
+.window-navTab {
   border: 0;
   height: 32px;
-  min-width: 84px;
-  padding: 0 14px;
+  width: 34px;
+  padding: 0 7px;
   border-radius: 16px;
   background: rgba(58, 58, 62, 0.96);
   color: rgba(230,230,234,.92);
-  font-size: 13px;
-  font-weight: 500;
-  font-family: "Bebas Neue", sans-serif;
-  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
   line-height: 1;
   cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
   transition:
-    background 160ms ease,
-    color 160ms ease,
-    transform 160ms var(--spring);
+    width 340ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    padding 340ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    background 240ms ease,
+    color 180ms ease,
+    transform 240ms cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: width, padding, transform;
+  backface-visibility: hidden;
 }
 
-.window-workTab:hover {
+.window-navTab:hover,
+.window-navTab:focus-visible {
+  width: 124px;
+  padding: 0 10px;
   background: rgba(86, 86, 92, 0.96);
 }
 
-.window-workTab:active {
+.window-navTab:active {
   transform: scale(.97);
 }
 
-.window-workTab.is-open {
-  background: rgba(98, 98, 104, 0.96);
+.window-navTab.is-open {
+  background: rgba(58, 58, 62, 0.96);
+}
+
+.window-navTab-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background-color: rgba(236, 236, 240, 0.2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+  flex-shrink: 0;
+}
+
+#workTab .window-navTab-dot {
+  background-image: url("assets/work.jpg");
+}
+
+#headerTabAbout .window-navTab-dot {
+  background-image: url("assets/about.jpg");
+}
+
+#headerTabResume .window-navTab-dot {
+  background-image: url("assets/resume.jpg");
+}
+
+#headerTabContact .window-navTab-dot {
+  background-image: url("assets/contact.jpg");
+}
+
+#headerTabRecommendations .window-navTab-dot {
+  background-image: url("assets/recommendations.jpg");
+}
+
+.window-navTab-label {
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(-8px);
+  filter: blur(2px);
+  transition:
+    opacity 210ms ease,
+    max-width 340ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 260ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    filter 240ms ease;
+}
+
+.window-navTab:hover .window-navTab-label,
+.window-navTab:focus-visible .window-navTab-label {
+  opacity: 1;
+  max-width: 92px;
+  transform: translateX(0);
+  filter: blur(0);
+}
+
+.window-navTab:focus-visible {
+  outline: 2px solid rgba(254, 91, 172, 0.9);
+  outline-offset: 1px;
 }
 
 .window-content {
@@ -687,7 +803,7 @@ body {
 
 .work-panel-header {
   color: #f2f2f2;
-  font-family: "Bebas Neue", sans-serif;
+  font-family: var(--font-display);
   font-size: 60px;
   line-height: .78;
   letter-spacing: 0;

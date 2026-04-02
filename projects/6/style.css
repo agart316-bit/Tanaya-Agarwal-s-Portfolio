@@ -1,43 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  background: #ffffff;
-}
-
-body {
-  background: #ffffff;
-  min-height: 100vh;
-  font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
-  font-size: 7.1px;
-  line-height: 1.45;
-  color: #1f1f1f;
   overflow-x: hidden;
-}
-
-.viewport {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background: #ffffff;
-}
-
-.journal {
-  width: 312px;
-  background: #ffffff;
-  border: 0;
-  will-change: transform;
 }
 
 .panel {
@@ -192,7 +154,7 @@ h1,
 h2 {
   margin: 0;
   text-align: center;
-  font-family: "Bebas Neue", sans-serif;
+  font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: 0;
   line-height: 0.9;

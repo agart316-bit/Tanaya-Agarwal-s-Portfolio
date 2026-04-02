@@ -1,39 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 :root {
   --contact-layout-width: 100vw;
   --title-width: 96.0625rem;
   --title-height: 10.75rem;
   --title-size: 9.5rem;
-  --envelope-width: 85.05rem;
-  --envelope-height: 81.5625rem;
-  --paper-width: 50.175rem;
-  --paper-height: 36.3938rem;
-  --paper-text-width: 46.125rem;
+  --letter-stack-scale: 0.88;
+  --envelope-width: calc(85.05rem * var(--letter-stack-scale));
+  --envelope-height: calc(81.5625rem * var(--letter-stack-scale));
+  --paper-width: calc(50.175rem * var(--letter-stack-scale));
+  --paper-height: calc(36.3938rem * var(--letter-stack-scale));
+  --paper-text-width: calc(46.125rem * var(--letter-stack-scale));
   --paper-rotation: 6.004deg;
-  --stack-offset-y: 4.5rem;
-  --paper-offset-y: 18.5rem;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  --stack-offset-y: calc(4.5rem * var(--letter-stack-scale));
+  --paper-offset-y: calc(18.5rem * var(--letter-stack-scale));
 }
 
 body {
-  background: #ffffff;
   color: #171717;
-  font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
-  font-size: var(--project-copy-size, 7.1px);
-  line-height: 1.45;
   overflow-x: hidden;
 }
 
@@ -50,7 +32,7 @@ body {
 .contact-title h1 {
   margin: 0;
   text-align: center;
-  font-family: "Bebas Neue", sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0;
   line-height: 0.9;
@@ -122,7 +104,7 @@ body {
   width: min(var(--paper-text-width), 82.735%);
   margin: 13.4% auto 0;
   color: #171717;
-  font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
+  font-family: var(--font-serif);
   font-size: var(--project-copy-size, 7.1px);
   font-style: normal;
   font-weight: 400;

@@ -1,9 +1,10 @@
 const scenes = Array.from(document.querySelectorAll("[data-scene]"));
 const BASE_COPY_SIZE = 7.1;
 const BASE_WIDTH = 312;
-const TARGET_RATIO = 0.5;
+const TARGET_RATIO = 0.65;
 const MIN_ZOOM = 0.8;
 const MAX_ZOOM = 2.5;
+const PROJECT_MAX_WIDTH = 1400;
 const APP_WINDOW_WIDTH_RATIO = 0.84;
 const APP_WINDOW_MAX_WIDTH = 1000;
 
@@ -43,9 +44,14 @@ function syncLayoutWidth() {
 }
 
 function syncProjectCopySize() {
+  const effectiveWidth = Math.min(getLayoutWidth(), PROJECT_MAX_WIDTH);
+  const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+  const clampedZoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+  const scaledCopySize = BASE_COPY_SIZE * clampedZoom;
+
   document.documentElement.style.setProperty(
     "--project-copy-size",
-    `${BASE_COPY_SIZE}px`
+    `${scaledCopySize}px`
   );
 }
 

@@ -6,6 +6,10 @@ const BASE_WIDTH = 312;
 const TARGET_RATIO = 0.65;
 const MIN_ZOOM = 0.8;
 const MAX_ZOOM = 2.5;
+const PREVIEW_OFFSET_X = 14;
+const PREVIEW_OFFSET_Y = 18;
+const PROJECT_IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG", "webp", "WEBP"];
+const PROJECT_IMAGE_INDEXES = [1, 0];
 
 /* ─── Floating layer (Cappen's work__list__layer) ─────────────────
    One single <div> that slides between rows on hover.
@@ -15,6 +19,13 @@ const MAX_ZOOM = 2.5;
 let layer = null;
 let layerOutRequest = null;
 let lastHoveredIndex = -1;
+let previewCursor = null;
+let previewCursorImage = null;
+let previewMoveRaf = null;
+let previewPosX = -9999;
+let previewPosY = -9999;
+let hoveredPreviewItem = null;
+const previewSrcByProject = new Map();
 
 function syncProjectCopySize() {
   const effectiveWidth = Math.min(window.innerWidth, 1400);
@@ -31,6 +42,132 @@ function createLayer() {
   layer = document.createElement("div");
   layer.className = "experience-list__layer";
   experienceList.appendChild(layer);
+}
+
+function createPreviewCursor() {
+  if (previewCursor) return;
+
+  previewCursor = document.createElement("div");
+  previewCursor.className = "experience-cursor-preview";
+
+  previewCursorImage = document.createElement("img");
+  previewCursorImage.alt = "";
+  previewCursorImage.draggable = false;
+  previewCursor.appendChild(previewCursorImage);
+
+  document.body.appendChild(previewCursor);
+}
+
+function updatePreviewCursorPosition() {
+  previewMoveRaf = null;
+  if (!previewCursor) return;
+  previewCursor.style.setProperty("--cursor-x", `${previewPosX}px`);
+  previewCursor.style.setProperty("--cursor-y", `${previewPosY}px`);
+}
+
+function queuePreviewCursorPosition(clientX, clientY) {
+  previewPosX = clientX + PREVIEW_OFFSET_X;
+  previewPosY = clientY + PREVIEW_OFFSET_Y;
+  if (previewMoveRaf) return;
+  previewMoveRaf = requestAnimationFrame(updatePreviewCursorPosition);
+}
+
+function hidePreviewCursor() {
+  if (!previewCursor) return;
+  previewCursor.classList.remove("is-visible");
+  hoveredPreviewItem = null;
+}
+
+function showPreviewCursorForItem(item) {
+  if (!previewCursor || !previewCursorImage) return;
+  if (!item || item.classList.contains("is-active")) {
+    hidePreviewCursor();
+    return;
+  }
+
+  const previewKey = item.dataset.preview
+    ? `local:${item.dataset.preview}`
+    : item.dataset.project
+      ? `project:${item.dataset.project}`
+      : null;
+  if (!previewKey) {
+    hidePreviewCursor();
+    return;
+  }
+
+  const src = previewSrcByProject.get(previewKey);
+  if (!src) {
+    hidePreviewCursor();
+    return;
+  }
+
+  if (previewCursorImage.src !== src) {
+    previewCursorImage.src = src;
+  }
+
+  hoveredPreviewItem = item;
+  previewCursor.classList.add("is-visible");
+}
+
+function resolveImagePath(src) {
+  return new Promise((resolve) => {
+    const probe = new Image();
+    probe.onload = () => resolve(src);
+    probe.onerror = () => resolve(null);
+    probe.src = src;
+  });
+}
+
+async function resolveFirstProjectImage(projectNum) {
+  for (const imageIndex of PROJECT_IMAGE_INDEXES) {
+    for (const ext of PROJECT_IMAGE_EXTENSIONS) {
+      const candidate = `../../projects/${projectNum}/project-${projectNum}-${imageIndex}.${ext}`;
+      const resolved = await resolveImagePath(candidate);
+      if (resolved) return resolved;
+    }
+  }
+  return null;
+}
+
+async function resolveLocalPreviewImage(baseName) {
+  if (!baseName) return null;
+  for (const ext of PROJECT_IMAGE_EXTENSIONS) {
+    const candidate = `./${baseName}.${ext}`;
+    const resolved = await resolveImagePath(candidate);
+    if (resolved) return resolved;
+  }
+  return null;
+}
+
+async function primeExperiencePreviewSources() {
+  const previewKeys = Array.from(
+    new Set(
+      experienceItems
+        .map((item) => {
+          if (item.dataset.preview) return `local:${item.dataset.preview}`;
+          if (item.dataset.project) return `project:${item.dataset.project}`;
+          return null;
+        })
+        .filter(Boolean)
+    )
+  );
+
+  const previews = await Promise.all(
+    previewKeys.map(async (key) => {
+      const [kind, value] = key.split(":");
+      if (kind === "local") {
+        const src = await resolveLocalPreviewImage(value);
+        return [key, src];
+      }
+      const src = await resolveFirstProjectImage(value);
+      return [key, src];
+    })
+  );
+
+  previews.forEach(([key, src]) => {
+    if (!src) return;
+    previewSrcByProject.set(key, src);
+  });
 }
 
 function updateLayerHeight() {
@@ -84,6 +221,7 @@ function onItemEnter(item, index) {
   // Hovering the open row: hide layer, no hover state
   if (item.classList.contains("is-active")) {
     hideLayer();
+    hidePreviewCursor();
     experienceList.classList.remove("is-hovering");
     experienceItems.forEach((el) => el.classList.remove("is-hovered"));
     lastHoveredIndex = index;
@@ -97,12 +235,14 @@ function onItemEnter(item, index) {
   // Slide if already hovering another row; snap+scale if entering fresh
   const shouldAnimate = layer && lastHoveredIndex !== -1;
   moveLayerTo(item, index, shouldAnimate);
+  showPreviewCursorForItem(item);
 }
 
 function onListLeave() {
   // Short delay before hiding layer (matches Cappen's ~200ms outRequest)
   layerOutRequest = setTimeout(() => {
     hideLayer();
+    hidePreviewCursor();
     experienceList.classList.remove("is-hovering");
     experienceItems.forEach((el) => el.classList.remove("is-hovered"));
     lastHoveredIndex = -1;
@@ -188,6 +328,7 @@ function setActiveItem(nextItem) {
 
 function setupInteraction() {
   createLayer();
+  createPreviewCursor();
   updateLayerHeight();
 
   experienceItems.forEach((item, index) => {
@@ -197,6 +338,7 @@ function setupInteraction() {
     // Click: hide hover layer, then toggle accordion
     trigger.addEventListener("click", () => {
       hideLayer();
+      hidePreviewCursor();
       experienceList.classList.remove("is-hovering");
       experienceItems.forEach((el) => el.classList.remove("is-hovered"));
       lastHoveredIndex = -1;
@@ -204,7 +346,26 @@ function setupInteraction() {
     });
 
     // Hover: move floating layer
-    item.addEventListener("mouseenter", () => onItemEnter(item, index));
+    item.addEventListener("mouseenter", (event) => {
+      queuePreviewCursorPosition(event.clientX, event.clientY);
+      onItemEnter(item, index);
+    });
+  });
+
+  experienceList.addEventListener("mousemove", (event) => {
+    queuePreviewCursorPosition(event.clientX, event.clientY);
+
+    const item = event.target.closest("[data-experience]");
+    if (!item) {
+      hidePreviewCursor();
+      return;
+    }
+    if (item.classList.contains("is-active")) {
+      hidePreviewCursor();
+      return;
+    }
+    if (item === hoveredPreviewItem) return;
+    showPreviewCursorForItem(item);
   });
 
   // When mouse leaves the whole list, retract the layer
@@ -245,8 +406,9 @@ window.addEventListener("resize", () => {
   if (detail) detail.style.height = "auto";
 });
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
   syncProjectCopySize();
+  await primeExperiencePreviewSources();
   setupInteraction();
   setupReveal();
 });

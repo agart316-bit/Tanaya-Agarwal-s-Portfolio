@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tanaya Agarwal</title>
+  <link rel="stylesheet" href="shared/base.css?v=1" />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Cursor-replacing tooltip */
@@ -168,7 +169,7 @@
       </a>
     </section>
 
-    <!-- Dock (4 icons, now also open windows) -->
+    <!-- Dock (5 icons, now also open windows) -->
     <nav class="dock" aria-label="Dock">
       <div class="dock-tray" id="dockTray">
 
@@ -183,13 +184,18 @@
         </div>
 
         <div class="dock-item">
-          <div class="dock-tooltip">Contact</div>
-          <button class="dock-app" type="button" aria-label="Contact" data-window="dock-contact"></button>
-        </div>        
+          <div class="dock-tooltip">Recommendations</div>
+          <button class="dock-app" type="button" aria-label="Recommendations" data-window="dock-recommendations"></button>
+        </div>
 
         <div class="dock-item">
-          <div class="dock-tooltip">Index</div>
-          <button class="dock-app" type="button" aria-label="Index" data-window="dock-index"></button>
+          <div class="dock-tooltip">Contacts</div>
+          <button class="dock-app" type="button" aria-label="Contacts" data-window="dock-contacts"></button>
+        </div>
+
+        <div class="dock-item">
+          <div class="dock-tooltip">Photos</div>
+          <button class="dock-app" type="button" aria-label="Photos" data-window="dock-photos"></button>
         </div>
 
       </div>
@@ -209,26 +215,50 @@
           <div class="window-barRight">
             <button
               id="workTab"
-              class="window-workTab"
+              class="window-navTab"
               type="button"
               aria-controls="workPanel"
               aria-expanded="false"
+              aria-label="Work"
             >
-              Work
+              <span class="window-navTab-dot" aria-hidden="true"></span>
+              <span class="window-navTab-label">Work</span>
             </button>
             <button
-              id="aboutTab"
-              class="window-workTab"
+              id="headerTabAbout"
+              class="window-navTab"
               type="button"
+              aria-label="About"
             >
-              About
+              <span class="window-navTab-dot" aria-hidden="true"></span>
+              <span class="window-navTab-label">About</span>
             </button>
             <button
-              id="resumeTab"
-              class="window-workTab"
+              id="headerTabResume"
+              class="window-navTab"
               type="button"
+              aria-label="Resume"
             >
-              Resume
+              <span class="window-navTab-dot" aria-hidden="true"></span>
+              <span class="window-navTab-label">Resume</span>
+            </button>
+            <button
+              id="headerTabContact"
+              class="window-navTab"
+              type="button"
+              aria-label="Contact"
+            >
+              <span class="window-navTab-dot" aria-hidden="true"></span>
+              <span class="window-navTab-label">Contact</span>
+            </button>
+            <button
+              id="headerTabRecommendations"
+              class="window-navTab"
+              type="button"
+              aria-label="Recommendations"
+            >
+              <span class="window-navTab-dot" aria-hidden="true"></span>
+              <span class="window-navTab-label">Recommendations</span>
             </button>
           </div>
         </div>

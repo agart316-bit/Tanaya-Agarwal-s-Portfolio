@@ -24,12 +24,15 @@ const passwordCaret = document.getElementById("passwordCaret");
 const windowLayer   = document.getElementById("windowLayer");
 const windowTitle   = document.getElementById("windowTitle");
 const mainWindow    = document.getElementById("mainWindow");
+const windowBar     = document.getElementById("windowBar");
 const projectFrame  = document.getElementById("projectFrame");
 const windowBlank   = document.getElementById("windowBlank");
 const windowContent = mainWindow?.querySelector(".window-content") || null;
 const workTab       = document.getElementById("workTab");
-const aboutTab      = document.getElementById("aboutTab");
-const resumeTab     = document.getElementById("resumeTab");
+const aboutTab      = document.getElementById("headerTabAbout");
+const resumeTab     = document.getElementById("headerTabResume");
+const contactTab    = document.getElementById("headerTabContact");
+const recommendationsTab = document.getElementById("headerTabRecommendations");
 const workPanel     = document.getElementById("workPanel");
 const workGrid      = document.getElementById("workGrid");
 
@@ -173,21 +176,41 @@ function unlock(){
    WINDOW — open / close / maximise / restore
 ========================================================= */
 let isMaximised = false;
+let windowOffsetX = 0;
+let windowOffsetY = 0;
+let savedWindowOffsetX = 0;
+let savedWindowOffsetY = 0;
+let isWindowDragging = false;
+let dragPointerId = null;
+let winDragStartX = 0;
+let winDragStartY = 0;
+let winDragOriginX = 0;
+let winDragOriginY = 0;
 
-const WINDOW_HEADER_TAB_SOURCES = {
-  about: "dock/about/index.html",
-  resume: "dock/resume/index.html"
+const WINDOW_HEADER_TABS = {
+  about: { title: "About", src: "dock/about/index.html" },
+  resume: { title: "Resume", src: "dock/resume/index.html" },
+  contact: { title: "Contact", src: "dock/contacts/index.html" },
+  recommendations: { title: "Recommendations", src: "dock/recommendations/index.html" }
 };
 
 function getHeaderTabKeyForSource(src = ""){
   const normalized = String(src).toLowerCase();
   if (normalized.includes("/about/") || normalized.includes("dock/about")) return "about";
   if (normalized.includes("/resume/") || normalized.includes("dock/resume")) return "resume";
+  if (normalized.includes("/contacts/") || normalized.includes("dock/contacts")) return "contact";
+  if (normalized.includes("/recommendations/") || normalized.includes("dock/recommendations")) return "recommendations";
   return null;
 }
 
 function setWindowHeaderTabActive(activeKey){
-  const tabs = { work: workTab, about: aboutTab, resume: resumeTab };
+  const tabs = {
+    work: workTab,
+    about: aboutTab,
+    resume: resumeTab,
+    contact: contactTab,
+    recommendations: recommendationsTab
+  };
   Object.entries(tabs).forEach(([key, btn]) => {
     if(!btn) return;
     btn.classList.toggle("is-open", key === activeKey);
@@ -209,11 +232,87 @@ function loadWindowContent(title, iframeSrc){
   }
 }
 
+function clampWindowOffset(nextX, nextY){
+  if(!mainWindow) return [nextX, nextY];
+
+  const width = mainWindow.offsetWidth || Math.min(window.innerWidth * 0.88, 1060);
+  const height = mainWindow.offsetHeight || Math.min(window.innerHeight * 0.86, 760);
+  const baseLeft = (window.innerWidth - width) / 2;
+  const baseTop = (window.innerHeight - height) / 2;
+
+  const minX = -baseLeft + 14;
+  const maxX = window.innerWidth - width - 14 - baseLeft;
+  const minY = -baseTop + 10;
+  const maxY = window.innerHeight - height - 10 - baseTop;
+
+  const clampedX = Math.min(Math.max(nextX, minX), maxX);
+  const clampedY = Math.min(Math.max(nextY, minY), maxY);
+  return [clampedX, clampedY];
+}
+
+function applyWindowOffset(){
+  if(!mainWindow) return;
+  mainWindow.style.setProperty("--window-offset-x", `${windowOffsetX}px`);
+  mainWindow.style.setProperty("--window-offset-y", `${windowOffsetY}px`);
+}
+
+function setWindowOffset(nextX, nextY){
+  const [x, y] = clampWindowOffset(nextX, nextY);
+  windowOffsetX = x;
+  windowOffsetY = y;
+  applyWindowOffset();
+}
+
+function resetWindowOffset(){
+  windowOffsetX = 0;
+  windowOffsetY = 0;
+  applyWindowOffset();
+}
+
+function onWindowDragStart(event){
+  if(!windowBar || !mainWindow || isMaximised) return;
+  if(event.button !== 0) return;
+  if(event.target.closest("button, [data-action], .window-navTab")) return;
+
+  isWindowDragging = true;
+  dragPointerId = event.pointerId;
+  winDragStartX = event.clientX;
+  winDragStartY = event.clientY;
+  winDragOriginX = windowOffsetX;
+  winDragOriginY = windowOffsetY;
+
+  mainWindow.classList.add("is-dragging");
+  windowBar.setPointerCapture(dragPointerId);
+  event.preventDefault();
+}
+
+function onWindowDragMove(event){
+  if(!isWindowDragging || event.pointerId !== dragPointerId) return;
+  const nextX = winDragOriginX + (event.clientX - winDragStartX);
+  const nextY = winDragOriginY + (event.clientY - winDragStartY);
+  setWindowOffset(nextX, nextY);
+}
+
+function endWindowDrag(event){
+  if(!isWindowDragging) return;
+  if(event && dragPointerId !== null && event.pointerId !== dragPointerId) return;
+
+  isWindowDragging = false;
+  mainWindow?.classList.remove("is-dragging");
+  if(windowBar && dragPointerId !== null && windowBar.hasPointerCapture(dragPointerId)) {
+    windowBar.releasePointerCapture(dragPointerId);
+  }
+  dragPointerId = null;
+}
+
 function openWindow(title, iframeSrc){
   windowLayer.classList.remove("is-hidden");
   isMaximised = false;
+  savedWindowOffsetX = 0;
+  savedWindowOffsetY = 0;
+  resetWindowOffset();
 
-  mainWindow.classList.remove("is-maximised", "is-closing");
+  mainWindow.classList.remove("is-maximised", "is-closing", "is-dragging");
   setWorkPanelOpen(false);
   setActiveWorkProject(null);
   setWindowHeaderTabActive(getHeaderTabKeyForSource(iframeSrc));
@@ -226,6 +325,7 @@ function openWindow(title, iframeSrc){
 }
 
 function closeWindow(){
+  endWindowDrag();
   setWorkPanelOpen(false);
   setActiveWorkProject(null);
   setWindowHeaderTabActive(null);
@@ -237,11 +337,18 @@ function closeWindow(){
 
     if(projectFrame) projectFrame.src = "";
     if(windowBlank) windowBlank.style.display = "grid";
+    savedWindowOffsetX = 0;
+    savedWindowOffsetY = 0;
+    resetWindowOffset();
   }, { once: true });
 }
 
 function maximiseWindow(){
   if(isMaximised) return;
+  endWindowDrag();
+  savedWindowOffsetX = windowOffsetX;
+  savedWindowOffsetY = windowOffsetY;
+  resetWindowOffset();
   isMaximised = true;
   mainWindow.classList.add("is-maximised");
 }
@@ -250,6 +357,7 @@ function restoreWindow(){
   if(!isMaximised) return;
   isMaximised = false;
   mainWindow.classList.remove("is-maximised");
+  setWindowOffset(savedWindowOffsetX, savedWindowOffsetY);
 }
 
 windowLayer.addEventListener("click", e => {
@@ -269,6 +377,16 @@ document.addEventListener("keydown", e => {
   }
   closeWindow();
 });
+
+window.addEventListener("resize", () => {
+  if(isMaximised || windowLayer.classList.contains("is-hidden")) return;
+  setWindowOffset(windowOffsetX, windowOffsetY);
+});
+
+windowBar?.addEventListener("pointerdown", onWindowDragStart);
+windowBar?.addEventListener("pointermove", onWindowDragMove);
+windowBar?.addEventListener("pointerup", endWindowDrag);
+windowBar?.addEventListener("pointercancel", endWindowDrag);
 
 /* =========================================================
    DESKTOP ICONS — open project windows
@@ -374,12 +492,12 @@ function setWorkPanelOpen(shouldOpen){
 }
 
 function openWindowHeaderTab(tabKey){
-  const src = WINDOW_HEADER_TAB_SOURCES[tabKey];
-  if(!src) return;
+  const tab = WINDOW_HEADER_TABS[tabKey];
+  if(!tab) return;
   setWorkPanelOpen(false);
   setActiveWorkProject(null);
   setWindowHeaderTabActive(tabKey);
-  loadWindowContent(tabKey === "about" ? "About" : "Resume", src);
+  loadWindowContent(tab.title, tab.src);
 }
 
 function setActiveWorkProject(projectNum){
@@ -477,17 +595,17 @@ function buildWorkPanel(){
 }
 
 function initWorkPanel(){
-  if(!workPanel || !workTab) return;
+  if(workPanel && workTab) {
+    workPanel.hidden = false;
+    setWorkPanelOpen(false);
+    buildWorkPanel();
 
-  workPanel.hidden = false;
-  setWorkPanelOpen(false);
-  buildWorkPanel();
-
-  workTab.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setWorkPanelOpen(!mainWindow.classList.contains("is-work-open"));
-  });
+    workTab.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setWorkPanelOpen(!mainWindow.classList.contains("is-work-open"));
+    });
+  }
 
   aboutTab?.addEventListener("click", (e) => {
     e.preventDefault();
@@ -499,6 +617,18 @@ function initWorkPanel(){
     e.preventDefault();
     e.stopPropagation();
     openWindowHeaderTab("resume");
+  });
+
+  contactTab?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openWindowHeaderTab("contact");
+  });
+
+  recommendationsTab?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openWindowHeaderTab("recommendations");
   });
 
   windowContent?.addEventListener("click", (e) => {
@@ -761,10 +891,11 @@ dockTray?.addEventListener("mouseleave", resetDockMag);
    DOCK ICONS — open dock windows
 ========================================================= */
 const DOCK_WINDOWS = {
-  "dock-about":   { title: "About",   src: "dock/about/index.html" },
-  "dock-contact": { title: "Contact", src: "dock/contact/index.html" },
-  "dock-resume":  { title: "Resume",  src: "dock/resume/index.html" },
-  "dock-index":   { title: "Index",   src: "dock/index/index.html" }
+  "dock-about":           { title: "About",           src: "dock/about/index.html" },
+  "dock-resume":          { title: "Resume",          src: "dock/resume/index.html" },
+  "dock-recommendations": { title: "Recommendations", src: "dock/recommendations/index.html" },
+  "dock-contacts":        { title: "Contacts",        src: "dock/contacts/index.html" },
+  "dock-photos":          { title: "Photos",          src: "dock/photos/index.html" }
 };
 
 document.querySelectorAll(".dock-app[data-window]").forEach(btn => {

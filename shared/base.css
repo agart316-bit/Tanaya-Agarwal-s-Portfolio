@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+:root {
+  --font-serif: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
+  --font-display: "Bebas Neue", sans-serif;
+  --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Bebas Neue", sans-serif;
+  --base-copy-size: 7.1px;
+  --project-copy-size: var(--base-copy-size);
+  --base-line-height: 1.45;
+  --color-page-bg: #ffffff;
+  --color-text: #1f1f1f;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--color-page-bg);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: var(--project-copy-size, var(--base-copy-size));
+  line-height: var(--base-line-height);
+  -webkit-font-smoothing: antialiased;
+}
+
+.viewport {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #ffffff;
+}
+
+.journal {
+  width: 312px;
+  background: #ffffff;
+  border: 0;
+  will-change: transform;
+}
