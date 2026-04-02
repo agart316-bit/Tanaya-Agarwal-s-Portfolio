@@ -17,6 +17,8 @@ body {
   background: #ffffff;
   color: #171717;
   font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
+  font-size: var(--project-copy-size, 7.1px);
+  line-height: 1.45;
   overflow-x: hidden;
 }
 
@@ -216,8 +218,8 @@ body {
 .experience-detail p {
   margin: 0;
   max-width: 100%;
-  font-size: clamp(18px, 1.12vw, 22px);
-  line-height: 1.58;
+  font-size: var(--project-copy-size, 7.1px);
+  line-height: 1.45;
   color: #171717;
   opacity: 0;
   transform: translateY(14px);

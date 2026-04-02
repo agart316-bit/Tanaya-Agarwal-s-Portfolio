@@ -18,6 +18,8 @@ body {
   background: #ffffff;
   min-height: 100vh;
   font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
+  font-size: 7.1px;
+  line-height: 1.45;
   color: #1f1f1f;
   overflow-x: hidden;
 }

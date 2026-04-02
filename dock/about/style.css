@@ -17,6 +17,8 @@ body {
   background: #ffffff;
   color: #1d1d1d;
   font-family: "Glypha", "ITC Glypha", "Palatino Linotype", Palatino, serif;
+  font-size: 7.1px;
+  line-height: 1.45;
   overflow-x: hidden;
 }
 
@@ -46,7 +48,7 @@ body {
 
 .about-copy {
   margin: 20px 0 24px;
-  font-size: 8.2px;
+  font-size: 7.1px;
   line-height: 1.45;
   max-width: 100%;
 }

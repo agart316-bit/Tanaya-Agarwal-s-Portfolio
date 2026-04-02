@@ -1,6 +1,11 @@
 const experienceList = document.getElementById("experienceList");
 const experienceItems = Array.from(document.querySelectorAll("[data-experience]"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const BASE_COPY_SIZE = 7.1;
+const BASE_WIDTH = 312;
+const TARGET_RATIO = 0.65;
+const MIN_ZOOM = 0.8;
+const MAX_ZOOM = 2.5;
 
 /* ─── Floating layer (Cappen's work__list__layer) ─────────────────
    One single <div> that slides between rows on hover.
@@ -10,6 +15,16 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 let layer = null;
 let layerOutRequest = null;
 let lastHoveredIndex = -1;
+
+function syncProjectCopySize() {
+  const effectiveWidth = Math.min(window.innerWidth, 1400);
+  const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+  const clampedZoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+  document.documentElement.style.setProperty(
+    "--project-copy-size",
+    `${(BASE_COPY_SIZE * clampedZoom).toFixed(2)}px`
+  );
+}
 
 function createLayer() {
   if (layer) return;
@@ -221,6 +236,7 @@ function setupReveal() {
 }
 
 window.addEventListener("resize", () => {
+  syncProjectCopySize();
   updateLayerHeight();
 
   const activeItem = experienceItems.find((item) => item.classList.contains("is-active"));
@@ -230,6 +246,9 @@ window.addEventListener("resize", () => {
 });
 
 window.addEventListener("load", () => {
+  syncProjectCopySize();
   setupInteraction();
   setupReveal();
 });
+
+syncProjectCopySize();
