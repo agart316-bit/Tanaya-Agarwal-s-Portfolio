@@ -12,11 +12,20 @@
   --lock-bg:    url("assets/lockscreen-bg.jpg");
   --dock-size:  50px;
   --dock-gap:   18px;
+  --site-min-width: 0px;
+  --site-min-height: 0px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
+html, body {
+  width: 100%;
+  height: 100%;
+  min-width: var(--site-min-width);
+  min-height: var(--site-min-height);
+  overflow: auto;
+}
 body {
+  position: relative;
   font-family: var(--font);
   color: rgb(236, 236, 236);
   -webkit-font-smoothing: antialiased;
@@ -27,7 +36,9 @@ body {
    LOCK SCREEN
 ========================================================= */
 .lockscreen {
-  position: fixed; inset: 0;
+  position: absolute; inset: 0;
+  min-width: var(--site-min-width);
+  min-height: var(--site-min-height);
   background-color: black;
   background: var(--lock-bg) center / cover no-repeat;
   display: flex;
@@ -46,7 +57,7 @@ body {
 }
 
 .lockscreen.is-unlocking {
-  transform: translateY(-100vh);
+  transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
 }
@@ -192,7 +203,9 @@ body {
    DESKTOP
 ========================================================= */
 .desktop {
-  position: fixed; inset: 0;
+  position: absolute; inset: 0;
+  min-width: var(--site-min-width);
+  min-height: var(--site-min-height);
   background: #ffffff; /* deep dark fallback while WebGL loads */
   animation: fadeIn 500ms ease both;
 }
@@ -215,8 +228,17 @@ body {
    DESKTOP SURFACE (sits above the WebGL layer)
 ========================================================= */
 .desktop-surface {
-  position: absolute; inset: 0;
-  bottom: 80px;
+  position: absolute;
+  inset: 0;
+  /* Reserve space for the dock at the bottom */
+  bottom: 96px;
+  overflow: visible;
+}
+
+.desktop-icons-canvas {
+  position: absolute;
+  inset: 0;
+  /* Icons are placed directly here with percentage-derived pixel coords */
 }
 
 /* =========================================================
@@ -319,7 +341,7 @@ body {
 }
 
 .desktop-icon-label {
-  font-size: 11px;
+  font-size: clamp(13px, 1vw, 15px);
   line-height: 1.2;
   text-align: center;
   text-shadow: 0 1px 6px rgba(0,0,0,.55);
@@ -459,7 +481,9 @@ body {
    WINDOW LAYER
 ========================================================= */
 .window-layer {
-  position: fixed; inset: 0;
+  position: absolute; inset: 0;
+  min-width: var(--site-min-width);
+  min-height: var(--site-min-height);
   display: grid; place-items: center;
   z-index: 100;
 }
@@ -545,6 +569,14 @@ body {
   border-radius: 0 !important;
 }
 
+.window.is-responsive-fullscreen {
+  --w: 100vw;
+  --h: 100vh;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+}
+
 .window.is-dragging {
   transition: none !important;
 }
@@ -602,7 +634,7 @@ body {
   border-radius: 15px;
   background: rgba(58, 58, 62, 0.96);
   text-align: center;
-  font-size: 12.5px;
+  font-size: clamp(14px, 1.05vw, 16px);
   font-weight: 500;
   color: rgba(255,255,255,.72);
   letter-spacing: .2px;
@@ -623,7 +655,7 @@ body {
   border-radius: 16px;
   background: rgba(58, 58, 62, 0.96);
   color: rgba(230,230,234,.92);
-  font-size: 12px;
+  font-size: clamp(13px, 0.95vw, 15px);
   font-weight: 400;
   font-family: var(--font-display);
   letter-spacing: 0.03em;
@@ -923,13 +955,40 @@ body {
 .work-card-url {
   display: block;
   color: rgba(66,66,66,.7);
-  font-size: 10px;
+  font-size: clamp(12px, 0.88vw, 13px);
   line-height: 1.2;
   overflow-wrap: anywhere;
   transform: translateY(-140%);
   transition: transform 430ms var(--ease-out);
   transition-delay: calc(var(--work-delay, 0ms) + 175ms);
   will-change: transform;
+}
+
+/* Non-mobile floor: keep typography legible as width tightens. */
+@media (min-width: 486px) {
+  body {
+    /* Override shared tiny base type size for non-mobile layouts. */
+    font-size: clamp(14px, 1vw, 16px);
+  }
+}
+
+@media (min-width: 486px) and (max-width: 1024px) {
+  .desktop-icon-label {
+    font-size: 13.5px;
+  }
+
+  .window-title {
+    font-size: 14.5px;
+  }
+
+  .window-navTab,
+  .window-navTab-label {
+    font-size: 13.5px;
+  }
+
+  .work-card-url {
+    font-size: 12.5px;
+  }
 }
 
 .window-workPanel.is-open .work-card-preview img,
@@ -941,6 +1000,42 @@ body {
 .window-workPanel.is-open .work-card-title,
 .window-workPanel.is-open .work-card-url {
   transform: translateY(0);
+}
+
+@media (max-width: 1280px) {
+  .window-bar {
+    grid-template-columns: 72px 1fr auto;
+    padding: 0 8px 0 10px;
+  }
+
+  .window-title {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .window-navTab {
+    width: 30px;
+    height: 30px;
+    padding: 0 6px;
+  }
+
+  .window-navTab:hover,
+  .window-navTab:focus-visible {
+    width: 106px;
+    padding: 0 9px;
+  }
+
+  .window-navTab-label {
+    font-size: 13px;
+  }
+
+  .window-workPanel {
+    width: clamp(260px, 30vw, 320px);
+  }
+
+  .work-grid {
+    gap: 14px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

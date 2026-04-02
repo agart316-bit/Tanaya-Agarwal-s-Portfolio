@@ -37,10 +37,12 @@ const workPanel     = document.getElementById("workPanel");
 const workGrid      = document.getElementById("workGrid");
 
 const surface       = document.getElementById("desktopSurface");
+const iconsCanvas   = document.getElementById("desktopIconsCanvas");
 const desktopIcons  = document.querySelectorAll(".desktop-icon");
 
 const dockItems     = document.querySelectorAll(".dock-item");
 const dockTray      = document.getElementById("dockTray");
+const dock          = document.querySelector(".dock");
 
 const PROJECTS = Array.from(desktopIcons)
   .map((icon) => {
@@ -159,6 +161,12 @@ lockscreen.addEventListener("click", e => {
 function unlock(){
   desktop.classList.remove("is-hidden");
 
+  // Reflow icon positions after the desktop becomes visible so
+  // centering uses the actual rendered surface dimensions.
+  requestAnimationFrame(() => {
+    refreshDesktopIconLayout();
+  });
+
   // Kick off the WebGL background as soon as desktop is visible
   // Use rAF so the element has been painted and has a real size
   requestAnimationFrame(() => {
@@ -180,12 +188,16 @@ let windowOffsetX = 0;
 let windowOffsetY = 0;
 let savedWindowOffsetX = 0;
 let savedWindowOffsetY = 0;
+let isResponsiveWindowFullscreen = false;
 let isWindowDragging = false;
 let dragPointerId = null;
 let winDragStartX = 0;
 let winDragStartY = 0;
 let winDragOriginX = 0;
 let winDragOriginY = 0;
+
+const WINDOW_FULLSCREEN_WIDTH = 1060;
+const WINDOW_FULLSCREEN_HEIGHT = 760;
 
 const WINDOW_HEADER_TABS = {
   about: { title: "About", src: "dock/about/index.html" },
@@ -234,6 +246,7 @@ function loadWindowContent(title, iframeSrc){
 
 function clampWindowOffset(nextX, nextY){
   if(!mainWindow) return [nextX, nextY];
+  if(isMaximised || isResponsiveWindowFullscreen) return [0, 0];
 
   const width = mainWindow.offsetWidth || Math.min(window.innerWidth * 0.88, 1060);
   const height = mainWindow.offsetHeight || Math.min(window.innerHeight * 0.86, 760);
@@ -270,7 +283,7 @@ function resetWindowOffset(){
 }
 
 function onWindowDragStart(event){
-  if(!windowBar || !mainWindow || isMaximised) return;
+  if(!windowBar || !mainWindow || isMaximised || isResponsiveWindowFullscreen) return;
   if(event.button !== 0) return;
   if(event.target.closest("button, [data-action], .window-navTab")) return;
 
@@ -313,6 +326,7 @@ function openWindow(title, iframeSrc){
   resetWindowOffset();
 
   mainWindow.classList.remove("is-maximised", "is-closing", "is-dragging");
+  syncResponsiveWindowMode();
   setWorkPanelOpen(false);
   setActiveWorkProject(null);
   setWindowHeaderTabActive(getHeaderTabKeyForSource(iframeSrc));
@@ -344,6 +358,7 @@ function closeWindow(){
 }
 
 function maximiseWindow(){
+  if(isResponsiveWindowFullscreen) return;
   if(isMaximised) return;
   endWindowDrag();
   savedWindowOffsetX = windowOffsetX;
@@ -358,6 +373,22 @@ function restoreWindow(){
   isMaximised = false;
   mainWindow.classList.remove("is-maximised");
   setWindowOffset(savedWindowOffsetX, savedWindowOffsetY);
+}
+
+function shouldUseResponsiveWindowFullscreen(){
+  return (
+    (window.innerWidth <= WINDOW_FULLSCREEN_WIDTH || window.innerHeight <= WINDOW_FULLSCREEN_HEIGHT)
+  );
+}
+
+function syncResponsiveWindowMode(){
+  if(!mainWindow) return;
+  isResponsiveWindowFullscreen = shouldUseResponsiveWindowFullscreen();
+  mainWindow.classList.toggle("is-responsive-fullscreen", isResponsiveWindowFullscreen);
+  if(isResponsiveWindowFullscreen) {
+    endWindowDrag();
+    resetWindowOffset();
+  }
 }
 
 windowLayer.addEventListener("click", e => {
@@ -379,7 +410,13 @@ document.addEventListener("keydown", e => {
 });
 
 window.addEventListener("resize", () => {
-  if(isMaximised || windowLayer.classList.contains("is-hidden")) return;
+  syncResponsiveWindowMode();
+  refreshDesktopIconLayout();
+  if(windowLayer.classList.contains("is-hidden")) return;
+  if(isMaximised || isResponsiveWindowFullscreen) {
+    resetWindowOffset();
+    return;
+  }
   setWindowOffset(windowOffsetX, windowOffsetY);
 });
 
@@ -726,8 +763,12 @@ async function setDesktopIconImages(){
   await Promise.all(work);
 }
 
-/* Initial layout (12 icons) */
-const ICON_POSITIONS = [
+// Reference design dimensions used to derive default percentages.
+const ICON_REF_W = 1440;
+const ICON_REF_H = 820;
+
+// Original pixel positions converted to percentage fractions.
+const ICON_POSITIONS_PX = [
   { x: 420, y: 95  },
   { x: 780, y: 140 },
   { x: 640, y: 300 },
@@ -742,20 +783,76 @@ const ICON_POSITIONS = [
   { x: 980, y: 520 },
 ];
 
-function layoutIconsInitial(){
-  desktopIcons.forEach((icon, i) => {
-    if (icon.dataset.positioned === "1") return;
+const ICON_POSITIONS = ICON_POSITIONS_PX.map(p => ({
+  px: p.x / ICON_REF_W,
+  py: p.y / ICON_REF_H,
+}));
 
-    const pos = ICON_POSITIONS[i] || { x: 60, y: 60 };
-    icon.style.left = pos.x + "px";
-    icon.style.top  = pos.y + "px";
+const ICON_FALLBACK_PCT = { px: 0.04, py: 0.07 };
+const ICON_DEFAULT_WIDTH  = 82;
+const ICON_DEFAULT_HEIGHT = 104;
+
+// Per-icon stored percentage, overwritten on drag-drop.
+const iconPositionPct = new Map();
+
+/** Usable surface = full viewport minus dock strip at the bottom. */
+function getSurfaceSize(){
+  const dockH = Math.ceil(dock?.offsetHeight || 86);
+  const w = Math.max(window.innerWidth,  320);
+  const h = Math.max(window.innerHeight - dockH - 10, 200);
+  return { w, h };
+}
+
+/** Percentage → clamped pixel position so icon stays fully on-screen. */
+function pctToPx(px, py, surfW, surfH){
+  const left = Math.min(Math.max(px * surfW, 0), surfW - ICON_DEFAULT_WIDTH);
+  const top  = Math.min(Math.max(py * surfH, 0), surfH - ICON_DEFAULT_HEIGHT);
+  return { left, top };
+}
+
+/** Pixel position → percentage for the current surface size. */
+function pxToPct(left, top, surfW, surfH){
+  return {
+    px: left / surfW,
+    py: top  / surfH,
+  };
+}
+
+function syncSiteMinSizeFromIcons(){
+  const root = document.documentElement;
+  const dockWidth  = Math.ceil(dockTray?.scrollWidth || dockTray?.offsetWidth || 0);
+  const dockHeight = Math.ceil(dockTray?.offsetHeight || dock?.offsetHeight || 0);
+  // Icons scale freely — only the dock drives the minimum width.
+  const minWidth  = Math.ceil(Math.max(dockWidth + 24, 320));
+  const minHeight = Math.ceil(dockHeight + 120);
+  root.style.setProperty("--site-min-width",  `${minWidth}px`);
+  root.style.setProperty("--site-min-height", `${minHeight}px`);
+  // Keep these vars for any CSS that reads them.
+  root.style.setProperty("--icons-canvas-width",  "100%");
+  root.style.setProperty("--icons-canvas-height", "100%");
+}
+
+function layoutIconsInitial(){
+  const { w, h } = getSurfaceSize();
+  desktopIcons.forEach((icon, i) => {
+    const pct = iconPositionPct.get(icon) || ICON_POSITIONS[i] || ICON_FALLBACK_PCT;
+    if (!iconPositionPct.has(icon)) iconPositionPct.set(icon, pct);
+    const { left, top } = pctToPx(pct.px, pct.py, w, h);
+    icon.style.left = `${left}px`;
+    icon.style.top  = `${top}px`;
     icon.dataset.positioned = "1";
   });
 }
 
+function refreshDesktopIconLayout(){
+  layoutIconsInitial();
+  syncSiteMinSizeFromIcons();
+}
+
 initWorkPanel();
 
-window.addEventListener("load", layoutIconsInitial);
+syncSiteMinSizeFromIcons();
+window.addEventListener("load", refreshDesktopIconLayout);
 window.addEventListener("load", setDesktopIconImages);
 
 /* Drag + click logic */
@@ -801,12 +898,13 @@ function onPointerMove(e){
 
   if(Math.abs(cx - dragStartX) > 4 || Math.abs(cy - dragStartY) > 4) dragMoved = true;
 
-  const surfRect = surface.getBoundingClientRect();
-  let newLeft = cx - surfRect.left - dragOffX;
-  let newTop  = cy - surfRect.top  - dragOffY;
+  const { w, h } = getSurfaceSize();
+  let newLeft = cx - dragOffX;
+  let newTop  = cy - dragOffY;
 
-  newLeft = Math.max(0, Math.min(newLeft, surfRect.width  - dragIcon.offsetWidth));
-  newTop  = Math.max(0, Math.min(newTop,  surfRect.height - dragIcon.offsetHeight));
+  // Clamp to the full surface (viewport minus dock).
+  newLeft = Math.max(0, Math.min(newLeft, w - ICON_DEFAULT_WIDTH));
+  newTop  = Math.max(0, Math.min(newTop,  h - ICON_DEFAULT_HEIGHT));
 
   dragIcon.style.left = newLeft + "px";
   dragIcon.style.top  = newTop  + "px";
@@ -820,6 +918,13 @@ function onPointerUp(){
   if(!dragMoved){
     const projectNum = dragIcon.dataset.project;
     if(projectNum) openProjectWindow(projectNum);
+  } else {
+    // Save the dropped position as a percentage so resize keeps it in place.
+    const { w, h } = getSurfaceSize();
+    const left = parseFloat(dragIcon.style.left) || 0;
+    const top  = parseFloat(dragIcon.style.top)  || 0;
+    iconPositionPct.set(dragIcon, pxToPct(left, top, w, h));
+    dragIcon.dataset.manualPosition = "1";
   }
   dragIcon = null;
 }
@@ -847,7 +952,9 @@ window.addEventListener("mouseup", onPointerUp);
 window.addEventListener("touchend", onPointerUp);
 
 surface?.addEventListener("mousedown", e => {
-  if(e.target === surface) desktopIcons.forEach(i => i.classList.remove("is-selected"));
+  if(e.target === surface || e.target === iconsCanvas) {
+    desktopIcons.forEach(i => i.classList.remove("is-selected"));
+  }
 });
 
 /* =========================================================
