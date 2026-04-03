@@ -151,18 +151,28 @@ body.loaded .panel {
 }
 
 .panel--hero {
-  background: #ffffff;
-  padding: 18px 20px 24px;
+  background: #f6f6f6;
+  padding: 22px 20px 42px;
+}
+
+h1,
+h2 {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.9;
+  text-transform: uppercase;
 }
 
 h1 {
-  margin: 14px 0 10px;
-  text-align: center;
-  font-family: var(--font-display);
   font-size: 31px;
-  line-height: 0.9;
-  letter-spacing: 0;
-  font-weight: 400;
+  margin-bottom: 26px;
+}
+
+h2 {
+  font-size: 31px;
 }
 
 .meta {
@@ -170,6 +180,15 @@ h1 {
   text-align: center;
   font-size: 8.4px;
   line-height: 1.35;
+}
+
+.panel--santorini {
+  background: #dce2eb;
+  padding: 26px 20px 38px;
+}
+
+.panel--santorini h2 {
+  margin-bottom: 22px;
 }
 
 .copy {
@@ -186,167 +205,79 @@ h1 {
   margin-bottom: 0;
 }
 
-.copy--hero {
-  margin-top: 28px;
+.copy--intro {
+  margin-bottom: 24px;
 }
 
-/* ─── SPLIT SLIDER CAROUSEL ─── */
-.panel--carousel {
-  background: #7e7e7e;
-  padding: 20px;
-  overflow: visible;
+.copy--comfort {
+  padding: 0 8px;
+  margin-bottom: 22px;
 }
 
-.split-slider {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  height: auto;
-  background: transparent;
-  overflow: hidden;
+figure {
+  margin: 0;
 }
 
-/* The visible window — shows exactly one row */
-.split-col {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  overflow: hidden;
+figcaption {
+  margin: 0 0 4px;
+  font-size: 5.9px;
+  letter-spacing: 0.07em;
+  color: #5b5b5b;
+  text-transform: lowercase;
 }
 
-.split-col--left  { left: 0; }
-.split-col--right { left: 50%; }
-
-/* The scrolling strip */
-.split-track {
-  display: flex;
-  flex-direction: column;
-  will-change: transform;
-}
-
-/* Reverse stack so right side can move downward while staying in-bounds */
-#trackRight {
-  flex-direction: column-reverse;
-}
-
-/* Each cell is exactly the height of the visible window */
-.split-cell {
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-.split-col,
-.split-cell {
-  height: 100%;
-}
-
-/* Thin divider line between columns */
-.split-col--right {
-  border-left: 1px solid rgba(255,255,255,0.15);
-}
-
-/* Arrow controls — positioned left/right edges, vertically centred */
-.menu-slider-controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 0px;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.menu-arrow {
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.9);
-  cursor: pointer;
+.gallery {
   display: grid;
-  place-items: center;
-  font-size: 12px;
-  line-height: 1;
-  padding: 0;
-  pointer-events: auto;
-  backdrop-filter: blur(4px);
-  transition: background 120ms ease, transform 120ms ease;
+  gap: 12px;
 }
 
-.menu-arrow:hover {
-  background: rgba(255, 255, 255, 0.32);
-  transform: scale(1.08);
+.gallery--top,
+.gallery--bottom,
+.gallery--comfort {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 14px;
+  row-gap: 12px;
 }
 
-.menu-arrow:active {
-  transform: scale(0.96);
+.gallery-center {
+  width: 36%;
+  margin: 12px auto;
 }
 
-/* Image slot for split carousel cells — full bleed, no gap */
-.image-slot--split {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: #000;
+.panel--comfort-title {
+  background: #f9f9f9;
+  padding: 34px 20px 22px;
 }
 
-.panel--bottom {
+.panel--comfort-body {
+  background: #efe2d5;
+  padding: 20px 20px 30px;
+}
+
+.panel--end {
   background: #ffffff;
-  padding: 24px 20px 40px;
-}
-
-.copy--bottom {
-  margin-bottom: 28px;
-}
-
-.solo-figure {
-  width: 54%;
-  margin: 0 auto;
+  min-height: 120px;
 }
 
 .image-slot {
   width: 100%;
-  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #000000;
 }
 
-.image-slot img,
-.image-slot video {
+.image-slot img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
 }
 
-.image-slot--hero {
-  aspect-ratio: 1.37 / 0.92;
+.image-slot--santorini {
+  aspect-ratio: 1 / 1.26;
 }
 
-.image-slot--solo {
-  aspect-ratio: 0.67 / 1;
-}
-
-.image-slot--solo video {
-  object-fit: contain;
-}
-
-/* Split-carousel media: fit frame height, auto width, crop sides if needed */
-.image-slot--split img,
-.image-slot--split video {
-  width: auto;
-  max-width: none;
-  height: 100%;
-  object-fit: unset;
-  object-position: center center;
+.image-slot--comfort {
+  aspect-ratio: 1 / 1.45;
 }

@@ -150,29 +150,15 @@ body.loaded .panel {
   }
 }
 
-.panel--hero {
-  background: #f6f6f6;
-  padding: 22px 20px 42px;
-}
-
-h1,
-h2 {
+h1 {
   margin: 0;
   text-align: center;
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: 0;
+  font-size: 31px;
   line-height: 0.9;
+  letter-spacing: 0;
+  font-weight: 400;
   text-transform: uppercase;
-}
-
-h1 {
-  font-size: 31px;
-  margin-bottom: 26px;
-}
-
-h2 {
-  font-size: 31px;
 }
 
 .meta {
@@ -182,13 +168,15 @@ h2 {
   line-height: 1.35;
 }
 
-.panel--santorini {
-  background: #dce2eb;
-  padding: 26px 20px 38px;
+.meta strong {
+  font-weight: 400;
 }
 
-.panel--santorini h2 {
-  margin-bottom: 22px;
+.meta--row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
 }
 
 .copy {
@@ -198,20 +186,15 @@ h2 {
 }
 
 .copy p {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .copy p:last-child {
   margin-bottom: 0;
 }
 
-.copy--intro {
-  margin-bottom: 24px;
-}
-
-.copy--comfort {
-  padding: 0 8px;
-  margin-bottom: 22px;
+.copy--section {
+  padding: 0 20px;
 }
 
 figure {
@@ -226,37 +209,62 @@ figcaption {
   text-transform: lowercase;
 }
 
-.gallery {
-  display: grid;
-  gap: 12px;
+.panel--hero {
+  background: #efefef;
+  padding: 16px 20px 18px;
 }
 
-.gallery--top,
-.gallery--bottom,
-.gallery--comfort {
-  grid-template-columns: 1fr 1fr;
-  column-gap: 14px;
-  row-gap: 12px;
+.cover {
+  width: 120px;
+  margin: 0 auto 14px;
 }
 
-.gallery-center {
-  width: 36%;
-  margin: 12px auto;
+.panel--hero h1 {
+  margin-bottom: 24px;
 }
 
-.panel--comfort-title {
-  background: #f9f9f9;
-  padding: 34px 20px 22px;
+.panel--hero .meta {
+  white-space: nowrap;
 }
 
-.panel--comfort-body {
-  background: #efe2d5;
-  padding: 20px 20px 30px;
+.panel--pink {
+  background: #e8dde5;
+  padding: 14px 0 26px;
+}
+
+.feature {
+  margin: 0;
+}
+
+.feature--left {
+  width: 156px;
+  margin-left: 18px;
+}
+
+.feature--right {
+  width: 156px;
+  margin-top: 34px;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.panel--pink .copy {
+  margin-top: 24px;
+}
+
+.panel--dark {
+  background: #000000;
+  padding: 26px 0 24px;
+}
+
+.feature--video {
+  width: 112px;
+  margin: 0 auto;
 }
 
 .panel--end {
-  background: #ffffff;
-  min-height: 120px;
+  background: #efefef;
+  min-height: 44px;
 }
 
 .image-slot {
@@ -265,6 +273,7 @@ figcaption {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border: 1px solid #d4d4d4;
 }
 
 .image-slot img {
@@ -274,10 +283,22 @@ figcaption {
   object-fit: cover;
 }
 
-.image-slot--santorini {
-  aspect-ratio: 1 / 1.26;
+.image-slot--cover,
+.image-slot--poster {
+  aspect-ratio: 587 / 741;
 }
 
-.image-slot--comfort {
-  aspect-ratio: 1 / 1.45;
+.video-wrap {
+  width: 100%;
+  aspect-ratio: 587 / 741;
+  border: 2px solid #d4d4d4;
+  overflow: hidden;
+  background: #000;
+}
+
+.solo-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }

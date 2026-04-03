@@ -462,8 +462,8 @@ body {
   background-image: url("assets/resume.jpg");
 }
 
-.dock-app[data-window="dock-recommendations"]::before {
-  background-image: url("assets/recommendations.jpg");
+.dock-app[data-window="dock-references"]::before {
+  background-image: url("assets/references.jpg");
 }
 
 .dock-app[data-window="dock-contacts"]::before {
@@ -720,8 +720,8 @@ body {
   background-image: url("assets/contact.jpg");
 }
 
-#headerTabRecommendations .window-navTab-dot {
-  background-image: url("assets/recommendations.jpg");
+#headerTabReferences .window-navTab-dot {
+  background-image: url("assets/references.jpg");
 }
 
 .window-navTab-label {

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installations</title>
+  <link rel="stylesheet" href="../../shared/base.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="../project-layout.css?v=1" />
+</head>
+<body>
+  <div class="viewport">
+    <main class="journal" id="journal">
+      <section class="panel panel--hero">
+        <h1>INSTALLATIONS</h1>
+        <p class="meta meta--row">
+          <span><strong>Year :</strong> 2022 - 2024</span>
+          <span><strong>Skills :</strong> Illustration, Adobe, Procreate</span>
+        </p>
+        <p class="meta"><strong>Medium :</strong> A5 book designed using Adobe Illustrator &amp; Photoshop</p>
+      </section>
+
+      <section class="panel panel--eat">
+        <h2>EAT UP</h2>
+        <div class="split split--eat">
+          <figure>
+            <figcaption>[ option ]</figcaption>
+            <div class="image-slot image-slot--eat">
+              <img src="project-11-1.jpg" alt="Food illustration blocks installation" />
+            </div>
+          </figure>
+          <div class="copy">
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel--laundry-title">
+        <h2>AIRING OUT<br />DIRTY LAUNDRY</h2>
+      </section>
+
+      <section class="panel panel--blue">
+        <div class="split split--laundry">
+          <div class="copy copy--laundry">
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          </div>
+          <figure class="feature feature--rack">
+            <div class="image-slot image-slot--rack">
+              <img src="project-11-2.jpg" alt="Blue and white dyed garments on rack" />
+            </div>
+          </figure>
+        </div>
+
+        <figure class="feature feature--left">
+          <div class="image-slot image-slot--strip">
+            <img src="project-11-3.png" alt="Closeup of blue hand-painted textiles" />
+          </div>
+        </figure>
+
+        <figure class="feature feature--right">
+          <div class="image-slot image-slot--strip">
+            <img src="project-11-4.png" alt="White garments with stamped text on rack" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--spacer"></section>
+
+      <section class="panel panel--fabric">
+        <h2>FABRICATION</h2>
+        <div class="copy copy--section">
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.</p>
+        </div>
+        <figure class="feature feature--fabric">
+          <figcaption>[ option ]</figcaption>
+          <div class="image-slot image-slot--fabric">
+            <img src="project-11-5.jpg" alt="Braided textile draped over white pedestal" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--end"></section>
+        <nav class="project-pagination" aria-label="Project navigation">
+      <button type="button" onclick="window.location.href='../10/index.html'">Previous</button>
+      <button type="button" onclick="window.location.href='../12/index.html'">Next</button>
+    </nav>
+    </main>
+  </div>
+
+  <script>
+    const journal = document.getElementById("journal");
+    const BASE_WIDTH = 312;
+    const TARGET_RATIO = 0.65;
+    const MIN_ZOOM = 0.8;
+    const MAX_ZOOM = 2.5;
+    const REVEAL_SELECTOR = "h1, h2, .meta, .copy p, figcaption, .image-slot";
+
+    function fitJournal() {
+      if (!journal) return;
+      const effectiveWidth = Math.min(window.innerWidth, 1400);
+      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+    }
+
+    function prepareRevealText(item) {
+      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
+      if (!supportsLineWrap) {
+        item.classList.add("reveal-text-raw");
+        return;
+      }
+
+      const existingLine = item.firstElementChild;
+      if (existingLine && existingLine.classList.contains("reveal-line")) return;
+
+      item.classList.add("reveal-clip");
+      const line = document.createElement("span");
+      line.className = "reveal-line";
+      while (item.firstChild) line.appendChild(item.firstChild);
+      item.appendChild(line);
+    }
+
+    function setupReveals() {
+      const panels = document.querySelectorAll(".panel");
+      panels.forEach((panel) => {
+        const items = panel.querySelectorAll(REVEAL_SELECTOR);
+        items.forEach((item) => {
+          item.classList.add("reveal-item");
+          if (item.matches(".image-slot")) {
+            item.classList.add("reveal-image");
+          } else if (item.matches("figcaption")) {
+            item.classList.add("reveal-caption");
+            prepareRevealText(item);
+          } else {
+            item.classList.add("reveal-text");
+            prepareRevealText(item);
+          }
+          item.style.setProperty("--reveal-delay", "0ms");
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
+    }
+
+    window.addEventListener("resize", fitJournal);
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+      fitJournal();
+      setupReveals();
+    });
+    fitJournal();
+  </script>
+</body>
+</html>

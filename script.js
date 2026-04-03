@@ -6,7 +6,7 @@
    - Draggable icons
    - Dock magnification
    - Window open / close / maximise / restore
-   - 12 desktop icons -> projects/<n>/index.html
+   - 14 desktop icons -> projects/<n>/index.html
    - 4 dock icons -> dock/<name>/index.html
 ========================================================= */
 
@@ -32,7 +32,7 @@ const workTab       = document.getElementById("workTab");
 const aboutTab      = document.getElementById("headerTabAbout");
 const resumeTab     = document.getElementById("headerTabResume");
 const contactTab    = document.getElementById("headerTabContact");
-const recommendationsTab = document.getElementById("headerTabRecommendations");
+const referencesTab = document.getElementById("headerTabReferences");
 const workPanel     = document.getElementById("workPanel");
 const workGrid      = document.getElementById("workGrid");
 
@@ -203,7 +203,7 @@ const WINDOW_HEADER_TABS = {
   about: { title: "About", src: "dock/about/index.html" },
   resume: { title: "Resume", src: "dock/resume/index.html" },
   contact: { title: "Contact", src: "dock/contacts/index.html" },
-  recommendations: { title: "Recommendations", src: "dock/recommendations/index.html" }
+  references: { title: "References", src: "dock/references/index.html" }
 };
 
 function getHeaderTabKeyForSource(src = ""){
@@ -211,7 +211,7 @@ function getHeaderTabKeyForSource(src = ""){
   if (normalized.includes("/about/") || normalized.includes("dock/about")) return "about";
   if (normalized.includes("/resume/") || normalized.includes("dock/resume")) return "resume";
   if (normalized.includes("/contacts/") || normalized.includes("dock/contacts")) return "contact";
-  if (normalized.includes("/recommendations/") || normalized.includes("dock/recommendations")) return "recommendations";
+  if (normalized.includes("/references/") || normalized.includes("dock/references")) return "references";
   return null;
 }
 
@@ -221,7 +221,7 @@ function setWindowHeaderTabActive(activeKey){
     about: aboutTab,
     resume: resumeTab,
     contact: contactTab,
-    recommendations: recommendationsTab
+    references: referencesTab
   };
   Object.entries(tabs).forEach(([key, btn]) => {
     if(!btn) return;
@@ -237,11 +237,52 @@ function loadWindowContent(title, iframeSrc){
     projectFrame.src = iframeSrc || "";
     projectFrame.onload = () => {
       if(windowBlank) windowBlank.style.display = "none";
+      syncWindowStateFromFrame();
     };
     projectFrame.onerror = () => {
       if(windowBlank) windowBlank.style.display = "grid";
     };
   }
+}
+
+function extractProjectNumberFromPath(input = ""){
+  const text = String(input || "");
+  const match = text.match(/projects\/(\d+)\/index\.html/i) || text.match(/projects\/(\d+)\b/i);
+  return match ? String(match[1]) : null;
+}
+
+function syncWindowStateFromFrame(){
+  if(!projectFrame) return;
+
+  let framePath = "";
+  try {
+    framePath = projectFrame.contentWindow?.location?.pathname || "";
+  } catch {
+    framePath = "";
+  }
+
+  const fallbackSrc = projectFrame.getAttribute("src") || "";
+  const combinedPath = `${framePath} ${fallbackSrc}`.trim();
+  const projectNum = extractProjectNumberFromPath(combinedPath);
+
+  if(projectNum){
+    const project = PROJECTS_BY_NUMBER.get(projectNum);
+    if(project?.title && windowTitle) windowTitle.textContent = project.title;
+    setActiveWorkProject(projectNum);
+    setWindowHeaderTabActive(null);
+    return;
+  }
+
+  const tabKey = getHeaderTabKeyForSource(combinedPath);
+  if(tabKey){
+    const tab = WINDOW_HEADER_TABS[tabKey];
+    if(tab?.title && windowTitle) windowTitle.textContent = tab.title;
+    setWindowHeaderTabActive(tabKey);
+    setActiveWorkProject(null);
+    return;
+  }
+
+  setActiveWorkProject(null);
 }
 
 function clampWindowOffset(nextX, nextY){
@@ -459,26 +500,21 @@ function resolveIconImage(basePath){
   });
 }
 
-async function resolveProjectStackImages(projectNum, maxCount = 5){
-  const stackImages = [];
-
-  for (let idx = 1; idx <= maxCount; idx++) {
-    const imageSrc = await resolveIconImage(`projects/${projectNum}/project-${projectNum}-${idx}`);
-    if (!imageSrc) break;
-    stackImages.push(imageSrc);
-  }
-
-  return stackImages;
-}
-
 const STACKED_PROJECT_IMAGE_MANIFEST = {
-  "4": [
-    "projects/4/project-4-1.jpg",
-    "projects/4/project-4-2.jpg",
-    "projects/4/project-4-3.1.jpg",
-    "projects/4/project-4-3.2.jpg",
-    "projects/4/project-4-3.3.jpg",
-    "projects/4/project-4-4.jpg"
+  "3": [
+    "projects/3/project-3-1.jpg",
+    "projects/3/project-3-2.jpg",
+    "projects/3/project-3-3.jpg",
+    "projects/3/project-3-4.jpg",
+    "projects/3/project-3-5.jpg"
+  ],
+  "8": [
+    "projects/8/project-8-1.jpg",
+    "projects/8/project-8-2.jpg",
+    "projects/8/project-8-3.jpg",
+    "projects/8/project-8-4.jpg",
+    "projects/8/project-8-5.jpg",
+    "projects/8/project-8-6.jpg"
   ]
 };
 
@@ -502,18 +538,37 @@ async function resolveManifestStackImages(paths = []){
 }
 
 const WORK_PREVIEW_MANIFEST = {
-  "1": ["projects/1/project-1-0.jpg", "projects/1/project-1-1.jpg", "assets/project-1.png"],
-  "2": ["projects/2/project-2-1.jpg"],
-  "3": ["projects/3/project-3-1.png", "assets/project-3.png"],
-  "4": ["projects/4/project-4-1.jpg"],
-  "5": ["projects/5/project-5-1.JPG", "assets/project-5.png"],
-  "6": ["projects/6/project-6-1.jpg", "assets/project-6.png"],
-  "7": ["projects/7/project-7-1.png", "assets/project-7.png"],
-  "8": ["projects/8/portfolio-8-1.JPG", "assets/project-8.png"],
+  "1": ["projects/1/project-1-1.png", "assets/project-1.png"],
+  "2": ["projects/2/project-2-1.png", "assets/project-2.png"],
+  "3": ["projects/3/project-3-1.jpg"],
+  "4": ["projects/4/project-4-1.jpg", "assets/project-4.png"],
+  "5": ["projects/5/project-5-3.jpg", "assets/project-5.png"],
+  "6": ["projects/6/project-6-1.png"],
+  "7": ["projects/7/project-7-1.png"],
+  "8": ["projects/8/project-8-1.jpg"],
   "9": ["projects/9/project-9-1.jpg", "assets/project-9.png"],
-  "10": ["projects/10/project-10-1.png", "assets/project-10.png"],
-  "11": ["assets/desktop-bg.jpg"],
-  "12": ["assets/lockscreen-bg.jpg"]
+  "10": ["projects/10/project-10-1.jpg", "assets/project-10.png"],
+  "11": ["projects/11/project-11-1.jpg", "assets/project-11.png"],
+  "12": ["projects/12/project-12-1.png", "assets/project-12.png"],
+  "13": ["assets/work.jpg"],
+  "14": ["assets/work.jpg"]
+};
+
+const DESKTOP_ICON_MANIFEST = {
+  "1": "assets/project-1.png",
+  "2": "assets/project-2.png",
+  "3": "projects/3/project-3-1.jpg",
+  "4": "assets/project-4.png",
+  "5": "assets/project-5.png",
+  "6": "projects/6/project-6-1.png",
+  "7": "projects/7/project-7-1.png",
+  "8": "projects/8/project-8-1.jpg",
+  "9": "assets/project-9.png",
+  "10": "assets/project-10.png",
+  "11": "assets/project-11.png",
+  "12": "assets/project-12.png",
+  "13": "assets/work.jpg",
+  "14": "assets/work.jpg"
 };
 
 function setWorkPanelOpen(shouldOpen){
@@ -662,10 +717,10 @@ function initWorkPanel(){
     openWindowHeaderTab("contact");
   });
 
-  recommendationsTab?.addEventListener("click", (e) => {
+  referencesTab?.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    openWindowHeaderTab("recommendations");
+    openWindowHeaderTab("references");
   });
 
   windowContent?.addEventListener("click", (e) => {
@@ -724,21 +779,19 @@ async function setDesktopIconImages(){
     if (!projectNum || !thumb) return;
 
     const manifestPaths = STACKED_PROJECT_IMAGE_MANIFEST[projectNum];
-    const stackImages = projectNum === "2"
-      ? await resolveProjectStackImages(projectNum)
-      : await resolveManifestStackImages(manifestPaths || []);
+    const stackImages = await resolveManifestStackImages(manifestPaths || []);
 
     if (stackImages.length) {
       setupStackedProjectIcon(icon, thumb, stackImages);
       return;
     }
 
-    let iconSrc = null;
-    if (projectNum === "8") {
-      iconSrc = await resolveImagePath("assets/project-8-clean.png");
-    }
+    let iconSrc = await resolveImagePath(DESKTOP_ICON_MANIFEST[projectNum]);
     if (!iconSrc) {
       iconSrc = await resolveIconImage(`assets/project-${projectNum}`);
+    }
+    if (!iconSrc) {
+      iconSrc = await resolveImagePath("assets/work.jpg");
     }
     if (!iconSrc) return;
 
@@ -781,6 +834,8 @@ const ICON_POSITIONS_PX = [
   { x: 560, y: 360 },
   { x: 760, y: 560 },
   { x: 980, y: 520 },
+  { x: 1140, y: 260 },
+  { x: 1140, y: 580 },
 ];
 
 const ICON_POSITIONS = ICON_POSITIONS_PX.map(p => ({
@@ -1000,7 +1055,7 @@ dockTray?.addEventListener("mouseleave", resetDockMag);
 const DOCK_WINDOWS = {
   "dock-about":           { title: "About",           src: "dock/about/index.html" },
   "dock-resume":          { title: "Resume",          src: "dock/resume/index.html" },
-  "dock-recommendations": { title: "Recommendations", src: "dock/recommendations/index.html" },
+  "dock-references": { title: "References", src: "dock/references/index.html" },
   "dock-contacts":        { title: "Contacts",        src: "dock/contacts/index.html" },
   "dock-photos":          { title: "Photos",          src: "dock/photos/index.html" }
 };

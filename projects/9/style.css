@@ -150,15 +150,23 @@ body.loaded .panel {
   }
 }
 
-h1 {
-  margin: 14px 0 20px;
+h1,
+h2 {
+  margin: 0;
   text-align: center;
   font-family: var(--font-display);
-  font-size: 31px;
-  line-height: 0.9;
-  letter-spacing: 0;
   font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.9;
   text-transform: uppercase;
+}
+
+h1 {
+  font-size: 31px;
+}
+
+h2 {
+  font-size: 31px;
 }
 
 .meta {
@@ -186,11 +194,7 @@ h1 {
 }
 
 .copy p {
-  margin: 0 0 8px;
-}
-
-.copy p:last-child {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .copy--section {
@@ -210,46 +214,86 @@ figcaption {
 }
 
 .panel--hero {
-  background: #ffffff;
-  padding: 16px 20px 30px;
+  background: #ededed;
+  padding: 18px 20px 38px;
+}
+
+.panel--hero h1 {
+  margin-bottom: 44px;
 }
 
 .panel--hero .meta {
   white-space: nowrap;
 }
 
-.panel--pink {
-  background: #e6d3e7;
-  padding: 38px 0 46px;
+.panel--upside {
+  background: #d4d4d4;
+  padding: 30px 20px 36px;
 }
 
-.panel--white {
-  background: #ffffff;
-  padding: 24px 0 28px;
+.panel--upside h2 {
+  margin-bottom: 16px;
 }
 
-.panel--blue {
-  background: #cad8e5;
-  padding: 22px 0 28px;
+.split {
+  display: grid;
+  gap: 10px;
+  align-items: start;
 }
 
-.panel--end {
+.split--top {
+  grid-template-columns: 1fr 150px;
+}
+
+.copy--narrow {
+  padding-top: 8px;
+}
+
+.panel--spacer {
   background: #efefef;
-  min-height: 46px;
+  min-height: 40px;
 }
 
-.feature--wide {
-  width: 204px;
+.panel--memory {
+  background: #9b9ca0;
+  padding: 30px 0 28px;
+}
+
+.panel--memory h2 {
+  margin-bottom: 24px;
+}
+
+.panel--memory .copy {
+  margin-bottom: 15px;
+}
+
+.feature--memory {
+  width: 272px;
   margin: 0 auto;
 }
 
-.supply {
-  width: 100px;
-  margin: 0 auto 18px;
+.panel--juhu {
+  background: #2e2f33;
+  padding: 28px 20px 40px;
 }
 
-.supply:last-child {
-  margin-bottom: 0;
+.panel--juhu h2 {
+  color: #efefef;
+  margin-bottom: 14px;
+}
+
+.split--bottom {
+  grid-template-columns: 1fr 150px;
+}
+
+.panel--juhu figcaption,
+.panel--juhu .copy {
+  color: #c7c7c7;
+}
+
+.panel--end {
+  background: #ededed;
+  min-height: 36px;
 }
 
 .image-slot {
@@ -267,16 +311,14 @@ figcaption {
   object-fit: cover;
 }
 
-.image-slot--hero {
-  width: 272px;
-  margin: 0 auto;
-  aspect-ratio: 1.23 / 1;
+.image-slot--upside {
+  aspect-ratio: 0.76 / 1;
 }
 
-.image-slot--wide {
-  aspect-ratio: 1.05 / 1;
+.image-slot--memory {
+  aspect-ratio: 2.41 / 1;
 }
 
-.image-slot--square {
-  aspect-ratio: 1 / 1;
+.image-slot--juhu {
+  aspect-ratio: 0.71 / 1;
 }

@@ -1,154 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Black N White</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=1" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lost In Translation</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f7f4ee;
+      color: #1f1f1f;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .wrap {
+      width: min(860px, 92vw);
+      text-align: center;
+      padding: 32px 18px 24px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    p {
+      margin: 0 0 18px;
+      opacity: 0.85;
+    }
+    img {
+      width: min(100%, 620px);
+      border-radius: 12px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+      display: block;
+      margin: 0 auto 20px;
+    }
+    .project-pagination {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .project-pagination button {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #1f1f1f;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
-  <div class="viewport">
-    <main class="journal" id="journal">
-      <section class="panel panel--hero">
-        <h1>BLACK N WHITE</h1>
-        <p class="meta meta--row">
-          <span><strong>Year :</strong> 2022 - 2024</span>
-          <span><strong>Skills :</strong> Illustration, Adobe, Procreate</span>
-        </p>
-        <p class="meta"><strong>Medium :</strong> A5 book designed using Adobe Illustrator &amp; Photoshop</p>
-      </section>
-
-      <section class="panel panel--upside">
-        <h2>THE UPSIDE DOWN</h2>
-        <div class="split split--top">
-          <div class="copy copy--narrow">
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-          </div>
-          <figure>
-            <figcaption>[ caption ]</figcaption>
-            <div class="image-slot image-slot--upside">
-              <img src="project-6-1.jpg" alt="Black and white fantasy sketch" />
-            </div>
-          </figure>
-        </div>
-      </section>
-
-      <section class="panel panel--spacer"></section>
-
-      <section class="panel panel--memory">
-        <h2>VEHICLES OF MEMORY</h2>
-        <div class="copy copy--section">
-          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-        </div>
-        <figure class="feature feature--memory">
-          <div class="image-slot image-slot--memory">
-            <img src="project-6-2.jpg" alt="Grid of black and white object sketches" />
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--spacer"></section>
-
-      <section class="panel panel--juhu">
-        <h2>SLIDES FROM JUHU</h2>
-        <div class="split split--bottom">
-          <figure>
-            <figcaption>[ caption ]</figcaption>
-            <div class="copy">
-              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-            </div>
-          </figure>
-          <figure>
-            <figcaption>[ caption ]</figcaption>
-            <div class="image-slot image-slot--juhu">
-              <img src="project-6-3.jpg" alt="Black and white observational sketch collage" />
-            </div>
-          </figure>
-        </div>
-      </section>
-
-      <section class="panel panel--end"></section>
-        <nav class="project-pagination" aria-label="Project navigation">
+  <main class="wrap">
+    <h1>Lost In Translation</h1>
+    <p>Book project placeholder. Full page layout can be added here.</p>
+    <img src="project-6-1.png" alt="Lost In Translation cover preview" />
+    <nav class="project-pagination" aria-label="Project navigation">
       <button type="button" onclick="window.location.href='../5/index.html'">Previous</button>
       <button type="button" onclick="window.location.href='../7/index.html'">Next</button>
     </nav>
-    </main>
-  </div>
-
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 2.5;
-    const REVEAL_SELECTOR = "h1, h2, .meta, .copy p, figcaption, .image-slot";
-
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-    }
-
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
-      if (!supportsLineWrap) {
-        item.classList.add("reveal-text-raw");
-        return;
-      }
-
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
-
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
-
-    function setupReveals() {
-      const panels = document.querySelectorAll(".panel");
-      panels.forEach((panel) => {
-        const items = panel.querySelectorAll(REVEAL_SELECTOR);
-        items.forEach((item) => {
-          item.classList.add("reveal-item");
-          if (item.matches(".image-slot")) {
-            item.classList.add("reveal-image");
-          } else if (item.matches("figcaption")) {
-            item.classList.add("reveal-caption");
-            prepareRevealText(item);
-          } else {
-            item.classList.add("reveal-text");
-            prepareRevealText(item);
-          }
-          item.style.setProperty("--reveal-delay", "0ms");
-        });
-      });
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-      );
-
-      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
-    }
-
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+  </main>
 </body>
 </html>

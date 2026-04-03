@@ -152,11 +152,11 @@ body.loaded .panel {
 
 .panel--hero {
   background: #ffffff;
-  padding: 22px 20px 15px;
+  padding: 18px 20px 24px;
 }
 
 h1 {
-  margin: 14px 0 9px;
+  margin: 14px 0 10px;
   text-align: center;
   font-family: var(--font-display);
   font-size: 31px;
@@ -172,18 +172,6 @@ h1 {
   line-height: 1.35;
 }
 
-.panel--pink {
-  background: #eadce4;
-  padding: 22px 18px 36px;
-}
-
-.intro-grid {
-  display: grid;
-  grid-template-columns: 1fr 124px;
-  gap: 10px;
-  align-items: start;
-}
-
 .copy {
   margin: 0;
   font-size: 7.1px;
@@ -191,88 +179,150 @@ h1 {
 }
 
 .copy p {
-  margin: 0 0 9px;
+  margin: 0 0 10px;
 }
 
 .copy p:last-child {
   margin-bottom: 0;
 }
 
-.copy--single {
-  padding: 10px 20px 0;
+.copy--hero {
+  margin-top: 28px;
 }
 
-figure {
-  margin: 0;
+/* ─── SPLIT SLIDER CAROUSEL ─── */
+.panel--carousel {
+  background: #7e7e7e;
+  padding: 20px;
+  overflow: visible;
 }
 
-figcaption {
-  margin: 0 0 4px;
-  font-size: 5.9px;
-  letter-spacing: 0.07em;
-  color: #5b5b5b;
-  text-transform: lowercase;
+.split-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  background: transparent;
+  overflow: hidden;
 }
 
-.stacked {
+/* The visible window — shows exactly one row */
+.split-col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.split-col--left  { left: 0; }
+.split-col--right { left: 50%; }
+
+/* The scrolling strip */
+.split-track {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  will-change: transform;
 }
 
-.feature {
-  margin-top: 19px;
+/* Reverse stack so right side can move downward while staying in-bounds */
+#trackRight {
+  flex-direction: column-reverse;
 }
 
-.feature--left {
-  width: 68%;
+/* Each cell is exactly the height of the visible window */
+.split-cell {
+  flex: 0 0 auto;
+  width: 100%;
 }
 
-.feature--right {
-  width: 64%;
-  margin-left: auto;
-  margin-top: 22px;
+.split-col,
+.split-cell {
+  height: 100%;
 }
 
-.panel--white {
-  background: #f3f3f3;
-  padding: 38px 0 28px;
+/* Thin divider line between columns */
+.split-col--right {
+  border-left: 1px solid rgba(255,255,255,0.15);
 }
 
-.panel--blue {
-  background: #d8e3ea;
-  padding: 28px 0 26px;
+/* Arrow controls — positioned left/right edges, vertically centred */
+.menu-slider-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0px;
+  pointer-events: none;
+  z-index: 10;
 }
 
-.supply {
-  width: 95px;
-  margin: 0 auto 24px;
+.menu-arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  transition: background 120ms ease, transform 120ms ease;
 }
 
-.supply:last-child {
-  margin-bottom: 0;
+.menu-arrow:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: scale(1.08);
 }
 
-.panel--end {
-  background: #f8f8f8;
-  min-height: 92px;
-  padding: 20px;
+.menu-arrow:active {
+  transform: scale(0.96);
 }
 
-.flipbook-wrap.is-hidden {
-  display: none;
+/* Image slot for split carousel cells — full bleed, no gap */
+.image-slot--split {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #000;
+}
+
+.panel--bottom {
+  background: #ffffff;
+  padding: 24px 20px 40px;
+}
+
+.copy--bottom {
+  margin-bottom: 28px;
+}
+
+.solo-figure {
+  width: 54%;
+  margin: 0 auto;
 }
 
 .image-slot {
   width: 100%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
+  background: #000000;
 }
 
-.image-slot img {
+.image-slot img,
+.image-slot video {
   width: 100%;
   height: 100%;
   display: block;
@@ -280,23 +330,23 @@ figcaption {
 }
 
 .image-slot--hero {
-  aspect-ratio: 1.35 / 1;
+  aspect-ratio: 1.37 / 0.92;
 }
 
-.image-slot--stack {
-  aspect-ratio: 1 / 0.72;
+.image-slot--solo {
+  aspect-ratio: 0.67 / 1;
 }
 
-.image-slot--wide {
-  aspect-ratio: 1.35 / 0.76;
+.image-slot--solo video {
+  object-fit: contain;
 }
 
-.image-slot--planner {
-  width: calc(100% - 42px);
-  margin: 0 auto;
-  aspect-ratio: 1.52 / 1;
-}
-
-.image-slot--square {
-  aspect-ratio: 1 / 1;
+/* Split-carousel media: fit frame height, auto width, crop sides if needed */
+.image-slot--split img,
+.image-slot--split video {
+  width: auto;
+  max-width: none;
+  height: 100%;
+  object-fit: unset;
+  object-position: center center;
 }
