@@ -1,66 +1,364 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Physics Textbook</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physics Textbook — Print &amp; Editorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../print-editorial.css" />
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
+    /* Project-7-specific overrides */
+
+    /* Hero: structured, grid-based — textbook precision */
+    .pe-hero { min-height: 100vh; }
+
+    /* Three-column hero with large numeral chapter-style */
+    .hero-structure {
       display: grid;
-      place-items: center;
-      background: #eef4fb;
-      color: #19212b;
-      font-family: "Helvetica Neue", Arial, sans-serif;
+      grid-template-columns: 80px 1fr;
+      gap: 0;
+      height: 100vh;
+      position: relative;
+      z-index: 2;
     }
-    .wrap {
-      width: min(860px, 92vw);
-      text-align: center;
-      padding: 32px 18px 24px;
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-    p {
-      margin: 0 0 18px;
-      opacity: 0.85;
-    }
-    img {
-      width: min(100%, 620px);
-      border-radius: 12px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
-      display: block;
-      margin: 0 auto 20px;
-    }
-    .project-pagination {
+
+    /* Spine — vertical text strip */
+    .hero-spine {
+      background: var(--ink);
       display: flex;
-      justify-content: center;
-      gap: 12px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 0;
+      position: relative;
     }
-    .project-pagination button {
-      border: 0;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      background: #1f1f1f;
-      color: #fff;
+
+    .hero-spine-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--pe-font-body);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.45);
+    }
+
+    .hero-spine-number {
+      font-family: var(--pe-font-display);
+      font-size: 32px;
+      color: var(--cream);
+      letter-spacing: 0;
+    }
+
+    /* Main hero area */
+    .hero-main {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img-panel {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img-panel .pe-hero-bg {
+      position: absolute;
+      inset: -15% 0;
+    }
+
+    /* Cream overlay for legibility */
+    .hero-img-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(245,240,232,0) 30%,
+        rgba(245,240,232,0.88) 100%
+      );
+    }
+
+    .hero-bottom-strip {
+      background: var(--cream);
+      background-image: repeating-linear-gradient(
+        to bottom, transparent 0, transparent 27px, var(--rule) 27px, var(--rule) 28px
+      );
+      padding: 32px 48px 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Chapter spec grid */
+    .chapter-spec {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid rgba(15,15,15,0.12);
+      margin-top: 32px;
+    }
+
+    .chapter-spec-item {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(15,15,15,0.12);
+    }
+
+    .chapter-spec-item:last-child { border-right: none; }
+
+    .spec-label {
+      font-family: var(--pe-font-body);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--stone);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .spec-value {
+      font-family: var(--pe-font-display);
+      font-size: clamp(18px, 2.4vw, 26px);
+      color: var(--ink);
+      letter-spacing: 0.04em;
+      display: block;
+    }
+
+    /* Diagram/spread layout */
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Annotation style captions */
+    .annotation {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .annotation-number {
+      font-family: var(--pe-font-display);
+      font-size: 28px;
+      color: var(--stone);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 32px;
+      text-align: right;
+    }
+
+    .annotation-text {
+      font-family: var(--pe-font-body);
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--lead);
+      padding-top: 4px;
+    }
+
+    /* Process strip — horizontal flow */
+    .process-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .process-step {
+      border-top: 1px solid rgba(15,15,15,0.15);
+      padding-top: 16px;
+    }
+
+    .process-step-num {
+      font-family: var(--pe-font-display);
+      font-size: 40px;
+      color: rgba(15,15,15,0.10);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .process-step-title {
+      font-family: var(--pe-font-body);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .process-step-text {
+      font-family: var(--pe-font-body);
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--lead);
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <h1>Physics Textbook</h1>
-    <p>Book project placeholder. Full page layout can be added here.</p>
-    <img src="project-7-1.png" alt="Physics Textbook cover preview" />
-    <nav class="project-pagination" aria-label="Project navigation">
-      <button type="button" onclick="window.location.href='../6/index.html'">Previous</button>
-      <button type="button" onclick="window.location.href='../8/index.html'">Next</button>
+
+<div class="pe-root" id="peRoot">
+
+  <!-- ── SECTION 1 — Hero (structured / spine grid) ── -->
+  <section class="pe-snap" id="sec-hero" style="min-height:100vh;position:relative;overflow:hidden;">
+
+    <div class="hero-structure">
+      <!-- Spine -->
+      <div class="hero-spine">
+        <span class="hero-spine-text pe-fade" data-delay="1">Print &amp; Editorial</span>
+        <span class="hero-spine-number pe-fade" data-delay="2">07</span>
+      </div>
+
+      <!-- Main hero area -->
+      <div class="hero-main">
+        <!-- Image panel -->
+        <div class="hero-img-panel">
+          <div class="pe-hero-bg" id="heroBg">
+            <img src="project-7-1.png" alt="" aria-hidden="true"
+                 style="width:100%;height:100%;object-fit:cover;object-position:top center;" />
+          </div>
+        </div>
+
+        <!-- Bottom strip: title + meta -->
+        <div class="hero-bottom-strip">
+          <p class="pe-eyebrow pe-fade" data-delay="0">Textbook Design · 07</p>
+          <h1 class="pe-title pe-reveal" data-delay="0" style="font-size:clamp(44px,7vw,80px);">Physics<br/>Textbook</h1>
+          <p class="pe-meta pe-fade" data-delay="1">
+            Editorial Design &nbsp;·&nbsp; Technical Illustration &nbsp;·&nbsp; Layout
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pe-scroll-hint" id="scrollHint">
+      <div class="pe-scroll-hint-line"></div>
+      <span class="pe-scroll-hint-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2 — Chapter spec + copy ── -->
+  <section class="pe-snap pe-section" id="sec-spec">
+    <p class="pe-label pe-reveal" data-delay="0" style="margin-bottom:20px;">Specification</p>
+    <div class="pe-body pe-fade" data-delay="1">
+      <p>A secondary-school physics textbook designed to make dense scientific content legible and navigable. The layout system uses a strict 12-column grid — generous enough for diagrams, tight enough for precision.</p>
+    </div>
+    <div class="chapter-spec pe-fade" data-delay="2">
+      <div class="chapter-spec-item">
+        <span class="spec-label">Format</span>
+        <span class="spec-value">A4 Portrait</span>
+      </div>
+      <div class="chapter-spec-item">
+        <span class="spec-label">Grid</span>
+        <span class="spec-value">12-Column</span>
+      </div>
+      <div class="chapter-spec-item">
+        <span class="spec-label">Chapters</span>
+        <span class="spec-value">18 Units</span>
+      </div>
+      <div class="chapter-spec-item">
+        <span class="spec-label">Medium</span>
+        <span class="spec-value">Illustrator</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3 — Diagram spread + annotations ── -->
+  <section class="pe-snap pe-section" id="sec-diagram">
+    <p class="pe-label pe-reveal" data-delay="0" style="margin-bottom:28px;">Layout System</p>
+    <div class="diagram-grid">
+      <!-- Spread preview -->
+      <div class="pe-card pe-fade" data-delay="0" style="aspect-ratio:1.4/1;">
+        <img class="pe-image" src="project-7-1.png" alt="Physics Textbook spread preview" />
+      </div>
+
+      <!-- Annotations -->
+      <div>
+        <div class="annotation pe-fade" data-delay="1">
+          <span class="annotation-number">01</span>
+          <span class="annotation-text">Chapter opener uses a full-bleed diagram panel — ink on cream, no photographic image. Forces occupy the visual hierarchy above words.</span>
+        </div>
+        <div class="annotation pe-fade" data-delay="2">
+          <span class="annotation-number">02</span>
+          <span class="annotation-text">Body text runs at 10/16pt Palatino. The classical serif carries authority without weight. Equations are typeset in a contrasting mono to signal code-like precision.</span>
+        </div>
+        <div class="annotation pe-fade" data-delay="3">
+          <span class="annotation-number">03</span>
+          <span class="annotation-text">Marginal callouts use the Stone palette — reduced opacity, reduced size — so they scaffold understanding without competing with the primary flow.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 4 — Process + pagination ── -->
+  <section class="pe-snap pe-section pe-section--ink" id="sec-process">
+    <p class="pe-label pe-reveal" data-delay="0" style="color:var(--stone);border-color:var(--stone);margin-bottom:28px;">Process</p>
+    <div class="process-strip">
+      <div class="process-step pe-fade" data-delay="0" style="border-color:rgba(245,240,232,0.12);">
+        <div class="process-step-num" style="color:rgba(245,240,232,0.08);">01</div>
+        <div class="process-step-title" style="color:var(--cream);">Content Map</div>
+        <div class="process-step-text" style="color:rgba(245,240,232,0.58);">All 18 chapters mapped to a hierarchy of concept, example, exercise, and extension. The grid system follows from this.</div>
+      </div>
+      <div class="process-step pe-fade" data-delay="1" style="border-color:rgba(245,240,232,0.12);">
+        <div class="process-step-num" style="color:rgba(245,240,232,0.08);">02</div>
+        <div class="process-step-title" style="color:var(--cream);">Diagram System</div>
+        <div class="process-step-text" style="color:rgba(245,240,232,0.58);">Each diagram follows a strict visual grammar: ink weight, arrow style, label placement — consistent from chapter one to eighteen.</div>
+      </div>
+      <div class="process-step pe-fade" data-delay="2" style="border-color:rgba(245,240,232,0.12);">
+        <div class="process-step-num" style="color:rgba(245,240,232,0.08);">03</div>
+        <div class="process-step-title" style="color:var(--cream);">Print Proof</div>
+        <div class="process-step-text" style="color:rgba(245,240,232,0.58);">Final spreads exported at 300 dpi, proofed on physical stock. Ink density adjusted per chapter to maintain consistent read-depth across print runs.</div>
+      </div>
+    </div>
+
+    <div class="pe-rule" style="background:rgba(245,240,232,0.10);margin-top:auto;"></div>
+    <nav class="pe-pagination" style="background:transparent;background-image:none;border-top:none;padding:0;padding-top:20px;" aria-label="Project navigation">
+      <button class="pe-pagination-btn" onclick="window.location.href='../6/index.html'">← Previous</button>
+      <span class="pe-pagination-group-label" style="color:rgba(245,240,232,0.4);">Print &amp; Editorial</span>
+      <button class="pe-pagination-btn" onclick="window.location.href='../8/index.html'">Next Group →</button>
     </nav>
-  </main>
+  </section>
+
+</div><!-- /.pe-root -->
+
+<script>
+  (function () {
+    const root   = document.getElementById('peRoot');
+    const heroBg = document.getElementById('heroBg');
+    const hint   = document.getElementById('scrollHint');
+
+    function revealAll(section) {
+      section.querySelectorAll('.pe-reveal, .pe-fade').forEach(el => el.classList.add('is-visible'));
+    }
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { revealAll(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.pe-snap').forEach(s => io.observe(s));
+
+    setTimeout(() => { if (hint) hint.classList.add('is-visible'); }, 1400);
+
+    let ticking = false;
+    root.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (heroBg) heroBg.style.transform = `translateY(${root.scrollTop * 0.4}px)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    revealAll(document.getElementById('sec-hero'));
+
+    root.addEventListener('scroll', () => {
+      if (root.scrollTop > 40 && hint) hint.classList.remove('is-visible');
+    }, { passive: true, once: true });
+  })();
+</script>
+
 </body>
 </html>

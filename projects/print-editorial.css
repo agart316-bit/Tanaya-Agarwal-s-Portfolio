@@ -1,0 +1,425 @@
+/* ============================================================
+   PRINT & EDITORIAL — shared theme for projects 4, 5, 6, 7
+   Ink / Cream / Lead / Stone palette
+   Letterpress clip-path entry · Scroll-snap · Ruled-line bg
+   Paper-lift hover · Parallax hero
+============================================================ */
+
+/* ── Tokens ── */
+:root {
+  --ink:   #0f0f0f;
+  --cream: #f5f0e8;
+  --lead:  #4a4a4a;
+  --stone: #9a9a9a;
+  --rule:  rgba(15, 15, 15, 0.07);
+
+  --pe-font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --pe-font-body:    "Palatino Linotype", Palatino, Georgia, serif;
+
+  --pe-ease-press: cubic-bezier(0, 0.55, 0.45, 1);
+  --pe-dur-reveal: 600ms;
+  --pe-dur-fade:   500ms;
+}
+
+/* ── Base reset for PE pages ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+  background-color: var(--cream);
+  /* Ruled-line ambient texture — 1 px hairline every 28 px */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 27px,
+    var(--rule) 27px,
+    var(--rule) 28px
+  );
+  color: var(--ink);
+  font-family: var(--pe-font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* let .pe-root scroll instead */
+}
+
+/* ── Scroll-snap root ── */
+.pe-root {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  /* Background texture rides with scroll so ruled lines always visible */
+  background-color: var(--cream);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 27px,
+    var(--rule) 27px,
+    var(--rule) 28px
+  );
+}
+
+/* ── Snap sections ── */
+.pe-snap {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Hero ── */
+.pe-hero {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  padding: 0;
+}
+
+.pe-hero-bg {
+  position: absolute;
+  inset: -15% 0 -15%;
+  background-size: cover;
+  background-position: center top;
+  will-change: transform;
+  /* JS sets transform for 0.4× parallax */
+  transform: translateY(0);
+}
+
+/* Cream overlay so text remains legible over any image */
+.pe-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(245, 240, 232, 0.92) 0%,
+    rgba(245, 240, 232, 0.55) 45%,
+    rgba(245, 240, 232, 0.20) 100%
+  );
+}
+
+.pe-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 48px 52px 52px;
+}
+
+.pe-eyebrow {
+  font-family: var(--pe-font-body);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pe-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--stone);
+  flex-shrink: 0;
+}
+
+/* ── Letterpress clip-path reveal ── */
+.pe-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--pe-dur-reveal) var(--pe-ease-press);
+  will-change: clip-path;
+}
+
+.pe-reveal.is-visible {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* Hero title uses larger reveal duration */
+.pe-title.pe-reveal {
+  transition-duration: 700ms;
+}
+
+/* Stagger child reveals */
+.pe-reveal[data-delay="1"] { transition-delay: 80ms; }
+.pe-reveal[data-delay="2"] { transition-delay: 160ms; }
+.pe-reveal[data-delay="3"] { transition-delay: 240ms; }
+.pe-reveal[data-delay="4"] { transition-delay: 320ms; }
+
+/* ── Fade-in (for hero image, secondary elements) ── */
+.pe-fade {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--pe-dur-fade) ease,
+    transform var(--pe-dur-fade) ease;
+  will-change: opacity, transform;
+}
+
+.pe-fade.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pe-fade[data-delay="1"] { transition-delay: 120ms; }
+.pe-fade[data-delay="2"] { transition-delay: 220ms; }
+.pe-fade[data-delay="3"] { transition-delay: 340ms; }
+
+/* ── Typography ── */
+.pe-title {
+  font-family: var(--pe-font-display);
+  font-size: clamp(52px, 9vw, 96px);
+  letter-spacing: 0.01em;
+  line-height: 0.88;
+  color: var(--ink);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.pe-subtitle {
+  font-family: var(--pe-font-display);
+  font-size: clamp(22px, 3.5vw, 36px);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--lead);
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-top: 6px;
+}
+
+.pe-meta {
+  font-family: var(--pe-font-body);
+  font-size: clamp(10px, 1.1vw, 12px);
+  color: var(--stone);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  margin-top: 18px;
+}
+
+.pe-body {
+  font-family: var(--pe-font-body);
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.7;
+  color: var(--lead);
+  max-width: 60ch;
+}
+
+.pe-body p { margin-bottom: 1em; }
+.pe-body p:last-child { margin-bottom: 0; }
+
+/* Section label badge */
+.pe-label {
+  font-family: var(--pe-font-body);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--stone);
+  border: 1px solid var(--stone);
+  padding: 3px 9px 2px;
+  display: inline-block;
+}
+
+/* ── Content sections ── */
+.pe-section {
+  padding: 64px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pe-section--center {
+  align-items: center;
+  text-align: center;
+}
+
+.pe-section--ink {
+  background-color: var(--ink);
+  background-image: none;
+  color: var(--cream);
+}
+
+.pe-section--ink .pe-body { color: rgba(245,240,232,0.70); }
+.pe-section--ink .pe-label { color: var(--stone); border-color: var(--stone); }
+
+/* ── Image containers ── */
+.pe-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Paper-lift hover — no glow, editorial restraint */
+.pe-card {
+  overflow: hidden;
+  background: var(--cream);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  cursor: default;
+}
+
+.pe-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(15, 15, 15, 0.14);
+}
+
+/* ── Grid layouts ── */
+.pe-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.pe-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.pe-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.pe-grid--asymm { grid-template-columns: 1.45fr 1fr; }
+.pe-grid--asymm-r { grid-template-columns: 1fr 1.45fr; }
+
+/* Square card aspect ratio */
+.pe-card-sq { aspect-ratio: 1 / 1; }
+.pe-card-land { aspect-ratio: 4 / 3; }
+.pe-card-port { aspect-ratio: 3 / 4; }
+.pe-card-wide { aspect-ratio: 16 / 9; }
+
+/* ── Divider ── */
+.pe-rule {
+  width: 100%;
+  height: 1px;
+  background: rgba(15,15,15,0.12);
+  margin: 32px 0;
+  flex-shrink: 0;
+}
+
+/* ── Caption ── */
+.pe-caption {
+  font-family: var(--pe-font-body);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-top: 8px;
+}
+
+/* ── Navigation (Prev / Next between Print & Editorial projects) ── */
+.pe-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 52px 32px;
+  border-top: 1px solid rgba(15,15,15,0.10);
+  background: var(--cream);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 27px,
+    var(--rule) 27px,
+    var(--rule) 28px
+  );
+  /* Does not snap — attached to last content section */
+}
+
+.pe-pagination-btn {
+  font-family: var(--pe-font-body);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lead);
+  background: none;
+  border: 1px solid rgba(15,15,15,0.22);
+  padding: 10px 22px 9px;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.pe-pagination-btn:hover {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}
+
+.pe-pagination-group-label {
+  font-family: var(--pe-font-body);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-align: center;
+}
+
+/* ── Scroll indicator ── */
+.pe-scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 600ms ease 800ms;
+}
+
+.pe-scroll-hint.is-visible { opacity: 1; }
+
+.pe-scroll-hint-line {
+  width: 1px;
+  height: 32px;
+  background: var(--stone);
+  animation: pe-scroll-drop 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: top center;
+}
+
+@keyframes pe-scroll-drop {
+  0%   { transform: scaleY(0); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+.pe-scroll-hint-label {
+  font-family: var(--pe-font-body);
+  font-size: 8px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .pe-reveal {
+    clip-path: inset(0 0% 0 0) !important;
+    transition: none !important;
+  }
+  .pe-fade {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .pe-card:hover {
+    transform: none !important;
+  }
+  .pe-scroll-hint-line {
+    animation: none !important;
+    opacity: 0.4;
+  }
+}
+
+/* ── Responsive: narrow iframe ── */
+@media (max-width: 680px) {
+  .pe-hero-content { padding: 32px 28px 36px; }
+  .pe-section { padding: 48px 28px; }
+  .pe-pagination { padding: 22px 28px 26px; }
+  .pe-grid--3 { grid-template-columns: 1fr; }
+  .pe-grid--2,
+  .pe-grid--asymm,
+  .pe-grid--asymm-r { grid-template-columns: 1fr; }
+  .pe-title { font-size: clamp(44px, 12vw, 72px); }
+}

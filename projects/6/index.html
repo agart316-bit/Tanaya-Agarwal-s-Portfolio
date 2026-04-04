@@ -1,66 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lost In Translation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost in Translation — Print &amp; Editorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../print-editorial.css" />
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #f7f4ee;
-      color: #1f1f1f;
-      font-family: "Helvetica Neue", Arial, sans-serif;
+    /* Project-6-specific overrides */
+
+    /* Hero: full-bleed with dramatic ink overlay */
+    .pe-hero { min-height: 100vh; }
+
+    .hero-overlay-ink {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(15,15,15,0.72) 0%,
+        rgba(15,15,15,0.30) 55%,
+        rgba(245,240,232,0.12) 100%
+      );
+      z-index: 1;
     }
-    .wrap {
-      width: min(860px, 92vw);
-      text-align: center;
-      padding: 32px 18px 24px;
+
+    /* Hero content sits on ink overlay — cream text */
+    .hero-text-ink {
+      position: relative;
+      z-index: 2;
+      padding: 52px;
     }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.4rem, 3vw, 2rem);
+
+    .hero-text-ink .pe-title { color: var(--cream); }
+    .hero-text-ink .pe-subtitle { color: rgba(245,240,232,0.68); }
+    .hero-text-ink .pe-meta { color: rgba(245,240,232,0.50); }
+    .hero-text-ink .pe-eyebrow { color: rgba(245,240,232,0.45); }
+    .hero-text-ink .pe-eyebrow::before { background: rgba(245,240,232,0.35); }
+
+    /* Pull-quote */
+    .pe-pullquote {
+      font-family: var(--pe-font-display);
+      font-size: clamp(28px, 4.5vw, 52px);
+      line-height: 1.05;
       letter-spacing: 0.02em;
+      color: var(--ink);
       text-transform: uppercase;
     }
-    p {
-      margin: 0 0 18px;
-      opacity: 0.85;
+
+    .pe-pullquote em {
+      font-style: normal;
+      color: var(--stone);
     }
-    img {
-      width: min(100%, 620px);
-      border-radius: 12px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
-      display: block;
-      margin: 0 auto 20px;
+
+    /* Quote accent line */
+    .pe-quote-rule {
+      width: 2px;
+      height: 48px;
+      background: var(--ink);
+      margin-bottom: 20px;
     }
-    .project-pagination {
+
+    /* Cover spread layout */
+    .cover-spread {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    /* Typeset detail panel */
+    .typeset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .typeset-cell {
+      background: var(--ink);
+      padding: 28px 24px;
       display: flex;
-      justify-content: center;
-      gap: 12px;
+      flex-direction: column;
+      gap: 6px;
     }
-    .project-pagination button {
-      border: 0;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      background: #1f1f1f;
-      color: #fff;
+
+    .typeset-label {
+      font-family: var(--pe-font-body);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    .typeset-value {
+      font-family: var(--pe-font-display);
+      font-size: clamp(22px, 3vw, 32px);
+      color: var(--cream);
+      letter-spacing: 0.04em;
+    }
+
+    .pe-number {
+      font-family: var(--pe-font-display);
+      font-size: clamp(88px, 14vw, 160px);
+      color: rgba(245,240,232,0.06);
+      line-height: 1;
+      user-select: none;
+      position: absolute;
+      right: 52px;
+      bottom: 24px;
+      letter-spacing: -0.02em;
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <h1>Lost In Translation</h1>
-    <p>Book project placeholder. Full page layout can be added here.</p>
-    <img src="project-6-1.png" alt="Lost In Translation cover preview" />
-    <nav class="project-pagination" aria-label="Project navigation">
-      <button type="button" onclick="window.location.href='../5/index.html'">Previous</button>
-      <button type="button" onclick="window.location.href='../7/index.html'">Next</button>
+
+<div class="pe-root" id="peRoot">
+
+  <!-- ── SECTION 1 — Hero (dark, full-bleed) ── -->
+  <section class="pe-snap pe-hero" id="sec-hero" style="position:relative;">
+    <!-- Background image with parallax -->
+    <div class="pe-hero-bg" id="heroBg" style="z-index:0;">
+      <img src="project-6-1.png" alt="" aria-hidden="true"
+           style="width:100%;height:100%;object-fit:cover;object-position:center;" />
+    </div>
+
+    <!-- Ink overlay for drama -->
+    <div class="hero-overlay-ink"></div>
+
+    <!-- Hero content -->
+    <div class="hero-text-ink" style="margin-top:auto;">
+      <p class="pe-eyebrow pe-fade" data-delay="0">Print &amp; Editorial · 06</p>
+      <h1 class="pe-title pe-reveal" data-delay="0">Lost in<br/>Translation</h1>
+      <p class="pe-subtitle pe-reveal" data-delay="1">Book Design</p>
+      <p class="pe-meta pe-fade" data-delay="2">
+        Editorial · Typography · Book Arts
+      </p>
+    </div>
+
+    <div class="pe-scroll-hint" id="scrollHint">
+      <div class="pe-scroll-hint-line" style="background:rgba(245,240,232,0.45);"></div>
+      <span class="pe-scroll-hint-label" style="color:rgba(245,240,232,0.45);">Scroll</span>
+    </div>
+
+    <span class="pe-number" aria-hidden="true">06</span>
+  </section>
+
+  <!-- ── SECTION 2 — Cover spread + concept ── -->
+  <section class="pe-snap pe-section" id="sec-cover">
+    <p class="pe-label pe-reveal" data-delay="0" style="margin-bottom:28px;">Book Cover</p>
+    <div class="cover-spread">
+      <div>
+        <div class="pe-quote-rule pe-fade" data-delay="0"></div>
+        <p class="pe-pullquote pe-reveal" data-delay="1">
+          Some things<br/>exist only in<br/><em>the space between</em><br/>languages.
+        </p>
+        <div style="height:28px;"></div>
+        <div class="pe-body pe-fade" data-delay="2">
+          <p>Lost in Translation explores the untranslatable — those words from other languages that describe feelings English cannot name. The book becomes both dictionary and portrait.</p>
+          <p>Typeset in a double-column grid, the layout pairs foreign headwords with full-spread imagery, letting negative space carry the emotion the text describes.</p>
+        </div>
+      </div>
+      <div class="pe-card pe-card-port pe-fade" data-delay="1">
+        <img class="pe-image" src="project-6-1.png" alt="Lost in Translation book cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3 — Typeset details ── -->
+  <section class="pe-snap pe-section pe-section--ink" id="sec-typeset">
+    <p class="pe-label pe-reveal" data-delay="0" style="color:var(--stone);border-color:var(--stone);margin-bottom:28px;">Typographic System</p>
+    <div class="typeset-grid">
+      <div class="typeset-cell pe-fade" data-delay="0">
+        <span class="typeset-label">Format</span>
+        <span class="typeset-value">A5 Portrait</span>
+      </div>
+      <div class="typeset-cell pe-fade" data-delay="1">
+        <span class="typeset-label">Grid</span>
+        <span class="typeset-value">2-Column</span>
+      </div>
+      <div class="typeset-cell pe-fade" data-delay="2">
+        <span class="typeset-label">Typeface</span>
+        <span class="typeset-value">Palatino</span>
+      </div>
+      <div class="typeset-cell pe-fade" data-delay="3">
+        <span class="typeset-label">Leading</span>
+        <span class="typeset-value">1.65 em</span>
+      </div>
+    </div>
+    <div style="height:32px;"></div>
+    <div class="pe-body pe-fade" data-delay="3" style="color:rgba(245,240,232,0.60);max-width:52ch;">
+      <p>Each spread is designed at print resolution. The text block sits within a classical 9:5 page proportion — generous outer margin, tight gutter, breathing room at the head.</p>
+    </div>
+
+    <div class="pe-rule" style="background:rgba(245,240,232,0.10);margin-top:auto;"></div>
+    <nav class="pe-pagination" style="background:transparent;background-image:none;border-top:none;padding:0;padding-top:20px;" aria-label="Project navigation">
+      <button class="pe-pagination-btn" onclick="window.location.href='../5/index.html'">← Previous</button>
+      <span class="pe-pagination-group-label" style="color:rgba(245,240,232,0.4);">Print &amp; Editorial</span>
+      <button class="pe-pagination-btn" onclick="window.location.href='../7/index.html'">Next →</button>
     </nav>
-  </main>
+  </section>
+
+</div><!-- /.pe-root -->
+
+<script>
+  (function () {
+    const root   = document.getElementById('peRoot');
+    const heroBg = document.getElementById('heroBg');
+    const hint   = document.getElementById('scrollHint');
+
+    function revealAll(section) {
+      section.querySelectorAll('.pe-reveal, .pe-fade').forEach(el => el.classList.add('is-visible'));
+    }
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { revealAll(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.pe-snap').forEach(s => io.observe(s));
+
+    setTimeout(() => { if (hint) hint.classList.add('is-visible'); }, 1400);
+
+    let ticking = false;
+    root.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (heroBg) heroBg.style.transform = `translateY(${root.scrollTop * 0.4}px)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    revealAll(document.getElementById('sec-hero'));
+
+    root.addEventListener('scroll', () => {
+      if (root.scrollTop > 40 && hint) hint.classList.remove('is-visible');
+    }, { passive: true, once: true });
+  })();
+</script>
+
 </body>
 </html>

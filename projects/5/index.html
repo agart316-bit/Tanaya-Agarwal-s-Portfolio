@@ -3,184 +3,257 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dream Journals</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=5" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <title>Dream Journals — Print &amp; Editorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../print-editorial.css" />
+  <style>
+    /* Project-5-specific overrides */
+
+    /* Hero uses a stacked image layout instead of full-bleed bg */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100vh;
+    }
+
+    .hero-split-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 52px;
+      background: var(--cream);
+      background-image: repeating-linear-gradient(
+        to bottom, transparent 0, transparent 27px, var(--rule) 27px, var(--rule) 28px
+      );
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-split-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-split-right .pe-hero-bg {
+      position: absolute;
+      inset: -12% 0;
+    }
+
+    /* Intro grid: copy left, stacked images right */
+    .intro-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Two options stacked */
+    .stack-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Wide spread images side by side */
+    .spread-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Planner full-width */
+    .planner-wrap {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    /* Three-up bottom grid */
+    .supply-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .pe-number {
+      font-family: var(--pe-font-display);
+      font-size: clamp(88px, 14vw, 160px);
+      color: rgba(15,15,15,0.05);
+      line-height: 1;
+      user-select: none;
+      position: absolute;
+      right: 52px;
+      bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+  </style>
 </head>
 <body>
-  <div class="viewport">
-    <main class="journal" id="journal">
-      <section class="panel panel--hero">
-        <div class="image-slot image-slot--hero">
-          <img src="project-5-3.jpg" alt="Dream Journals hero image" />
+
+<div class="pe-root" id="peRoot">
+
+  <!-- ── SECTION 1 — Hero (split) ── -->
+  <section class="pe-snap" id="sec-hero" style="position:relative;min-height:100vh;">
+    <div class="hero-split">
+      <!-- Left: title block -->
+      <div class="hero-split-left">
+        <p class="pe-eyebrow pe-fade" data-delay="0">Print &amp; Editorial · 05</p>
+        <h1 class="pe-title pe-reveal" data-delay="0">Dream<br/>Journals</h1>
+        <p class="pe-subtitle pe-reveal" data-delay="1">Stationery Collection</p>
+        <p class="pe-meta pe-fade" data-delay="1">
+          Year 2020 &nbsp;·&nbsp; Illustration, Adobe, Production<br/>
+          Medium — A5 book, Adobe Illustrator &amp; Photoshop
+        </p>
+        <span class="pe-number" aria-hidden="true" style="right:auto;left:52px;bottom:24px;">05</span>
+      </div>
+
+      <!-- Right: hero image with parallax -->
+      <div class="hero-split-right">
+        <div class="pe-hero-bg pe-fade" data-delay="2" id="heroBg">
+          <img src="project-5-3.jpg" alt="Dream Journals hero" style="width:100%;height:100%;object-fit:cover;" />
         </div>
-        <h1>DREAM JOURNALS</h1>
-        <p class="meta">Year : 2020 &nbsp;&nbsp;&nbsp; Skills : Illustration, Adobe, Production</p>
-        <p class="meta">Medium : A5 book designed using Adobe Illustrator &amp; Photoshop</p>
-      </section>
+      </div>
+    </div>
 
-      <section class="panel panel--pink">
-        <div class="intro-grid">
-          <div class="copy copy--intro">
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
-          </div>
+    <!-- Scroll hint -->
+    <div class="pe-scroll-hint" id="scrollHint">
+      <div class="pe-scroll-hint-line"></div>
+      <span class="pe-scroll-hint-label">Scroll</span>
+    </div>
+  </section>
 
-          <div class="stacked">
-            <figure>
-              <figcaption>[ option ]</figcaption>
-              <div class="image-slot image-slot--stack">
-                <img src="project-5-4.jpg" alt="Dream Journals concept image 1" />
-              </div>
-            </figure>
-            <figure>
-              <figcaption>[ option ]</figcaption>
-              <div class="image-slot image-slot--stack">
-                <img src="project-5-5.jpg" alt="Dream Journals concept image 2" />
-              </div>
-            </figure>
+  <!-- ── SECTION 2 — Intro copy + option stack ── -->
+  <section class="pe-snap pe-section" id="sec-intro">
+    <p class="pe-label pe-reveal" data-delay="0" style="margin-bottom:24px;">Concept</p>
+    <div class="intro-split">
+      <div class="pe-body pe-fade" data-delay="1">
+        <p>Dream Journals channels the intimacy of handwritten pages into a coherent product system. Each cover variant speaks to a different kind of dreamer — the planner, the wanderer, the archivist.</p>
+        <p>The collection pairs muted illustration with generous white space, letting the tactile quality of the paper do the editorial heavy lifting. Photoshop handles the warmth; Illustrator locks in the precision.</p>
+      </div>
+      <div class="stack-pair">
+        <figure>
+          <div class="pe-card pe-card-land pe-fade" data-delay="1">
+            <img class="pe-image" src="project-5-4.jpg" alt="Dream Journals concept option 1" />
           </div>
+          <figcaption class="pe-caption pe-fade" data-delay="2">Option A</figcaption>
+        </figure>
+        <figure>
+          <div class="pe-card pe-card-land pe-fade" data-delay="2">
+            <img class="pe-image" src="project-5-5.jpg" alt="Dream Journals concept option 2" />
+          </div>
+          <figcaption class="pe-caption pe-fade" data-delay="3">Option B</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3 — Spreads ── -->
+  <section class="pe-snap pe-section" id="sec-spreads">
+    <p class="pe-label pe-reveal" data-delay="0" style="margin-bottom:24px;">Cover Options</p>
+    <div class="spread-grid">
+      <figure>
+        <div class="pe-card pe-card-land pe-fade" data-delay="0">
+          <img class="pe-image" src="project-5-6.jpg" alt="Dream Journals spread — option 1" />
         </div>
-
-        <figure class="feature feature--left">
-          <figcaption>[ option 1 ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-5-6.jpg" alt="Dream Journals spread image 2" />
-          </div>
-        </figure>
-
-        <figure class="feature feature--right">
-          <figcaption>[ option 2 ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-5-7.jpg" alt="Dream Journals spread image 2" />
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--white">
-        <div class="image-slot image-slot--planner">
-          <img src="project-5-1.png" alt="Dream Journals planner page" />
+        <figcaption class="pe-caption pe-fade" data-delay="1">Option 1</figcaption>
+      </figure>
+      <figure>
+        <div class="pe-card pe-card-land pe-fade" data-delay="1">
+          <img class="pe-image" src="project-5-7.jpg" alt="Dream Journals spread — option 2" />
         </div>
-        <p class="copy copy--single">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra inceptos himenaeos.</p>
-      </section>
+        <figcaption class="pe-caption pe-fade" data-delay="2">Option 2</figcaption>
+      </figure>
+    </div>
+  </section>
 
-      <section class="panel panel--blue">
-        <figure class="supply">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--square">
-            <img src="project-5-8.jpg" alt="Dream Journals stationery image 1" />
-          </div>
-        </figure>
-        <figure class="supply">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--square">
-            <img src="project-5-9.jpg" alt="Dream Journals stationery image 2" />
-          </div>
-        </figure>
-        <figure class="supply">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--square">
-            <img src="project-5-10.jpg" alt="Dream Journals stationery image 3" />
-          </div>
-        </figure>
-      </section>
+  <!-- ── SECTION 4 — Planner page + copy ── -->
+  <section class="pe-snap pe-section" id="sec-planner">
+    <p class="pe-label pe-reveal" data-delay="0" style="margin-bottom:24px;">Interior</p>
+    <div class="planner-wrap">
+      <div class="pe-card pe-fade" data-delay="0" style="aspect-ratio:0.75/1;">
+        <img class="pe-image" src="project-5-1.png" alt="Dream Journals planner page spread" />
+      </div>
+      <div class="pe-body pe-fade" data-delay="1">
+        <p>The interior grid is drawn from classical book proportions — a 9:5 ratio between the text block and the page. Ruled columns, folio numbers, and deliberate margin notes make each spread feel like a continuation rather than a start.</p>
+      </div>
+    </div>
+  </section>
 
-      <section class="panel panel--end">
-        <div class="flipbook-wrap is-hidden">
-          <a
-            href="https://online.flippingbook.com/view/685099698/"
-            class="fbo-embed"
-            data-fbo-id="4f0096167e"
-            data-fbo-ratio="3:2"
-            data-fbo-lightbox="yes"
-            data-fbo-width="100%"
-            data-fbo-height="auto"
-            data-fbo-version="1"
-            style="max-width:100%;display:block;"
-          >August</a>
-          <script async defer src="https://online.flippingbook.com/EmbedScriptUrl.aspx?m=redir&hid=685099698"></script>
+  <!-- ── SECTION 5 — Three-up supply + pagination ── -->
+  <section class="pe-snap pe-section pe-section--ink" id="sec-supply">
+    <p class="pe-label pe-reveal" data-delay="0" style="color:var(--stone);border-color:var(--stone);margin-bottom:24px;">Accessories</p>
+    <div class="supply-grid" style="margin-bottom:auto;">
+      <figure>
+        <div class="pe-card pe-card-sq pe-fade" data-delay="0">
+          <img class="pe-image" src="project-5-8.jpg" alt="Dream Journals stationery 1" />
         </div>
-      </section>
-        <nav class="project-pagination" aria-label="Project navigation">
-      <button type="button" onclick="window.location.href='../4/index.html'">Previous</button>
-      <button type="button" onclick="window.location.href='../6/index.html'">Next</button>
+        <figcaption class="pe-caption pe-fade" data-delay="1" style="color:var(--stone);">Accessory I</figcaption>
+      </figure>
+      <figure>
+        <div class="pe-card pe-card-sq pe-fade" data-delay="1">
+          <img class="pe-image" src="project-5-9.jpg" alt="Dream Journals stationery 2" />
+        </div>
+        <figcaption class="pe-caption pe-fade" data-delay="2" style="color:var(--stone);">Accessory II</figcaption>
+      </figure>
+      <figure>
+        <div class="pe-card pe-card-sq pe-fade" data-delay="2">
+          <img class="pe-image" src="project-5-10.jpg" alt="Dream Journals stationery 3" />
+        </div>
+        <figcaption class="pe-caption pe-fade" data-delay="3" style="color:var(--stone);">Accessory III</figcaption>
+      </figure>
+    </div>
+
+    <div class="pe-rule" style="background:rgba(245,240,232,0.10);margin-top:32px;"></div>
+    <nav class="pe-pagination" style="background:transparent;background-image:none;border-top:none;padding:0;padding-top:20px;" aria-label="Project navigation">
+      <button class="pe-pagination-btn" onclick="window.location.href='../4/index.html'">← Previous</button>
+      <span class="pe-pagination-group-label" style="color:rgba(245,240,232,0.4);">Print &amp; Editorial</span>
+      <button class="pe-pagination-btn" onclick="window.location.href='../6/index.html'">Next →</button>
     </nav>
-    </main>
-  </div>
+  </section>
 
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 2.5;
-    const REVEAL_SELECTOR = "h1, .meta, .copy p, figcaption, .image-slot";
+</div><!-- /.pe-root -->
 
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+<script>
+  (function () {
+    const root   = document.getElementById('peRoot');
+    const heroBg = document.getElementById('heroBg');
+    const hint   = document.getElementById('scrollHint');
+
+    function revealAll(section) {
+      section.querySelectorAll('.pe-reveal, .pe-fade').forEach(el => el.classList.add('is-visible'));
     }
 
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
-      if (!supportsLineWrap) {
-        item.classList.add("reveal-text-raw");
-        return;
-      }
-
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
-
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
-
-    function setupReveals() {
-      const panels = document.querySelectorAll(".panel");
-      panels.forEach((panel) => {
-        const items = panel.querySelectorAll(REVEAL_SELECTOR);
-        items.forEach((item) => {
-          item.classList.add("reveal-item");
-          if (item.matches(".image-slot")) {
-            item.classList.add("reveal-image");
-          } else if (item.matches("figcaption")) {
-            item.classList.add("reveal-caption");
-            prepareRevealText(item);
-          } else {
-            item.classList.add("reveal-text");
-            prepareRevealText(item);
-          }
-          item.style.setProperty("--reveal-delay", "0ms");
-        });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { revealAll(e.target); io.unobserve(e.target); }
       });
+    }, { threshold: 0.18 });
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-      );
+    document.querySelectorAll('.pe-snap').forEach(s => io.observe(s));
 
-      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
-    }
+    setTimeout(() => { if (hint) hint.classList.add('is-visible'); }, 1400);
 
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+    let ticking = false;
+    root.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (heroBg) heroBg.style.transform = `translateY(${root.scrollTop * 0.4}px)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    revealAll(document.getElementById('sec-hero'));
+
+    root.addEventListener('scroll', () => {
+      if (root.scrollTop > 40 && hint) hint.classList.remove('is-visible');
+    }, { passive: true, once: true });
+  })();
+</script>
+
 </body>
 </html>
