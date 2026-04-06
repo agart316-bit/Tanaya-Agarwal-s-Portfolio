@@ -140,6 +140,14 @@
           <span class="desktop-icon-label">Web Design</span>
         </a>
       </div>
+
+      <aside
+        id="desktopContextMenu"
+        class="desktop-context-menu"
+        role="menu"
+        aria-label="App details"
+        hidden
+      ></aside>
     </section>
 
     <!-- Dock (5 icons, now also open windows) -->
@@ -176,18 +184,26 @@
 
     <aside id="welcomeBanner" class="ios-notification" role="status" aria-live="polite" hidden>
       <div class="ios-notification-card">
-        <span class="ios-notification-title">Portfolio</span>
-        <p class="ios-notification-body">
-          Welcome to Tanaya's portfolio. Go through the apps to see my work.
-        </p>
         <button
           id="welcomeBannerClose"
           class="ios-notification-close"
           type="button"
           aria-label="Close notification"
         >
-          x
+          ×
         </button>
+        <div class="ios-notification-icon" aria-hidden="true">
+          <span class="ios-notification-icon-dot dot-blue"></span>
+          <span class="ios-notification-icon-dot dot-red"></span>
+          <span class="ios-notification-icon-dot dot-gold"></span>
+        </div>
+        <div class="ios-notification-copy">
+          <span class="ios-notification-kicker">TIME SENSITIVE</span>
+          <span class="ios-notification-title">Portfolio</span>
+          <p class="ios-notification-body">
+            Welcome to Tanaya's portfolio. Go through the apps to see my work.
+          </p>
+        </div>
       </div>
     </aside>
 

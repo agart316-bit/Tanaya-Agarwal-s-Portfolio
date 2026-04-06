@@ -164,17 +164,6 @@ function createProjectItem(project, index) {
   const item = document.createElement("article");
   item.className = "media-item";
 
-  const head = document.createElement("header");
-  head.className = "media-item-head";
-
-  const title = document.createElement("h2");
-  title.className = "media-item-title";
-  title.textContent = project.title;
-
-  const meta = document.createElement("span");
-  meta.className = "media-item-meta";
-  meta.textContent = `Project ${project.id}`;
-
   const frame = document.createElement("iframe");
   frame.className = "media-frame";
   frame.title = `${project.title} content`;
@@ -182,8 +171,7 @@ function createProjectItem(project, index) {
   frame.src = `../../projects/${project.id}/index.html`;
 
   attachAutoHeight(frame);
-  head.append(title, meta);
-  item.append(head, frame);
+  item.append(frame);
   return item;
 }
 

@@ -41,6 +41,7 @@ const workGrid      = document.getElementById("workGrid");
 const surface       = document.getElementById("desktopSurface");
 const iconsCanvas   = document.getElementById("desktopIconsCanvas");
 const desktopIcons  = document.querySelectorAll(".desktop-icon");
+const desktopContextMenu = document.getElementById("desktopContextMenu");
 
 const dockItems     = document.querySelectorAll(".dock-item");
 const dockTray      = document.getElementById("dockTray");
@@ -71,7 +72,33 @@ const DESKTOP_GROUP_WINDOWS = {
   web:     { title: "Web Design", src: "dock/media/index.html?group=web" }
 };
 
+const DESKTOP_GROUP_PROJECTS = {
+  motion: ["1", "2", "3"],
+  print: ["4", "5", "6", "7"],
+  fineart: ["8", "9", "10"],
+  spatial: ["11"],
+  web: ["12", "13", "14"]
+};
+
 const PROJECTS_BY_NUMBER = new Map(PROJECTS.map((project) => [project.projectNum, project]));
+
+function renderDesktopProjectBadges(){
+  desktopIcons.forEach((icon) => {
+    const groupKey = String(icon.dataset.group || "").toLowerCase();
+    if(!groupKey) return;
+    const count = (DESKTOP_GROUP_PROJECTS[groupKey] || []).length;
+    if(!count) return;
+
+    let badge = icon.querySelector(".desktop-icon-badge");
+    if(!badge){
+      badge = document.createElement("span");
+      badge.className = "desktop-icon-badge";
+      badge.setAttribute("aria-hidden", "true");
+      icon.appendChild(badge);
+    }
+    badge.textContent = String(count);
+  });
+}
 
 /* =========================================================
    CLOCKS
@@ -590,6 +617,7 @@ windowBar?.addEventListener("pointercancel", endWindowDrag);
    DESKTOP ICONS — open project windows
 ========================================================= */
 function openProjectWindow(projectNum){
+  closeDesktopContextMenu();
   const project = PROJECTS_BY_NUMBER.get(String(projectNum));
   const title = project?.title || `Project ${projectNum}`;
   const src = project?.url || `projects/${projectNum}/index.html`;
@@ -605,6 +633,7 @@ function openDesktopGroupWindow(groupKey){
 
 function openDesktopIcon(icon){
   if(!icon) return;
+  closeDesktopContextMenu();
   const projectNum = icon.dataset.project;
   if(projectNum) {
     openProjectWindow(projectNum);
@@ -620,6 +649,89 @@ function openDesktopIcon(icon){
     const title = icon.querySelector(".desktop-icon-label")?.textContent?.trim() || "Project";
     openWindow(title, href);
   }
+}
+
+function getGroupProjects(groupKey){
+  const keys = DESKTOP_GROUP_PROJECTS[String(groupKey || "").toLowerCase()] || [];
+  return keys
+    .map((num) => PROJECTS_BY_NUMBER.get(num))
+    .filter(Boolean);
+}
+
+function closeDesktopContextMenu(){
+  if(!desktopContextMenu || desktopContextMenu.hidden) return;
+  desktopContextMenu.classList.remove("open");
+  desktopContextMenu.addEventListener("transitionend", () => {
+    if(desktopContextMenu.classList.contains("open")) return;
+    desktopContextMenu.hidden = true;
+    desktopContextMenu.innerHTML = "";
+  }, { once: true });
+}
+
+function positionDesktopContextMenu(anchorIcon){
+  if(!desktopContextMenu || !anchorIcon) return;
+
+  const anchorRect = anchorIcon.getBoundingClientRect();
+  const menuRect = desktopContextMenu.getBoundingClientRect();
+  const margin = 10;
+
+  let left = anchorRect.right + 12;
+  let top = anchorRect.top + 2;
+
+  if (left + menuRect.width > window.innerWidth - margin) {
+    left = anchorRect.left - menuRect.width - 12;
+  }
+  if (left < margin) left = margin;
+  if (top + menuRect.height > window.innerHeight - margin) {
+    top = window.innerHeight - menuRect.height - margin;
+  }
+  if (top < margin) top = margin;
+
+  desktopContextMenu.style.left = `${left}px`;
+  desktopContextMenu.style.top = `${top}px`;
+}
+
+function openDesktopContextMenu(icon){
+  if(!desktopContextMenu || !icon) return;
+  const groupKey = icon.dataset.group;
+  const group = DESKTOP_GROUP_WINDOWS[groupKey];
+  const projects = getGroupProjects(groupKey);
+  if(!group || !projects.length) return;
+
+  desktopContextMenu.innerHTML = "";
+
+  const heading = document.createElement("p");
+  heading.className = "desktop-context-menu-header";
+  heading.textContent = group.title;
+
+  const list = document.createElement("ul");
+  list.className = "desktop-context-menu-list";
+
+  projects.forEach((project) => {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "desktop-context-menu-item";
+    button.setAttribute("role", "menuitem");
+    button.textContent = project.title;
+    button.addEventListener("click", () => {
+      closeDesktopContextMenu();
+      openProjectWindow(project.projectNum);
+    });
+    item.appendChild(button);
+    list.appendChild(item);
+  });
+
+  desktopContextMenu.append(heading, list);
+  desktopContextMenu.hidden = false;
+  desktopContextMenu.classList.remove("open");
+  desktopContextMenu.style.left = "0px";
+  desktopContextMenu.style.top = "0px";
+
+  requestAnimationFrame(() => {
+    positionDesktopContextMenu(icon);
+    desktopContextMenu.classList.add("open");
+  });
 }
 
 const ICON_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg", "PNG", "JPG", "JPEG", "WEBP", "SVG"];
@@ -1099,14 +1211,38 @@ initWorkPanel();
 syncSiteMinSizeFromIcons();
 window.addEventListener("load", refreshDesktopIconLayout);
 window.addEventListener("load", setDesktopIconImages);
+window.addEventListener("load", renderDesktopProjectBadges);
 
 /* Drag + click logic */
 let dragIcon = null, dragOffX = 0, dragOffY = 0;
 let dragMoved = false, dragStartX = 0, dragStartY = 0;
+let longPressTimer = null;
+let longPressTriggered = false;
+const LONG_PRESS_MS = 420;
+const LONG_PRESS_MOVE_THRESHOLD = 8;
 
 function getClientXY(e){
   if(e.touches && e.touches.length) return [e.touches[0].clientX, e.touches[0].clientY];
   return [e.clientX, e.clientY];
+}
+
+function clearLongPressTimer(){
+  if(longPressTimer !== null){
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+}
+
+function scheduleLongPress(icon){
+  clearLongPressTimer();
+  longPressTriggered = false;
+  longPressTimer = window.setTimeout(() => {
+    longPressTimer = null;
+    if(!dragIcon || dragIcon !== icon || dragMoved) return;
+    longPressTriggered = true;
+    icon.classList.remove("is-dragging");
+    openDesktopContextMenu(icon);
+  }, LONG_PRESS_MS);
 }
 
 function onIconPointerDown(e){
@@ -1122,6 +1258,7 @@ function onIconPointerDown(e){
 
   desktopIcons.forEach(i => i.classList.remove("is-selected"));
   icon.classList.add("is-selected");
+  closeDesktopContextMenu();
 
   const rect = icon.getBoundingClientRect();
   const [cx, cy] = getClientXY(e);
@@ -1132,6 +1269,7 @@ function onIconPointerDown(e){
   dragMoved  = false;
   dragStartX = cx;
   dragStartY = cy;
+  scheduleLongPress(icon);
 
   icon.classList.add("is-dragging");
   e.preventDefault();
@@ -1141,7 +1279,15 @@ function onPointerMove(e){
   if(!dragIcon) return;
   const [cx, cy] = getClientXY(e);
 
-  if(Math.abs(cx - dragStartX) > 4 || Math.abs(cy - dragStartY) > 4) dragMoved = true;
+  const movedPastPressThreshold =
+    Math.abs(cx - dragStartX) > LONG_PRESS_MOVE_THRESHOLD ||
+    Math.abs(cy - dragStartY) > LONG_PRESS_MOVE_THRESHOLD;
+  if(movedPastPressThreshold){
+    dragMoved = true;
+    clearLongPressTimer();
+  }
+
+  if(longPressTriggered) return;
 
   const { w, h } = getSurfaceSize();
   let newLeft = cx - dragOffX;
@@ -1158,7 +1304,14 @@ function onPointerMove(e){
 
 function onPointerUp(){
   if(!dragIcon) return;
+  clearLongPressTimer();
   dragIcon.classList.remove("is-dragging");
+
+  if(longPressTriggered){
+    longPressTriggered = false;
+    dragIcon = null;
+    return;
+  }
 
   if(!dragMoved){
     openDesktopIcon(dragIcon);
@@ -1171,11 +1324,18 @@ function onPointerUp(){
     dragIcon.dataset.manualPosition = "1";
   }
   dragIcon = null;
+  longPressTriggered = false;
 }
 
 desktopIcons.forEach(icon => {
   icon.addEventListener("mousedown", onIconPointerDown);
   icon.addEventListener("touchstart", onIconPointerDown, { passive: false });
+  icon.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    desktopIcons.forEach(i => i.classList.remove("is-selected"));
+    icon.classList.add("is-selected");
+    openDesktopContextMenu(icon);
+  });
   icon.addEventListener("click", (e) => {
     const hasModifier = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
     if (icon.tagName === "A" && !hasModifier) {
@@ -1193,10 +1353,25 @@ window.addEventListener("mousemove", onPointerMove);
 window.addEventListener("touchmove", onPointerMove, { passive: false });
 window.addEventListener("mouseup", onPointerUp);
 window.addEventListener("touchend", onPointerUp);
+window.addEventListener("touchcancel", onPointerUp);
+window.addEventListener("resize", () => {
+  if(!desktopContextMenu || desktopContextMenu.hidden) return;
+  closeDesktopContextMenu();
+});
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape") closeDesktopContextMenu();
+});
+document.addEventListener("pointerdown", (e) => {
+  if(!desktopContextMenu || desktopContextMenu.hidden) return;
+  if(e.target.closest("#desktopContextMenu")) return;
+  if(e.target.closest(".desktop-icon")) return;
+  closeDesktopContextMenu();
+});
 
 surface?.addEventListener("mousedown", e => {
   if(e.target === surface || e.target === iconsCanvas) {
     desktopIcons.forEach(i => i.classList.remove("is-selected"));
+    closeDesktopContextMenu();
   }
 });
 
