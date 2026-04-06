@@ -22,6 +22,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  overscroll-behavior-y: contain;
 }
 
 body {
@@ -32,6 +33,8 @@ body {
   font-size: var(--project-copy-size, var(--base-copy-size));
   line-height: var(--base-line-height);
   -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .viewport {

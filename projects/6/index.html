@@ -1,66 +1,208 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lost In Translation</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #f7f4ee;
-      color: #1f1f1f;
-      font-family: "Helvetica Neue", Arial, sans-serif;
-    }
-    .wrap {
-      width: min(860px, 92vw);
-      text-align: center;
-      padding: 32px 18px 24px;
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-    p {
-      margin: 0 0 18px;
-      opacity: 0.85;
-    }
-    img {
-      width: min(100%, 620px);
-      border-radius: 12px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
-      display: block;
-      margin: 0 auto 20px;
-    }
-    .project-pagination {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
-    .project-pagination button {
-      border: 0;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      background: #1f1f1f;
-      color: #fff;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost in Translation</title>
+  <link rel="stylesheet" href="../../shared/base.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="../project-layout.css?v=1" />
 </head>
 <body>
-  <main class="wrap">
-    <h1>Lost In Translation</h1>
-    <p>Book project placeholder. Full page layout can be added here.</p>
-    <img src="project-6-1.png" alt="Lost In Translation cover preview" />
-    <nav class="project-pagination" aria-label="Project navigation">
-      <button type="button" onclick="window.location.href='../5/index.html'">Previous</button>
-      <button type="button" onclick="window.location.href='../7/index.html'">Next</button>
-    </nav>
-  </main>
+  <div class="viewport">
+    <main class="journal" id="journal">
+
+      <!-- ── HERO ──────────────────────────────────────── -->
+      <section class="panel panel--hero">
+        <div class="image-slot image-slot--hero">
+          <img src="project-6-1.png" alt="Lost in Translation — cover" />
+        </div>
+        <h1>LOST IN TRANSLATION</h1>
+        <span class="rule"></span>
+        <p class="meta meta--row">
+          <span><strong>Year :</strong> 2021</span>
+          <span><strong>Skills :</strong> Book Design, Typography, Adobe InDesign</span>
+        </p>
+        <p class="meta"><strong>Medium :</strong> Book designed in Adobe InDesign &amp; Illustrator</p>
+      </section>
+
+      <!-- ── SECTION 1 : Full-spread cover spread ───────── -->
+      <section class="panel panel--dust">
+        <figure class="feature feature--wide">
+          <figcaption>[ cover spread ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-6-2.png" alt="Lost in Translation spread 1" />
+          </div>
+        </figure>
+      </section>
+
+      <!-- ── SECTION 2 : Editorial copy + side image ────── -->
+      <section class="panel panel--cream">
+        <div class="copy copy--section">
+          <p>A book project exploring the untranslatable — words, feelings, and ideas that exist in one language but resist all equivalents in another. The design system mirrors this idea: a deliberate tension between familiar serif body text and unexpected structural interruptions.</p>
+          <p>Typography is treated as an architectural element throughout, with generous white space acting as visual breathing room for ideas that resist containment.</p>
+        </div>
+        <figure class="feature feature--center" style="margin-top: 18px;">
+          <figcaption>[ interior spread — chapter opener ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-6-3.png" alt="Lost in Translation chapter opener" />
+          </div>
+        </figure>
+      </section>
+
+      <!-- ── SECTION 3 : Spread pair ───────────────────── -->
+      <section class="panel panel--stone">
+        <div class="spread-pair">
+          <figure>
+            <figcaption>[ spread — left ]</figcaption>
+            <div class="image-slot image-slot--square">
+              <img src="project-6-4.png" alt="Lost in Translation spread left" />
+            </div>
+          </figure>
+          <figure>
+            <figcaption>[ spread — right ]</figcaption>
+            <div class="image-slot image-slot--square">
+              <img src="project-6-5.png" alt="Lost in Translation spread right" />
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ── SECTION 4 : Pull quote + detail ───────────── -->
+      <section class="panel panel--cream">
+        <blockquote class="pull-quote">
+          "The Japanese call it <em>mono no aware</em> — the gentle sadness of transient things. No single word in English holds the same weight."
+        </blockquote>
+        <figure class="feature feature--center">
+          <figcaption>[ detail — typography grid ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-6-6.png" alt="Lost in Translation typography detail" />
+          </div>
+        </figure>
+      </section>
+
+      <!-- ── SECTION 5 : Three interior pages ─────────── -->
+      <section class="panel panel--dust">
+        <div class="triptych">
+          <figure>
+            <figcaption>[ pg. 14 ]</figcaption>
+            <div class="image-slot image-slot--portrait">
+              <img src="project-6-7.png" alt="Interior page 14" />
+            </div>
+          </figure>
+          <figure>
+            <figcaption>[ pg. 15 ]</figcaption>
+            <div class="image-slot image-slot--portrait">
+              <img src="project-6-8.png" alt="Interior page 15" />
+            </div>
+          </figure>
+          <figure>
+            <figcaption>[ pg. 16 ]</figcaption>
+            <div class="image-slot image-slot--portrait">
+              <img src="project-6-9.png" alt="Interior page 16" />
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ── SECTION 6 : Back matter / shift stack ─────── -->
+      <section class="panel panel--stone">
+        <figure class="feature feature--left" style="margin-bottom:0;">
+          <figcaption>[ back matter — index spread ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-6-10.png" alt="Lost in Translation back matter" />
+          </div>
+        </figure>
+        <figure class="feature feature--right">
+          <figcaption>[ detail — marginalia ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-6-11.png" alt="Lost in Translation marginalia" />
+          </div>
+        </figure>
+      </section>
+
+      <!-- ── SECTION 7 : Final spread ──────────────────── -->
+      <section class="panel panel--dust">
+        <figure class="feature feature--wide">
+          <figcaption>[ closing spread ]</figcaption>
+          <div class="image-slot image-slot--wide">
+            <img src="project-6-12.png" alt="Lost in Translation closing spread" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="panel panel--end"></section>
+
+      <nav class="project-pagination" aria-label="Project navigation">
+        <button type="button" onclick="window.location.href='../5/index.html'">Previous</button>
+        <button type="button" onclick="window.location.href='../7/index.html'">Next</button>
+      </nav>
+
+    </main>
+  </div>
+
+  <script>
+    const journal = document.getElementById("journal");
+    const BASE_WIDTH   = 312;
+    const TARGET_RATIO = 0.65;
+    const MIN_ZOOM     = 0.8;
+    const MAX_ZOOM     = 2.5;
+    const REVEAL_SELECTOR = "h1, h2, .meta, .copy p, .pull-quote, figcaption, .image-slot, .rule";
+
+    function fitJournal() {
+      if (!journal) return;
+      const effectiveWidth = Math.min(window.innerWidth, 1400);
+      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
+      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
+    }
+
+    function prepareRevealText(item) {
+      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, .pull-quote, figcaption");
+      if (!supportsLineWrap) { item.classList.add("reveal-text-raw"); return; }
+      const existingLine = item.firstElementChild;
+      if (existingLine && existingLine.classList.contains("reveal-line")) return;
+      item.classList.add("reveal-clip");
+      const line = document.createElement("span");
+      line.className = "reveal-line";
+      while (item.firstChild) line.appendChild(item.firstChild);
+      item.appendChild(line);
+    }
+
+    function setupReveals() {
+      document.querySelectorAll(".panel").forEach(panel => {
+        panel.querySelectorAll(REVEAL_SELECTOR).forEach((item, i) => {
+          item.classList.add("reveal-item");
+          item.style.setProperty("--reveal-delay", `${i * 55}ms`);
+          if (item.matches(".image-slot")) {
+            item.classList.add("reveal-image");
+          } else if (item.matches("figcaption")) {
+            item.classList.add("reveal-caption");
+            prepareRevealText(item);
+          } else {
+            item.classList.add("reveal-text");
+            prepareRevealText(item);
+          }
+        });
+      });
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("revealed");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+
+      document.querySelectorAll(".reveal-item").forEach(item => observer.observe(item));
+    }
+
+    window.addEventListener("resize", fitJournal);
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+      fitJournal();
+      setupReveals();
+    });
+    fitJournal();
+  </script>
 </body>
 </html>

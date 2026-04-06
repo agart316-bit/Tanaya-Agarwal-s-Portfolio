@@ -20,6 +20,8 @@ const lockDate      = document.getElementById("lockDate");
 const unlockForm    = document.getElementById("unlockForm");
 const passwordInput = document.getElementById("passwordInput");
 const passwordCaret = document.getElementById("passwordCaret");
+const welcomeBanner = document.getElementById("welcomeBanner");
+const welcomeBannerClose = document.getElementById("welcomeBannerClose");
 
 const windowLayer   = document.getElementById("windowLayer");
 const windowTitle   = document.getElementById("windowTitle");
@@ -44,19 +46,30 @@ const dockItems     = document.querySelectorAll(".dock-item");
 const dockTray      = document.getElementById("dockTray");
 const dock          = document.querySelector(".dock");
 
-const PROJECTS = Array.from(desktopIcons)
-  .map((icon) => {
-    const projectNum = icon.dataset.project ? String(icon.dataset.project) : "";
-    if (!projectNum) return null;
-    const title = icon.querySelector(".desktop-icon-label")?.textContent?.trim() || `Project ${projectNum}`;
-    return {
-      projectNum,
-      title,
-      url: icon.getAttribute("href") || `projects/${projectNum}/index.html`
-    };
-  })
-  .filter(Boolean)
-  .sort((a, b) => Number(a.projectNum) - Number(b.projectNum));
+const PROJECTS = [
+  { projectNum: "1",  title: "Men of Platinum",    url: "projects/1/index.html" },
+  { projectNum: "2",  title: "Now or Never",       url: "projects/2/index.html" },
+  { projectNum: "3",  title: "Digital Illustrations", url: "projects/3/index.html" },
+  { projectNum: "4",  title: "ArtsyDesign. co",    url: "projects/4/index.html" },
+  { projectNum: "5",  title: "Dream Journals",     url: "projects/5/index.html" },
+  { projectNum: "6",  title: "Lost in Translation", url: "projects/6/index.html" },
+  { projectNum: "7",  title: "Physics Textbook",   url: "projects/7/index.html" },
+  { projectNum: "8",  title: "Paintings",          url: "projects/8/index.html" },
+  { projectNum: "9",  title: "Black N White",      url: "projects/9/index.html" },
+  { projectNum: "10", title: "Pottery",            url: "projects/10/index.html" },
+  { projectNum: "11", title: "Installations",      url: "projects/11/index.html" },
+  { projectNum: "12", title: "The Borges Stories", url: "projects/12/index.html" },
+  { projectNum: "13", title: "Ten Tab Open",       url: "projects/13/index.html" },
+  { projectNum: "14", title: "Fashion History",    url: "projects/14/index.html" }
+];
+
+const DESKTOP_GROUP_WINDOWS = {
+  motion:  { title: "Digital Illustration & Motion", src: "dock/media/index.html?group=motion" },
+  print:   { title: "Print & Editorial", src: "dock/media/index.html?group=print" },
+  fineart: { title: "Fine Art", src: "dock/media/index.html?group=fineart" },
+  spatial: { title: "Spatial / Installation", src: "dock/media/index.html?group=spatial" },
+  web:     { title: "Web Design", src: "dock/media/index.html?group=web" }
+};
 
 const PROJECTS_BY_NUMBER = new Map(PROJECTS.map((project) => [project.projectNum, project]));
 
@@ -86,6 +99,7 @@ setInterval(tickClocks, 15000);
 const DOTS_COUNT = 6;
 const DOT_CHAR   = "•";
 let typingDone = false;
+let welcomeBannerShown = false;
 
 function showCaret(){ passwordCaret.classList.add("is-visible"); }
 function hideCaret(){ passwordCaret.classList.remove("is-visible"); }
@@ -117,6 +131,27 @@ passwordInput.addEventListener("keydown", e => {
 passwordInput.addEventListener("input", () => {
   passwordInput.value = DOT_CHAR.repeat(DOTS_COUNT);
 });
+
+function showWelcomeBanner(){
+  if(!welcomeBanner || welcomeBannerShown) return;
+  welcomeBannerShown = true;
+  welcomeBanner.hidden = false;
+  requestAnimationFrame(() => {
+    welcomeBanner.classList.add("is-visible");
+  });
+}
+
+function hideWelcomeBanner(){
+  if(!welcomeBanner) return;
+  welcomeBanner.classList.remove("is-visible");
+  welcomeBanner.addEventListener("transitionend", () => {
+    if(!welcomeBanner.classList.contains("is-visible")) {
+      welcomeBanner.hidden = true;
+    }
+  }, { once: true });
+}
+
+welcomeBannerClose?.addEventListener("click", hideWelcomeBanner);
 
 /* =========================================================
    LIQUID ETHER — initialise once on first unlock
@@ -159,6 +194,7 @@ lockscreen.addEventListener("click", e => {
 });
 
 function unlock(){
+  if(lockscreen.classList.contains("is-unlocking")) return;
   desktop.classList.remove("is-hidden");
 
   // Reflow icon positions after the desktop becomes visible so
@@ -177,6 +213,7 @@ function unlock(){
   hideCaret();
   lockscreen.addEventListener("transitionend", () => {
     lockscreen.style.display = "none";
+    showWelcomeBanner();
   }, { once: true });
 }
 
@@ -198,6 +235,8 @@ let winDragOriginY = 0;
 
 const WINDOW_FULLSCREEN_WIDTH = 1060;
 const WINDOW_FULLSCREEN_HEIGHT = 760;
+const WINDOW_BAR_SCROLL_RANGE = 40;
+let frameScrollDetach = null;
 
 const WINDOW_HEADER_TABS = {
   about: { title: "About", src: "dock/about/index.html" },
@@ -229,18 +268,96 @@ function setWindowHeaderTabActive(activeKey){
   });
 }
 
+function setWindowScrollProgress(scrollTop = 0){
+  if(!mainWindow) return;
+  const progress = Math.min(Math.max(Number(scrollTop) / WINDOW_BAR_SCROLL_RANGE, 0), 1);
+  mainWindow.style.setProperty("--window-scroll-progress", progress.toFixed(3));
+}
+
+function getFrameScrollTop(){
+  if(!projectFrame) return 0;
+  try {
+    const frameWin = projectFrame.contentWindow;
+    const frameDoc = frameWin?.document;
+    const scrollEl = frameDoc?.scrollingElement || frameDoc?.documentElement || frameDoc?.body;
+    const scrollTop = scrollEl?.scrollTop ?? frameWin?.scrollY ?? 0;
+    return Number.isFinite(scrollTop) ? scrollTop : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function clearFrameScrollTracking(){
+  if(typeof frameScrollDetach === "function") {
+    frameScrollDetach();
+  }
+  frameScrollDetach = null;
+}
+
+function syncWindowBarFromFrameScroll(){
+  setWindowScrollProgress(getFrameScrollTop());
+}
+
+function trackFrameScrollProgress(){
+  clearFrameScrollTracking();
+  if(!projectFrame) {
+    setWindowScrollProgress(0);
+    return;
+  }
+
+  let frameWin = null;
+  let frameDoc = null;
+  try {
+    frameWin = projectFrame.contentWindow;
+    frameDoc = frameWin?.document;
+  } catch {
+    setWindowScrollProgress(0);
+    return;
+  }
+
+  if(!frameWin || !frameDoc) {
+    setWindowScrollProgress(0);
+    return;
+  }
+
+  let rafId = null;
+  const requestSync = () => {
+    if(rafId !== null) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      syncWindowBarFromFrameScroll();
+    });
+  };
+
+  frameWin.addEventListener("scroll", requestSync, { passive: true });
+  frameDoc.addEventListener("scroll", requestSync, { passive: true, capture: true });
+  frameWin.addEventListener("resize", requestSync, { passive: true });
+  requestSync();
+
+  frameScrollDetach = () => {
+    if(rafId !== null) cancelAnimationFrame(rafId);
+    frameWin.removeEventListener("scroll", requestSync);
+    frameDoc.removeEventListener("scroll", requestSync, true);
+    frameWin.removeEventListener("resize", requestSync);
+  };
+}
+
 function loadWindowContent(title, iframeSrc){
   if(windowTitle) windowTitle.textContent = title || "Window";
   if(windowBlank) windowBlank.style.display = "grid";
+  clearFrameScrollTracking();
+  setWindowScrollProgress(0);
 
   if(projectFrame){
     projectFrame.src = iframeSrc || "";
     projectFrame.onload = () => {
       if(windowBlank) windowBlank.style.display = "none";
       syncWindowStateFromFrame();
+      trackFrameScrollProgress();
     };
     projectFrame.onerror = () => {
       if(windowBlank) windowBlank.style.display = "grid";
+      setWindowScrollProgress(0);
     };
   }
 }
@@ -371,6 +488,7 @@ function openWindow(title, iframeSrc){
   setWorkPanelOpen(false);
   setActiveWorkProject(null);
   setWindowHeaderTabActive(getHeaderTabKeyForSource(iframeSrc));
+  setWindowScrollProgress(0);
   loadWindowContent(title, iframeSrc);
 
   void mainWindow.offsetWidth;
@@ -392,6 +510,8 @@ function closeWindow(){
 
     if(projectFrame) projectFrame.src = "";
     if(windowBlank) windowBlank.style.display = "grid";
+    clearFrameScrollTracking();
+    setWindowScrollProgress(0);
     savedWindowOffsetX = 0;
     savedWindowOffsetY = 0;
     resetWindowOffset();
@@ -475,6 +595,31 @@ function openProjectWindow(projectNum){
   const src = project?.url || `projects/${projectNum}/index.html`;
   openWindow(title, src);
   setActiveWorkProject(String(projectNum));
+}
+
+function openDesktopGroupWindow(groupKey){
+  const group = DESKTOP_GROUP_WINDOWS[String(groupKey || "").toLowerCase()];
+  if(!group) return;
+  openWindow(group.title, group.src);
+}
+
+function openDesktopIcon(icon){
+  if(!icon) return;
+  const projectNum = icon.dataset.project;
+  if(projectNum) {
+    openProjectWindow(projectNum);
+    return;
+  }
+  const groupKey = icon.dataset.group;
+  if(groupKey) {
+    openDesktopGroupWindow(groupKey);
+    return;
+  }
+  const href = icon.getAttribute("href");
+  if(href) {
+    const title = icon.querySelector(".desktop-icon-label")?.textContent?.trim() || "Project";
+    openWindow(title, href);
+  }
 }
 
 const ICON_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg", "PNG", "JPG", "JPEG", "WEBP", "SVG"];
@@ -578,8 +723,10 @@ function setWorkPanelOpen(shouldOpen){
   workTab.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
   if(shouldOpen){
     setWindowHeaderTabActive("work");
+    setWindowScrollProgress(workGrid?.scrollTop || 0);
   } else {
     workTab.classList.remove("is-open");
+    syncWindowBarFromFrameScroll();
   }
 }
 
@@ -678,11 +825,58 @@ function createWorkCard(project, index){
   return card;
 }
 
+// Category grouping definition — order and labels for the Work panel
+const WORK_CATEGORIES = [
+  {
+    key: "motion",
+    label: "Digital Illustration & Motion",
+    projects: ["1", "2", "3"]
+  },
+  {
+    key: "print",
+    label: "Print & Editorial",
+    projects: ["4", "5", "6", "7"]
+  },
+  {
+    key: "fineart",
+    label: "Fine Art",
+    projects: ["8", "9", "10"]
+  },
+  {
+    key: "spatial",
+    label: "Spatial & Installation",
+    projects: ["11"]
+  },
+  {
+    key: "web",
+    label: "Web Design",
+    projects: ["12", "13", "14"]
+  }
+];
+
 function buildWorkPanel(){
   if(!workGrid) return;
   workGrid.innerHTML = "";
-  PROJECTS.forEach((project, index) => {
-    workGrid.appendChild(createWorkCard(project, index));
+
+  let cardIndex = 0;
+
+  WORK_CATEGORIES.forEach(cat => {
+    // Category header
+    const header = document.createElement("div");
+    header.className = `work-cat-header work-cat-header--${cat.key}`;
+    header.textContent = cat.label;
+    workGrid.appendChild(header);
+
+    // Cards for this category in a sub-grid
+    const catGrid = document.createElement("div");
+    catGrid.className = "work-cat-grid";
+    workGrid.appendChild(catGrid);
+
+    cat.projects.forEach(num => {
+      const project = PROJECTS_BY_NUMBER.get(num);
+      if (!project) return;
+      catGrid.appendChild(createWorkCard(project, cardIndex++));
+    });
   });
 }
 
@@ -691,6 +885,11 @@ function initWorkPanel(){
     workPanel.hidden = false;
     setWorkPanelOpen(false);
     buildWorkPanel();
+
+    workGrid?.addEventListener("scroll", () => {
+      if(!mainWindow.classList.contains("is-work-open")) return;
+      setWindowScrollProgress(workGrid.scrollTop || 0);
+    }, { passive: true });
 
     workTab.addEventListener("click", (e) => {
       e.preventDefault();
@@ -820,22 +1019,13 @@ async function setDesktopIconImages(){
 const ICON_REF_W = 1440;
 const ICON_REF_H = 820;
 
-// Original pixel positions converted to percentage fractions.
+// 5 app positions (ref 1440×820), one per medium group.
 const ICON_POSITIONS_PX = [
-  { x: 420, y: 95  },
-  { x: 780, y: 140 },
-  { x: 640, y: 300 },
-  { x: 900, y: 420 },
-  { x: 480, y: 480 },
-  { x: 520, y: 150 },
-  { x: 860, y: 220 },
-  { x: 700, y: 460 },
-  { x: 980, y: 120 },
-  { x: 560, y: 360 },
-  { x: 760, y: 560 },
-  { x: 980, y: 520 },
-  { x: 1140, y: 260 },
-  { x: 1140, y: 580 },
+  { x: 120, y: 130 },   // motion
+  { x: 410, y: 220 },   // print
+  { x: 760, y: 130 },   // fine art
+  { x: 620, y: 500 },   // spatial
+  { x: 1070, y: 220 },  // web
 ];
 
 const ICON_POSITIONS = ICON_POSITIONS_PX.map(p => ({
@@ -844,8 +1034,8 @@ const ICON_POSITIONS = ICON_POSITIONS_PX.map(p => ({
 }));
 
 const ICON_FALLBACK_PCT = { px: 0.04, py: 0.07 };
-const ICON_DEFAULT_WIDTH  = 82;
-const ICON_DEFAULT_HEIGHT = 104;
+const ICON_DEFAULT_WIDTH  = 126;
+const ICON_DEFAULT_HEIGHT = 132;
 
 // Per-icon stored percentage, overwritten on drag-drop.
 const iconPositionPct = new Map();
@@ -971,8 +1161,7 @@ function onPointerUp(){
   dragIcon.classList.remove("is-dragging");
 
   if(!dragMoved){
-    const projectNum = dragIcon.dataset.project;
-    if(projectNum) openProjectWindow(projectNum);
+    openDesktopIcon(dragIcon);
   } else {
     // Save the dropped position as a percentage so resize keeps it in place.
     const { w, h } = getSurfaceSize();
@@ -994,8 +1183,7 @@ desktopIcons.forEach(icon => {
       // semantics for context-menu "Open Link in New Tab" and modifier-click.
       e.preventDefault();
       if (e.detail === 0) {
-        const projectNum = icon.dataset.project;
-        if (projectNum) openProjectWindow(projectNum);
+        openDesktopIcon(icon);
       }
     }
   });
@@ -1016,7 +1204,10 @@ surface?.addEventListener("mousedown", e => {
    DOCK MAGNIFICATION
 ========================================================= */
 const MAG_SCALES = [1.5, 1.3, 1.1, 1];
-const DOCK_BASE = 50;
+const DOCK_BASE = (() => {
+  const parsed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dock-size"));
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 50;
+})();
 const BASE_MARGIN = 7;
 
 function setDockMag(hoveredIndex){

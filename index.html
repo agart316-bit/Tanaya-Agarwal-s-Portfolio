@@ -106,77 +106,38 @@
     <div id="liquidEtherBg" class="liquid-ether-bg"></div>
 
     <section class="desktop-surface" id="desktopSurface">
+
+      <!-- Nameplate watermark — spans the page behind icons -->
+      <div class="desktop-nameplate" aria-hidden="true">
+        <span class="nameplate-name">Tanaya Agarwal's Portfolio</span>
+      </div>
+
       <div class="desktop-icons-canvas" id="desktopIconsCanvas">
 
-        <!-- 14 Desktop icons -->
-        <a class="desktop-icon" data-project="1" href="projects/1/index.html">
-          <img class="desktop-icon-img" src="assets/project-1.png" alt="Project 1 icon" draggable="false" />
-          <span class="desktop-icon-label">Men of platinum (illustrations / motion video)</span>
+        <!-- 5 Medium apps -->
+        <a class="desktop-icon" data-group="motion" href="dock/media/index.html?group=motion">
+          <img class="desktop-icon-img" src="assets/project-1.png" alt="Digital Illustration and Motion app icon" draggable="false" />
+          <span class="desktop-icon-label">Digital Illustration &amp; Motion</span>
         </a>
 
-        <a class="desktop-icon" data-project="2" href="projects/2/index.html">
-          <img class="desktop-icon-img" src="assets/project-2.png" alt="Project 2 icon" draggable="false" />
-          <span class="desktop-icon-label">Now or never ( illustration / animation )</span>
+        <a class="desktop-icon" data-group="print" href="dock/media/index.html?group=print">
+          <img class="desktop-icon-img" src="assets/project-4.png" alt="Print and Editorial app icon" draggable="false" />
+          <span class="desktop-icon-label">Print &amp; Editorial</span>
         </a>
 
-        <a class="desktop-icon" data-project="3" href="projects/3/index.html">
-          <img class="desktop-icon-img" src="assets/work.jpg" alt="Project 3 icon" draggable="false" />
-          <span class="desktop-icon-label">Digital illustrations</span>
+        <a class="desktop-icon" data-group="fineart" href="dock/media/index.html?group=fineart">
+          <img class="desktop-icon-img" src="assets/project-9.png" alt="Fine Art app icon" draggable="false" />
+          <span class="desktop-icon-label">Fine Art</span>
         </a>
 
-        <a class="desktop-icon" data-project="4" href="projects/4/index.html">
-          <img class="desktop-icon-img" src="assets/project-4.png" alt="Project 4 icon" draggable="false" />
-          <span class="desktop-icon-label">Artsy Design Collection ( stationery collection )</span>
+        <a class="desktop-icon" data-group="spatial" href="dock/media/index.html?group=spatial">
+          <img class="desktop-icon-img" src="assets/project-11.png" alt="Spatial and Installation app icon" draggable="false" />
+          <span class="desktop-icon-label">Spatial / Installation</span>
         </a>
 
-        <a class="desktop-icon" data-project="5" href="projects/5/index.html">
-          <img class="desktop-icon-img" src="assets/project-5.png" alt="Project 5 icon" draggable="false" />
-          <span class="desktop-icon-label">Dream journals (stationery collection )</span>
-        </a>
-
-        <a class="desktop-icon" data-project="6" href="projects/6/index.html">
-          <img class="desktop-icon-img" src="assets/work.jpg" alt="Project 6 icon" draggable="false" />
-          <span class="desktop-icon-label">Lost In Translation ( book )</span>
-        </a>
-
-        <a class="desktop-icon" data-project="7" href="projects/7/index.html">
-          <img class="desktop-icon-img" src="assets/work.jpg" alt="Project 7 icon" draggable="false" />
-          <span class="desktop-icon-label">Physics Textbook ( book)</span>
-        </a>
-
-        <a class="desktop-icon" data-project="8" href="projects/8/index.html">
-          <img class="desktop-icon-img" src="assets/work.jpg" alt="Project 8 icon" draggable="false" />
-          <span class="desktop-icon-label">Paintings</span>
-        </a>
-
-        <a class="desktop-icon" data-project="9" href="projects/9/index.html">
-          <img class="desktop-icon-img" src="assets/project-9.png" alt="Project 9 icon" draggable="false" />
-          <span class="desktop-icon-label">Black and white sketches</span>
-        </a>
-
-        <a class="desktop-icon" data-project="10" href="projects/10/index.html">
-          <img class="desktop-icon-img" src="assets/project-10.png" alt="Project 10 icon" draggable="false" />
-          <span class="desktop-icon-label">Pottery</span>
-        </a>
-
-        <a class="desktop-icon" data-project="11" href="projects/11/index.html">
-          <img class="desktop-icon-img" src="assets/project-11.png" alt="Project 11 icon" draggable="false" />
-          <span class="desktop-icon-label">3D installations</span>
-        </a>
-
-        <a class="desktop-icon" data-project="12" href="projects/12/index.html">
-          <img class="desktop-icon-img" src="assets/project-12.png" alt="Project 12 icon" draggable="false" />
-          <span class="desktop-icon-label">Borges Stories ( website )</span>
-        </a>
-
-        <a class="desktop-icon" data-project="13" href="projects/13/index.html">
-          <img class="desktop-icon-img" src="assets/work.jpg" alt="Project 13 icon" draggable="false" />
-          <span class="desktop-icon-label">Ten tab open ( website )</span>
-        </a>
-
-        <a class="desktop-icon" data-project="14" href="projects/14/index.html">
-          <img class="desktop-icon-img" src="assets/work.jpg" alt="Project 14 icon" draggable="false" />
-          <span class="desktop-icon-label">Fashion History ( website )</span>
+        <a class="desktop-icon" data-group="web" href="dock/media/index.html?group=web">
+          <img class="desktop-icon-img" src="assets/project-12.png" alt="Web Design app icon" draggable="false" />
+          <span class="desktop-icon-label">Web Design</span>
         </a>
       </div>
     </section>
@@ -212,6 +173,23 @@
 
       </div>
     </nav>
+
+    <aside id="welcomeBanner" class="ios-notification" role="status" aria-live="polite" hidden>
+      <div class="ios-notification-card">
+        <span class="ios-notification-title">Portfolio</span>
+        <p class="ios-notification-body">
+          Welcome to Tanaya's portfolio. Go through the apps to see my work.
+        </p>
+        <button
+          id="welcomeBannerClose"
+          class="ios-notification-close"
+          type="button"
+          aria-label="Close notification"
+        >
+          x
+        </button>
+      </div>
+    </aside>
 
     <!-- Window -->
     <section id="windowLayer" class="window-layer is-hidden" aria-label="Window layer">
