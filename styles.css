@@ -1208,8 +1208,8 @@ body {
   transform: translate3d(118%, 0, 0);
   will-change: transform, opacity;
   transition:
-    transform 280ms cubic-bezier(0.22, 0.86, 0.28, 1),
-    opacity 280ms ease;
+    transform 380ms cubic-bezier(0.22, 0.86, 0.28, 1),
+    opacity 380ms cubic-bezier(0.22, 0.86, 0.28, 1);
 }
 
 .ios-notification.is-visible {

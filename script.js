@@ -163,8 +163,12 @@ function showWelcomeBanner(){
   if(!welcomeBanner || welcomeBannerShown) return;
   welcomeBannerShown = true;
   welcomeBanner.hidden = false;
+  welcomeBanner.classList.remove("is-visible");
+  void welcomeBanner.offsetWidth;
   requestAnimationFrame(() => {
-    welcomeBanner.classList.add("is-visible");
+    requestAnimationFrame(() => {
+      welcomeBanner.classList.add("is-visible");
+    });
   });
 }
 
