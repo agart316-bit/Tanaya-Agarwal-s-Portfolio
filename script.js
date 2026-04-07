@@ -924,12 +924,7 @@ function createWorkCard(project, index){
   title.className = "work-card-title";
   title.textContent = project.title;
 
-  const url = document.createElement("span");
-  url.className = "work-card-url";
-  url.textContent = project.url;
-
   meta.appendChild(title);
-  meta.appendChild(url);
   card.append(preview, meta);
 
   card.addEventListener("click", () => {

@@ -241,9 +241,9 @@ h1 {
   height: 100%;
 }
 
-/* Thin divider line between columns */
+/* Keep split images flush with no center seam. */
 .split-col--right {
-  border-left: 1px solid rgba(255,255,255,0.15);
+  border-left: 0;
 }
 
 /* Arrow controls — positioned left/right edges, vertically centred */
