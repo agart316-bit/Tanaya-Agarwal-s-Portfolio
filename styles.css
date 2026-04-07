@@ -290,6 +290,12 @@ body {
   box-shadow: none;
 }
 
+/* Spatial icon asset has a light matte; blend + no shadow keeps only the pink cube visible. */
+.desktop-icon[data-group="spatial"] .desktop-icon-img {
+  box-shadow: none;
+  mix-blend-mode: multiply;
+}
+
 .desktop-icon--stacked .desktop-icon-stack {
   position: relative;
   display: inline-flex;
@@ -346,6 +352,7 @@ body {
   font-size: clamp(13px, 1vw, 15px);
   line-height: 1.14;
   text-align: center;
+  color: rgb(48, 48, 48);
   text-shadow: 0 1px 6px rgba(0,0,0,.55);
   white-space: normal;
   overflow: visible;
