@@ -1176,6 +1176,25 @@ body {
   white-space: nowrap;
 }
 
+.nameplate-mobile-break {
+  display: none;
+}
+
+@media (max-width: 485px) {
+  .nameplate-name {
+    font-size: clamp(42px, 13.8vw, 74px);
+    line-height: 0.92;
+    white-space: nowrap;
+    width: 100vw;
+    max-width: 100vw;
+    padding-inline: 0;
+  }
+
+  .nameplate-mobile-break {
+    display: block;
+  }
+}
+
 /* =========================================================
    DESKTOP CATEGORY LABELS
 ========================================================= */
@@ -1316,7 +1335,7 @@ body {
 
       <!-- Nameplate watermark — spans the page behind icons -->
       <div class="desktop-nameplate" aria-hidden="true">
-        <span class="nameplate-name">Tanaya Agarwal's Portfolio</span>
+        <span class="nameplate-name">Tanaya Agarwal's<br class="nameplate-mobile-break">Portfolio</span>
       </div>
 
       <!-- Category labels — grouped visual identifiers -->
@@ -1477,15 +1496,6 @@ body {
               <span class="window-navTab-label">Resume</span>
             </button>
             <button
-              id="headerTabContact"
-              class="window-navTab"
-              type="button"
-              aria-label="Contact"
-            >
-              <span class="window-navTab-dot" aria-hidden="true"></span>
-              <span class="window-navTab-label">Contact</span>
-            </button>
-            <button
               id="headerTabReferences"
               class="window-navTab"
               type="button"
@@ -1493,6 +1503,15 @@ body {
             >
               <span class="window-navTab-dot" aria-hidden="true"></span>
               <span class="window-navTab-label">References</span>
+            </button>
+            <button
+              id="headerTabContact"
+              class="window-navTab"
+              type="button"
+              aria-label="Contact"
+            >
+              <span class="window-navTab-dot" aria-hidden="true"></span>
+              <span class="window-navTab-label">Contact</span>
             </button>
           </div>
         </div>
