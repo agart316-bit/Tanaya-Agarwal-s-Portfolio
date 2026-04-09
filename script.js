@@ -97,48 +97,44 @@ function renderDesktopProjectBadges(){
       icon.appendChild(badge);
     }
     badge.dataset.target = String(count);
+    badge.dataset.animated = "0";
     badge.textContent = "0";
     badge.classList.remove("is-visible");
   });
 }
 
-function animateDesktopBadgeCounters(){
-  if(desktopBadgeCountAnimationPlayed) return Promise.resolve();
-  desktopBadgeCountAnimationPlayed = true;
+function animateDesktopBadgeCounter(icon){
+  const badge = icon?.querySelector(".desktop-icon-badge");
+  const target = Number.parseInt(badge?.dataset.target || "0", 10);
 
-  const jobs = Array.from(desktopIcons).map((icon, index) => {
-    const badge = icon.querySelector(".desktop-icon-badge");
-    const target = Number.parseInt(badge?.dataset.target || "0", 10);
+  return new Promise((resolve) => {
+    if(!badge || !Number.isFinite(target) || target < 1){
+      resolve();
+      return;
+    }
+    if(badge.dataset.animated === "1"){
+      resolve();
+      return;
+    }
 
-    return new Promise((resolve) => {
-      if(!badge || !Number.isFinite(target) || target < 1){
+    badge.dataset.animated = "1";
+    badge.classList.add("is-visible");
+
+    const stepMs = 220;
+    let value = 0;
+
+    const tick = () => {
+      value += 1;
+      badge.textContent = String(value);
+      if(value >= target){
         resolve();
         return;
       }
+      window.setTimeout(tick, stepMs);
+    };
 
-      const startDelayMs = index * 110;
-      const stepMs = 120;
-      let value = 0;
-
-      window.setTimeout(() => {
-        badge.classList.add("is-visible");
-
-        const tick = () => {
-          value += 1;
-          badge.textContent = String(value);
-          if(value >= target){
-            resolve();
-            return;
-          }
-          window.setTimeout(tick, stepMs);
-        };
-
-        window.setTimeout(tick, 80);
-      }, startDelayMs);
-    });
+    window.setTimeout(tick, 140);
   });
-
-  return Promise.all(jobs);
 }
 
 /* =========================================================
@@ -169,7 +165,6 @@ const DOT_CHAR   = "•";
 let typingDone = false;
 let welcomeBannerShown = false;
 let desktopLaunchAnimationPlayed = false;
-let desktopBadgeCountAnimationPlayed = false;
 
 function showCaret(){ passwordCaret.classList.add("is-visible"); }
 function hideCaret(){ passwordCaret.classList.remove("is-visible"); }
@@ -302,9 +297,7 @@ function unlock(){
   lockscreen.addEventListener("transitionend", () => {
     lockscreen.style.display = "none";
     launchPromise.finally(() => {
-      animateDesktopBadgeCounters().finally(() => {
-        showWelcomeBanner();
-      });
+      showWelcomeBanner();
     });
   }, { once: true });
 }
@@ -1188,13 +1181,13 @@ async function setDesktopIconImages(){
 }
 
 const DESKTOP_ARTWORK_SIZE = { width: 1046, height: 1288 };
-const DESKTOP_ARTWORK_LAPTOP_SOURCE = { x: 0.73, y: 0.83 };
+const DESKTOP_ARTWORK_LAPTOP_SOURCE = { x: 0.73, y: 0.86 };
 const DESKTOP_ARTWORK_GROUP_TARGETS = {
-  motion:  { x: 0.37, y: 0.23 }, // top-center
-  print:   { x: 0.10, y: 0.41 }, // left-mid
-  fineart: { x: 0.72, y: 0.32 }, // upper-right
-  spatial: { x: 0.84, y: 0.55 }, // right-mid
-  web:     { x: 0.06, y: 0.73 }  // lower-left
+  motion:  { x: 0.32, y: 0.20 }, // top-center
+  print:   { x: 0.07, y: 0.43 }, // left-mid
+  fineart: { x: 0.76, y: 0.32 }, // upper-right
+  spatial: { x: 0.84, y: 0.58 }, // right-mid
+  web:     { x: 0.05, y: 0.72 }  // lower-left
 };
 
 const FALLBACK_ICON_PCTS = [
@@ -1299,6 +1292,16 @@ function layoutIconsInitial(){
 }
 
 function getIconImageCenter(icon){
+  const thumb = icon?.querySelector(".desktop-icon-img");
+  const canvasRect = iconsCanvas?.getBoundingClientRect();
+  const thumbRect = thumb?.getBoundingClientRect();
+  if(canvasRect && thumbRect && thumbRect.width > 0 && thumbRect.height > 0){
+    return {
+      x: (thumbRect.left - canvasRect.left) + (thumbRect.width / 2),
+      y: (thumbRect.top - canvasRect.top) + (thumbRect.height / 2)
+    };
+  }
+
   const left = parseFloat(icon.style.left) || 0;
   const top = parseFloat(icon.style.top) || 0;
   return {
@@ -1309,11 +1312,24 @@ function getIconImageCenter(icon){
 
 function animateDesktopIconLaunch(){
   if(!iconsCanvas || !desktopIcons.length) return Promise.resolve();
-  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    Array.from(desktopIcons).forEach((icon) => {
+      icon.classList.add("is-landed");
+      animateDesktopBadgeCounter(icon);
+    });
+    return Promise.resolve();
+  }
 
   const { w, h } = getSurfaceSize();
   const source = artworkPointToSurfacePx(DESKTOP_ARTWORK_LAPTOP_SOURCE, w, h);
   const icons = Array.from(desktopIcons);
+  const launchOrder = new Map([
+    ["spatial", 0],
+    ["fineart", 1],
+    ["motion", 2],
+    ["print", 3],
+    ["web", 4]
+  ]);
 
   iconsCanvas.classList.add("is-launching");
   icons.forEach((icon) => icon.classList.remove("is-landed"));
@@ -1328,9 +1344,14 @@ function animateDesktopIconLaunch(){
       const dy = target.y - source.y;
       const sideBend = (index - ((icons.length - 1) / 2)) * 24;
       const arcLift = -Math.min(170, 72 + Math.abs(dx) * 0.24 + Math.abs(dy) * 0.12);
+      const groupKey = String(icon.dataset.group || "").toLowerCase();
+      const launchDelayIndex = launchOrder.has(groupKey)
+        ? launchOrder.get(groupKey)
+        : (launchOrder.size + index);
 
       if(!sourceSrc){
         icon.classList.add("is-landed");
+        animateDesktopBadgeCounter(icon);
         resolve();
         return;
       }
@@ -1339,6 +1360,11 @@ function animateDesktopIconLaunch(){
       ghost.className = "desktop-icon-launch-ghost";
       ghost.style.left = `${source.x}px`;
       ghost.style.top = `${source.y}px`;
+      const thumbRect = thumb?.getBoundingClientRect();
+      if(thumbRect && thumbRect.width > 0 && thumbRect.height > 0){
+        ghost.style.width = `${thumbRect.width}px`;
+        ghost.style.height = `${thumbRect.height}px`;
+      }
 
       const img = document.createElement("img");
       img.src = sourceSrc;
@@ -1390,7 +1416,7 @@ function animateDesktopIconLaunch(){
         ],
         {
           duration: 2380,
-          delay: index * 230,
+          delay: launchDelayIndex * 230,
           easing: "cubic-bezier(0.16, 0.84, 0.24, 1)",
           fill: "forwards"
         }
@@ -1399,6 +1425,7 @@ function animateDesktopIconLaunch(){
       animation.addEventListener("finish", () => {
         ghost.remove();
         icon.classList.add("is-landed");
+        animateDesktopBadgeCounter(icon);
         resolve();
       }, { once: true });
     });

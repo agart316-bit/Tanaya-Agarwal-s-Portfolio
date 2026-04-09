@@ -11,7 +11,7 @@
   --dur-slow: 600ms;
   --lock-bg:    url("assets/lockscreen-bg.jpg");
   --desktop-art-bg: url("assets/desktop-crouching-folders.png");
-  --desktop-art-offset-y: 34px;
+  --desktop-art-offset-y: 54px;
   --dock-size:  50px;
   --dock-gap:   18px;
   --site-min-width: 0px;
@@ -304,13 +304,20 @@ body {
   top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
+  display: block;
   width: 126px;
+  max-width: 126px;
+  box-sizing: border-box;
+  padding: 1px 4px;
+  border-radius: 4px;
   font-size: clamp(13px, 1vw, 15px);
   line-height: 1.14;
   text-align: center;
   color: rgb(48, 48, 48);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
   white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
   pointer-events: none;
 }
 
@@ -422,6 +429,10 @@ body {
 }
 
 .desktop-icon-label {
+  display: block;
+  width: 126px;
+  max-width: 126px;
+  box-sizing: border-box;
   font-size: clamp(13px, 1vw, 15px);
   line-height: 1.14;
   text-align: center;
@@ -430,7 +441,6 @@ body {
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
-  max-width: 124px;
   padding: 1px 4px;
   border-radius: 4px;
   pointer-events: none;
@@ -1211,13 +1221,14 @@ body {
 /* Non-mobile floor: keep typography legible as width tightens. */
 @media (min-width: 486px) {
   body {
-    /* Override shared tiny base type size for non-mobile layouts. */
-    font-size: clamp(14px, 1vw, 16px);
+    /* Keep body copy at least 16px on desktop/tablet. */
+    font-size: clamp(16px, 1vw, 18px);
   }
 }
 
 @media (min-width: 486px) and (max-width: 1024px) {
-  .desktop-icon-label {
+  .desktop-icon-label,
+  .desktop-icon-launch-ghost-label {
     font-size: 13.5px;
   }
 
