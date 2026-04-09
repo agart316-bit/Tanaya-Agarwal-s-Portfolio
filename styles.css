@@ -10,6 +10,7 @@
   --dur-mid:  320ms;
   --dur-slow: 600ms;
   --lock-bg:    url("assets/lockscreen-bg.jpg");
+  --lock-bg-dim: 0.7;
   --desktop-art-bg: url("assets/desktop-crouching-folders.png");
   --desktop-art-offset-y: 54px;
   --dock-size:  50px;
@@ -46,8 +47,10 @@ body {
   position: absolute; inset: 0;
   min-width: var(--site-min-width);
   min-height: var(--site-min-height);
-  background-color: black;
-  background: var(--lock-bg) center / cover no-repeat;
+  background-color: rgb(0, 0, 0);
+  background:
+    linear-gradient(rgba(255,255,255,var(--lock-bg-dim)), rgba(255,255,255,var(--lock-bg-dim))),
+    var(--lock-bg) center / cover no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,7 +121,9 @@ body {
   font-weight: 400;
   color: #FE5BAC;
   letter-spacing: 0;
-  text-shadow: 0 1px 10px rgba(0,0,0,.35);
+  text-shadow:
+    0 0 9px rgb(255, 255, 255),
+    0 1px 10px rgb(255, 255, 255);
 }
 
 .lockscreen-form { width: min(160px, 72vw); }
@@ -201,9 +206,10 @@ body {
 
 .lockscreen-hint {
   margin-top: 7px;
-  font-size: 10px;
+  font-size: 11px;
   color: rgb(254, 91, 172, 0.805);
   letter-spacing: .15px;
+  text-shadow: 8 8 8px rgb(255, 255, 255);
 }
 
 /* =========================================================
