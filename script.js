@@ -96,8 +96,49 @@ function renderDesktopProjectBadges(){
       badge.setAttribute("aria-hidden", "true");
       icon.appendChild(badge);
     }
-    badge.textContent = String(count);
+    badge.dataset.target = String(count);
+    badge.textContent = "0";
+    badge.classList.remove("is-visible");
   });
+}
+
+function animateDesktopBadgeCounters(){
+  if(desktopBadgeCountAnimationPlayed) return Promise.resolve();
+  desktopBadgeCountAnimationPlayed = true;
+
+  const jobs = Array.from(desktopIcons).map((icon, index) => {
+    const badge = icon.querySelector(".desktop-icon-badge");
+    const target = Number.parseInt(badge?.dataset.target || "0", 10);
+
+    return new Promise((resolve) => {
+      if(!badge || !Number.isFinite(target) || target < 1){
+        resolve();
+        return;
+      }
+
+      const startDelayMs = index * 110;
+      const stepMs = 120;
+      let value = 0;
+
+      window.setTimeout(() => {
+        badge.classList.add("is-visible");
+
+        const tick = () => {
+          value += 1;
+          badge.textContent = String(value);
+          if(value >= target){
+            resolve();
+            return;
+          }
+          window.setTimeout(tick, stepMs);
+        };
+
+        window.setTimeout(tick, 80);
+      }, startDelayMs);
+    });
+  });
+
+  return Promise.all(jobs);
 }
 
 /* =========================================================
@@ -127,6 +168,8 @@ const DOTS_COUNT = 6;
 const DOT_CHAR   = "•";
 let typingDone = false;
 let welcomeBannerShown = false;
+let desktopLaunchAnimationPlayed = false;
+let desktopBadgeCountAnimationPlayed = false;
 
 function showCaret(){ passwordCaret.classList.add("is-visible"); }
 function hideCaret(){ passwordCaret.classList.remove("is-visible"); }
@@ -224,14 +267,28 @@ lockscreen.addEventListener("click", e => {
   if(typingDone) unlock();
 });
 
+window.addEventListener("keydown", (e) => {
+  if (!typingDone) return;
+  if (lockscreen.style.display === "none" || lockscreen.classList.contains("is-unlocking")) return;
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    unlock();
+  }
+});
+
 function unlock(){
   if(lockscreen.classList.contains("is-unlocking")) return;
   desktop.classList.remove("is-hidden");
+  let launchPromise = Promise.resolve();
 
   // Reflow icon positions after the desktop becomes visible so
   // centering uses the actual rendered surface dimensions.
   requestAnimationFrame(() => {
     refreshDesktopIconLayout();
+    if(!desktopLaunchAnimationPlayed){
+      desktopLaunchAnimationPlayed = true;
+      launchPromise = animateDesktopIconLaunch();
+    }
   });
 
   // Kick off the WebGL background as soon as desktop is visible
@@ -244,7 +301,11 @@ function unlock(){
   hideCaret();
   lockscreen.addEventListener("transitionend", () => {
     lockscreen.style.display = "none";
-    showWelcomeBanner();
+    launchPromise.finally(() => {
+      animateDesktopBadgeCounters().finally(() => {
+        showWelcomeBanner();
+      });
+    });
   }, { once: true });
 }
 
@@ -1126,27 +1187,28 @@ async function setDesktopIconImages(){
   await Promise.all(work);
 }
 
-// Reference design dimensions used to derive default percentages.
-const ICON_REF_W = 1440;
-const ICON_REF_H = 820;
+const DESKTOP_ARTWORK_SIZE = { width: 1046, height: 1288 };
+const DESKTOP_ARTWORK_LAPTOP_SOURCE = { x: 0.73, y: 0.83 };
+const DESKTOP_ARTWORK_GROUP_TARGETS = {
+  motion:  { x: 0.37, y: 0.23 }, // top-center
+  print:   { x: 0.10, y: 0.41 }, // left-mid
+  fineart: { x: 0.72, y: 0.32 }, // upper-right
+  spatial: { x: 0.84, y: 0.55 }, // right-mid
+  web:     { x: 0.06, y: 0.73 }  // lower-left
+};
 
-// 5 app positions (ref 1440×820), one per medium group.
-const ICON_POSITIONS_PX = [
-  { x: 120, y: 130 },   // motion
-  { x: 410, y: 220 },   // print
-  { x: 760, y: 130 },   // fine art
-  { x: 620, y: 500 },   // spatial
-  { x: 1070, y: 220 },  // web
+const FALLBACK_ICON_PCTS = [
+  { px: 120 / 1440, py: 130 / 820 },
+  { px: 410 / 1440, py: 220 / 820 },
+  { px: 760 / 1440, py: 130 / 820 },
+  { px: 620 / 1440, py: 500 / 820 },
+  { px: 1070 / 1440, py: 220 / 820 }
 ];
-
-const ICON_POSITIONS = ICON_POSITIONS_PX.map(p => ({
-  px: p.x / ICON_REF_W,
-  py: p.y / ICON_REF_H,
-}));
-
 const ICON_FALLBACK_PCT = { px: 0.04, py: 0.07 };
 const ICON_DEFAULT_WIDTH  = 126;
 const ICON_DEFAULT_HEIGHT = 132;
+const ICON_IMAGE_CENTER_OFFSET_X = 63;
+const ICON_IMAGE_CENTER_OFFSET_Y = 47;
 
 // Per-icon stored percentage, overwritten on drag-drop.
 const iconPositionPct = new Map();
@@ -1157,6 +1219,25 @@ function getSurfaceSize(){
   const w = Math.max(window.innerWidth,  320);
   const h = Math.max(window.innerHeight - dockH - 10, 200);
   return { w, h };
+}
+
+function getArtworkPlacement(surfW, surfH){
+  const artW = DESKTOP_ARTWORK_SIZE.width;
+  const artH = DESKTOP_ARTWORK_SIZE.height;
+  const scale = Math.min(surfW / artW, surfH / artH);
+  const width = artW * scale;
+  const height = artH * scale;
+  const left = (surfW - width) / 2;
+  const top = surfH - height; // background-position: center bottom
+  return { left, top, width, height };
+}
+
+function artworkPointToSurfacePx(point, surfW, surfH){
+  const placement = getArtworkPlacement(surfW, surfH);
+  return {
+    x: placement.left + (point.x * placement.width),
+    y: placement.top + (point.y * placement.height)
+  };
 }
 
 /** Percentage → clamped pixel position so icon stays fully on-screen. */
@@ -1191,12 +1272,140 @@ function syncSiteMinSizeFromIcons(){
 function layoutIconsInitial(){
   const { w, h } = getSurfaceSize();
   desktopIcons.forEach((icon, i) => {
-    const pct = iconPositionPct.get(icon) || ICON_POSITIONS[i] || ICON_FALLBACK_PCT;
-    if (!iconPositionPct.has(icon)) iconPositionPct.set(icon, pct);
-    const { left, top } = pctToPx(pct.px, pct.py, w, h);
+    let left = 0;
+    let top = 0;
+
+    if(icon.dataset.manualPosition === "1"){
+      const pct = iconPositionPct.get(icon) || FALLBACK_ICON_PCTS[i] || ICON_FALLBACK_PCT;
+      ({ left, top } = pctToPx(pct.px, pct.py, w, h));
+    } else {
+      const groupKey = String(icon.dataset.group || "").toLowerCase();
+      const artworkTarget = DESKTOP_ARTWORK_GROUP_TARGETS[groupKey];
+      if(artworkTarget){
+        const target = artworkPointToSurfacePx(artworkTarget, w, h);
+        left = Math.min(Math.max(target.x - ICON_IMAGE_CENTER_OFFSET_X, 0), w - ICON_DEFAULT_WIDTH);
+        top = Math.min(Math.max(target.y - ICON_IMAGE_CENTER_OFFSET_Y, 0), h - ICON_DEFAULT_HEIGHT);
+      } else {
+        const pct = iconPositionPct.get(icon) || FALLBACK_ICON_PCTS[i] || ICON_FALLBACK_PCT;
+        if (!iconPositionPct.has(icon)) iconPositionPct.set(icon, pct);
+        ({ left, top } = pctToPx(pct.px, pct.py, w, h));
+      }
+    }
+
     icon.style.left = `${left}px`;
     icon.style.top  = `${top}px`;
     icon.dataset.positioned = "1";
+  });
+}
+
+function getIconImageCenter(icon){
+  const left = parseFloat(icon.style.left) || 0;
+  const top = parseFloat(icon.style.top) || 0;
+  return {
+    x: left + ICON_IMAGE_CENTER_OFFSET_X,
+    y: top + ICON_IMAGE_CENTER_OFFSET_Y
+  };
+}
+
+function animateDesktopIconLaunch(){
+  if(!iconsCanvas || !desktopIcons.length) return Promise.resolve();
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return Promise.resolve();
+
+  const { w, h } = getSurfaceSize();
+  const source = artworkPointToSurfacePx(DESKTOP_ARTWORK_LAPTOP_SOURCE, w, h);
+  const icons = Array.from(desktopIcons);
+
+  iconsCanvas.classList.add("is-launching");
+  icons.forEach((icon) => icon.classList.remove("is-landed"));
+
+  const flights = icons.map((icon, index) => {
+    return new Promise((resolve) => {
+      const thumb = icon.querySelector(".desktop-icon-img");
+      const labelText = icon.querySelector(".desktop-icon-label")?.textContent?.trim() || "";
+      const sourceSrc = thumb?.currentSrc || thumb?.src;
+      const target = getIconImageCenter(icon);
+      const dx = target.x - source.x;
+      const dy = target.y - source.y;
+      const sideBend = (index - ((icons.length - 1) / 2)) * 24;
+      const arcLift = -Math.min(170, 72 + Math.abs(dx) * 0.24 + Math.abs(dy) * 0.12);
+
+      if(!sourceSrc){
+        icon.classList.add("is-landed");
+        resolve();
+        return;
+      }
+
+      const ghost = document.createElement("span");
+      ghost.className = "desktop-icon-launch-ghost";
+      ghost.style.left = `${source.x}px`;
+      ghost.style.top = `${source.y}px`;
+
+      const img = document.createElement("img");
+      img.src = sourceSrc;
+      img.alt = "";
+      img.draggable = false;
+      ghost.appendChild(img);
+
+      if(labelText){
+        const ghostLabel = document.createElement("span");
+        ghostLabel.className = "desktop-icon-launch-ghost-label";
+        ghostLabel.textContent = labelText;
+        ghost.appendChild(ghostLabel);
+      }
+
+      iconsCanvas.appendChild(ghost);
+
+      const animation = ghost.animate(
+        [
+          {
+            offset: 0,
+            opacity: 0,
+            transform: "translate(-50%, -50%) translate3d(0px, 0px, 0) scale(0.02)"
+          },
+          {
+            offset: 0.28,
+            opacity: 1,
+            transform: `translate(-50%, -50%) translate3d(${(dx * 0.26) + sideBend}px, ${(dy * 0.18) + arcLift}px, 0) scale(0.28)`
+          },
+          {
+            offset: 0.62,
+            opacity: 1,
+            transform: `translate(-50%, -50%) translate3d(${(dx * 0.72) + (sideBend * 0.36)}px, ${(dy * 0.74) + (arcLift * 0.26)}px, 0) scale(0.72)`
+          },
+          {
+            offset: 0.86,
+            opacity: 1,
+            transform: `translate(-50%, -50%) translate3d(${dx * 0.95}px, ${dy * 0.96}px, 0) scale(0.95)`
+          },
+          {
+            offset: 0.96,
+            opacity: 1,
+            transform: `translate(-50%, -50%) translate3d(${dx * 1.02}px, ${dy * 1.01}px, 0) scale(1.04)`
+          },
+          {
+            offset: 1,
+            opacity: 1,
+            transform: `translate(-50%, -50%) translate3d(${dx}px, ${dy}px, 0) scale(1)`
+          }
+        ],
+        {
+          duration: 2380,
+          delay: index * 230,
+          easing: "cubic-bezier(0.16, 0.84, 0.24, 1)",
+          fill: "forwards"
+        }
+      );
+
+      animation.addEventListener("finish", () => {
+        ghost.remove();
+        icon.classList.add("is-landed");
+        resolve();
+      }, { once: true });
+    });
+  });
+
+  return Promise.all(flights).finally(() => {
+    iconsCanvas.classList.remove("is-launching");
   });
 }
 
@@ -1206,11 +1415,11 @@ function refreshDesktopIconLayout(){
 }
 
 initWorkPanel();
+renderDesktopProjectBadges();
 
 syncSiteMinSizeFromIcons();
 window.addEventListener("load", refreshDesktopIconLayout);
 window.addEventListener("load", setDesktopIconImages);
-window.addEventListener("load", renderDesktopProjectBadges);
 
 /* Drag + click logic */
 let dragIcon = null, dragOffX = 0, dragOffY = 0;

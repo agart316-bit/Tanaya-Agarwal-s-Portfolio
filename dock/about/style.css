@@ -94,7 +94,7 @@ body {
 .polaroid img {
   width: 100%;
   height: calc(182px * var(--about-height-scale));
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   filter: grayscale(1);
   pointer-events: none;
