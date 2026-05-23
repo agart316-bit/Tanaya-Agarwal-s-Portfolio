@@ -55,112 +55,125 @@ function getGroupFromQuery() {
   return GROUPS[key] ? key : "motion";
 }
 
-function getFrameDocumentHeight(frame) {
-  try {
-    const frameDoc = frame.contentDocument;
-    if (!frameDoc) return 0;
-    const body = frameDoc.body;
-    const html = frameDoc.documentElement;
-    const bodyRect = body ? body.getBoundingClientRect().height : 0;
-    const htmlRect = html ? html.getBoundingClientRect().height : 0;
-    return Math.ceil(Math.max(
-      body ? body.scrollHeight : 0,
-      body ? body.offsetHeight : 0,
-      body ? body.clientHeight : 0,
-      html ? html.scrollHeight : 0,
-      html ? html.offsetHeight : 0,
-      html ? html.clientHeight : 0,
-      bodyRect,
-      htmlRect
-    ));
-  } catch {
-    return 0;
+// ─── Inject a height-reporter + wheel-bridge into a same-origin iframe ───
+// This runs inside the project iframe's context after it loads.
+const INJECTED_SCRIPT = `
+(function() {
+  if (window.__mediaPageBridged) return;
+  window.__mediaPageBridged = true;
+
+  // Lock own scroll; wheel events go up to the media page instead
+  document.documentElement.style.overflow = 'hidden';
+  document.documentElement.style.overscrollBehavior = 'none';
+  document.body.style.overflow = 'hidden';
+  document.body.style.overscrollBehavior = 'none';
+
+  function sendHeight() {
+    // getBoundingClientRect on the root element accounts for CSS zoom correctly
+    var h = document.documentElement.getBoundingClientRect().height;
+    // Also check body
+    var bh = document.body.getBoundingClientRect().height;
+    var height = Math.ceil(Math.max(h, bh, 620));
+    window.parent.postMessage({ type: 'project-height', height: height }, '*');
   }
-}
 
-function attachAutoHeight(frame) {
-  let frameWinRef = null;
-  let resizeObserver = null;
-  let mutationObserver = null;
-  let rafId = null;
+  // Wheel → scroll the parent (media page) instead
+  document.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    window.parent.postMessage({ type: 'project-wheel', deltaX: e.deltaX, deltaY: e.deltaY }, '*');
+  }, { passive: false });
 
-  const requestSync = () => {
-    if (rafId !== null) return;
-    rafId = requestAnimationFrame(() => {
-      rafId = null;
-      const height = getFrameDocumentHeight(frame);
-      if (!height) return;
-      frame.style.height = `${Math.max(height, 620)}px`;
-    });
-  };
+  // Touch scroll → pass up too
+  var touchStartY = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var dy = touchStartY - e.touches[0].clientY;
+    touchStartY = e.touches[0].clientY;
+    window.parent.postMessage({ type: 'project-wheel', deltaX: 0, deltaY: dy }, '*');
+  }, { passive: false });
 
-  const lockInnerScrollAndBridge = (frameDoc, frameWin) => {
-    if (!frameDoc || !frameWin) return;
-    if (frameDoc.documentElement) {
-      frameDoc.documentElement.style.overflow = "hidden";
-      frameDoc.documentElement.style.overscrollBehavior = "none";
-    }
-    if (frameDoc.body) {
-      frameDoc.body.style.overflow = "hidden";
-      frameDoc.body.style.overscrollBehavior = "none";
-    }
+  // Report height now and whenever layout changes
+  sendHeight();
+  var ro = new ResizeObserver(sendHeight);
+  ro.observe(document.documentElement);
+  ro.observe(document.body);
 
-    // Keep one continuous scroll: wheel over inner project panels scrolls this parent page.
-    frameDoc.addEventListener("wheel", (event) => {
-      event.preventDefault();
-      window.scrollBy({
-        left: event.deltaX || 0,
-        top: event.deltaY || 0,
-        behavior: "auto"
-      });
-    }, { passive: false });
-  };
+  // Also re-report after images/videos load
+  document.querySelectorAll('img, video').forEach(function(el) {
+    el.addEventListener('load', sendHeight, { passive: true });
+    el.addEventListener('loadedmetadata', sendHeight, { passive: true });
+  });
 
+  setTimeout(sendHeight, 200);
+  setTimeout(sendHeight, 600);
+  setTimeout(sendHeight, 1400);
+})();
+`;
+
+function attachFrame(frame, item) {
   frame.addEventListener("load", () => {
-    if (rafId !== null) cancelAnimationFrame(rafId);
-    if (resizeObserver) resizeObserver.disconnect();
-    if (mutationObserver) mutationObserver.disconnect();
-    if (frameWinRef) frameWinRef.removeEventListener("resize", requestSync);
-
-    requestSync();
-
     try {
       const frameDoc = frame.contentDocument;
       const frameWin = frame.contentWindow;
       if (!frameDoc || !frameWin) return;
-      frameWinRef = frameWin;
-      lockInnerScrollAndBridge(frameDoc, frameWin);
 
-      frameWin.addEventListener("resize", requestSync, { passive: true });
-      frameDoc.addEventListener("scroll", requestSync, { passive: true, capture: true });
-
-      resizeObserver = new ResizeObserver(requestSync);
-      if (frameDoc.documentElement) resizeObserver.observe(frameDoc.documentElement);
-      if (frameDoc.body) resizeObserver.observe(frameDoc.body);
-
-      mutationObserver = new MutationObserver(requestSync);
-      mutationObserver.observe(frameDoc.documentElement || frameDoc, {
-        childList: true,
-        subtree: true,
-        attributes: true
-      });
-
-      frameDoc.querySelectorAll("img, video, iframe").forEach((mediaEl) => {
-        mediaEl.addEventListener("load", requestSync, { passive: true });
-        mediaEl.addEventListener("loadedmetadata", requestSync, { passive: true });
-      });
-
-      // Late assets / in-page script layout updates.
-      setTimeout(requestSync, 120);
-      setTimeout(requestSync, 420);
-      setTimeout(requestSync, 900);
-    } catch {
-      // ignore
+      // Inject the bridge script into the project iframe
+      const script = frameDoc.createElement("script");
+      script.textContent = INJECTED_SCRIPT;
+      frameDoc.head.appendChild(script);
+    } catch (e) {
+      // cross-origin fallback — shouldn't happen for local files
     }
   });
 }
 
-function createProjectItem(project, index) {
+// Listen for height + wheel messages from project iframes
+window.addEventListener("message", (e) => {
+  if (!e.data || typeof e.data !== "object") return;
+
+  if (e.data.type === "project-height") {
+    // Find which iframe sent this
+    const frames = stackEl ? stackEl.querySelectorAll(".media-frame") : [];
+    frames.forEach((frame) => {
+      if (frame.contentWindow === e.source) {
+        const newHeight = Math.max(Number(e.data.height) || 620, 620);
+        frame.style.height = newHeight + "px";
+      }
+    });
+    return;
+  }
+
+  if (e.data.type === "project-wheel") {
+    // Relay the wheel event up to the portfolio window so it can scroll
+    // the .window-content div (the media iframe's own window can't scroll it).
+    window.parent.postMessage({
+      type: "media-wheel",
+      deltaX: e.data.deltaX || 0,
+      deltaY: e.data.deltaY || 0
+    }, "*");
+  }
+});
+
+// ── Intersection Observer for reveal transitions ──
+function setupRevealObserver() {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.02, rootMargin: "0px 0px -20px 0px" }
+  );
+  return observer;
+}
+
+function createProjectItem(project, index, observer) {
   const item = document.createElement("article");
   item.className = "media-item";
 
@@ -170,8 +183,12 @@ function createProjectItem(project, index) {
   frame.loading = index === 0 ? "eager" : "lazy";
   frame.src = `../../projects/${project.id}/index.html`;
 
-  attachAutoHeight(frame);
+  attachFrame(frame, item);
   item.append(frame);
+
+  // Observe for the reveal transition
+  observer.observe(item);
+
   return item;
 }
 
@@ -184,9 +201,49 @@ function buildGroupView() {
   introEl.textContent = config.intro;
   stackEl.innerHTML = "";
 
+  const observer = setupRevealObserver();
+
   config.projects.forEach((project, index) => {
-    stackEl.appendChild(createProjectItem(project, index));
+    stackEl.appendChild(createProjectItem(project, index, observer));
   });
 }
 
 buildGroupView();
+
+// ── Report this page's full scroll height to the portfolio window ──
+// Since body is overflow:hidden, the browser won't measure scroll height
+// correctly — we compute it from the stack element's layout instead.
+function reportTotalHeight() {
+  if (!stackEl) return;
+  const headerH = document.querySelector(".media-header")?.getBoundingClientRect().height || 0;
+  // Sum up each media-item's offsetHeight + gap
+  const items = Array.from(stackEl.querySelectorAll(".media-item"));
+  let stackH = 0;
+  items.forEach(item => { stackH += item.getBoundingClientRect().height + 26; }); // 26 = gap
+  const totalH = Math.ceil(headerH + stackH + 26 + 40); // header + stack + padding
+  window.parent.postMessage({ type: "media-total-height", height: totalH }, "*");
+}
+
+// Report height whenever project iframes update their sizes
+const _origMsgHandler = window.onmessage;
+window.addEventListener("message", () => {
+  // After any project-height update, re-report our total
+  setTimeout(reportTotalHeight, 50);
+});
+
+// Also watch for layout changes via ResizeObserver
+const _stackRO = new ResizeObserver(reportTotalHeight);
+_stackRO.observe(document.documentElement);
+if (stackEl) _stackRO.observe(stackEl);
+[200, 600, 1200, 2500].forEach(ms => setTimeout(reportTotalHeight, ms));
+
+// Forward wheel events on the media page itself up to the portfolio window
+// so the .window-content div scrolls (the media iframe can't scroll itself).
+window.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  window.parent.postMessage({
+    type: "media-wheel",
+    deltaX: e.deltaX || 0,
+    deltaY: e.deltaY || 0
+  }, "*");
+}, { passive: false });

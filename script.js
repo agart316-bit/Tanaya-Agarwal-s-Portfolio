@@ -380,7 +380,9 @@ function clearFrameScrollTracking(){
 }
 
 function syncWindowBarFromFrameScroll(){
-  setWindowScrollProgress(getFrameScrollTop());
+  // Prefer windowContent scrollTop (now the primary scroll container)
+  const ct = windowContent ? windowContent.scrollTop : 0;
+  setWindowScrollProgress(ct || getFrameScrollTop());
 }
 
 function trackFrameScrollProgress(){
@@ -414,6 +416,8 @@ function trackFrameScrollProgress(){
     });
   };
 
+  // Track both the windowContent scroll and inner frame scroll
+  windowContent?.addEventListener("scroll", requestSync, { passive: true });
   frameWin.addEventListener("scroll", requestSync, { passive: true });
   frameDoc.addEventListener("scroll", requestSync, { passive: true, capture: true });
   frameWin.addEventListener("resize", requestSync, { passive: true });
@@ -421,16 +425,96 @@ function trackFrameScrollProgress(){
 
   frameScrollDetach = () => {
     if(rafId !== null) cancelAnimationFrame(rafId);
+    windowContent?.removeEventListener("scroll", requestSync);
     frameWin.removeEventListener("scroll", requestSync);
     frameDoc.removeEventListener("scroll", requestSync, true);
     frameWin.removeEventListener("resize", requestSync);
   };
 }
 
+/* =========================================================
+   FRAME AUTO-HEIGHT — resizes projectFrame to its content
+   so window-content (overflow-y: auto) can scroll it.
+========================================================= */
+let frameHeightRafId = null;
+let frameHeightObservers = [];
+let frameHeightFromRelay = false; // true when media-total-height relay is managing the height
+
+function clearFrameHeightTracking() {
+  frameHeightObservers.forEach(ob => { try { ob.disconnect(); } catch(e){} });
+  frameHeightObservers = [];
+  if (frameHeightRafId !== null) {
+    cancelAnimationFrame(frameHeightRafId);
+    frameHeightRafId = null;
+  }
+  frameHeightFromRelay = false;
+  if (projectFrame) projectFrame.style.height = "100%";
+  if (windowContent) windowContent.scrollTop = 0;
+}
+
+function scheduleFrameHeightSync() {
+  if (frameHeightRafId !== null) return;
+  frameHeightRafId = requestAnimationFrame(() => {
+    frameHeightRafId = null;
+    syncFrameHeight();
+  });
+}
+
+function syncFrameHeight() {
+  if (!projectFrame) return;
+  // If the media-relay is managing height via postMessage, don't overwrite it.
+  if (frameHeightFromRelay) return;
+  try {
+    const fd = projectFrame.contentDocument;
+    if (!fd) return;
+    // getBoundingClientRect accounts for CSS zoom correctly
+    const h = Math.ceil(Math.max(
+      fd.documentElement.getBoundingClientRect().height,
+      fd.body ? fd.body.getBoundingClientRect().height : 0,
+      620
+    ));
+    projectFrame.style.height = h + "px";
+  } catch(e) {
+    // cross-origin — leave as-is
+  }
+}
+
+function trackFrameHeight() {
+  clearFrameHeightTracking();
+  if (!projectFrame) return;
+  try {
+    const fd = projectFrame.contentDocument;
+    const fw = projectFrame.contentWindow;
+    if (!fd || !fw) return;
+
+    syncFrameHeight();
+
+    // Watch for any layout changes inside the iframe
+    const ro = new ResizeObserver(scheduleFrameHeightSync);
+    ro.observe(fd.documentElement);
+    if (fd.body) ro.observe(fd.body);
+    frameHeightObservers.push(ro);
+
+    const mo = new MutationObserver(scheduleFrameHeightSync);
+    mo.observe(fd.documentElement, { childList: true, subtree: true, attributes: true });
+    frameHeightObservers.push(mo);
+
+    fd.querySelectorAll("img, video, iframe").forEach(el => {
+      el.addEventListener("load", scheduleFrameHeightSync, { passive: true });
+      el.addEventListener("loadedmetadata", scheduleFrameHeightSync, { passive: true });
+    });
+
+    // Retry a few times for late-rendering content
+    [200, 500, 1000, 2000].forEach(ms => setTimeout(scheduleFrameHeightSync, ms));
+
+  } catch(e) { /* cross-origin */ }
+}
+
 function loadWindowContent(title, iframeSrc){
   if(windowTitle) windowTitle.textContent = title || "Window";
   if(windowBlank) windowBlank.style.display = "grid";
   clearFrameScrollTracking();
+  clearFrameHeightTracking();
   setWindowScrollProgress(0);
 
   if(projectFrame){
@@ -439,6 +523,7 @@ function loadWindowContent(title, iframeSrc){
       if(windowBlank) windowBlank.style.display = "none";
       syncWindowStateFromFrame();
       trackFrameScrollProgress();
+      trackFrameHeight();
     };
     projectFrame.onerror = () => {
       if(windowBlank) windowBlank.style.display = "grid";
@@ -574,6 +659,7 @@ function openWindow(title, iframeSrc){
   setActiveWorkProject(null);
   setWindowHeaderTabActive(getHeaderTabKeyForSource(iframeSrc));
   setWindowScrollProgress(0);
+  if(windowContent) windowContent.scrollTop = 0;
   loadWindowContent(title, iframeSrc);
 
   void mainWindow.offsetWidth;
@@ -596,6 +682,8 @@ function closeWindow(){
     if(projectFrame) projectFrame.src = "";
     if(windowBlank) windowBlank.style.display = "grid";
     clearFrameScrollTracking();
+    clearFrameHeightTracking();
+    if(windowContent) windowContent.scrollTop = 0;
     setWindowScrollProgress(0);
     savedWindowOffsetX = 0;
     savedWindowOffsetY = 0;
@@ -1668,4 +1756,37 @@ document.querySelectorAll(".dock-app[data-window]").forEach(btn => {
     if(!cfg) return;
     openWindow(cfg.title, cfg.src);
   });
+});
+
+/* =========================================================
+   IFRAME SCROLL RELAY
+   The media page (dock/media) can't scroll .window-content
+   directly — it relays wheel events up via postMessage.
+   We catch them here and scroll the actual container.
+   We also receive the media page's true total height so we
+   can size projectFrame correctly for windowContent to scroll.
+========================================================= */
+window.addEventListener("message", (e) => {
+  if (!e.data || typeof e.data !== "object") return;
+
+  // Wheel relay: project iframes → media page → here → windowContent
+  if (e.data.type === "media-wheel") {
+    if (!windowContent) return;
+    windowContent.scrollBy({
+      left: Number(e.data.deltaX) || 0,
+      top:  Number(e.data.deltaY) || 0,
+      behavior: "auto"
+    });
+    return;
+  }
+
+  // Height relay: media page reports its true stacked content height
+  // so we can size projectFrame so windowContent has something to scroll.
+  if (e.data.type === "media-total-height") {
+    const h = Number(e.data.height);
+    if (projectFrame && Number.isFinite(h) && h > 0) {
+      frameHeightFromRelay = true;
+      projectFrame.style.height = Math.ceil(h) + "px";
+    }
+  }
 });
