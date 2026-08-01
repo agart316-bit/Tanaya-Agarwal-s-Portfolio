@@ -1,11 +1,11 @@
 const GROUPS = {
   motion: {
     title: "Digital Illustration & Motion",
-    intro: "Men of Platinum, Now or Never, Digital Illustrations",
+    intro: "Men of Platinum, Digital Illustrations, The Upside Down",
     projects: [
       { id: "1", title: "Men of Platinum" },
-      { id: "2", title: "Now or Never" },
-      { id: "3", title: "Digital Illustrations" }
+      { id: "3", title: "Digital Illustrations" },
+      { id: "15", title: "The Upside Down" }
     ]
   },
   print: {

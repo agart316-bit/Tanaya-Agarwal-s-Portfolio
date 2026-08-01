@@ -20,6 +20,11 @@
   --rail-w:236px;
   --gutter:clamp(32px,4.5vw,64px);
   --ar:1.5;
+  /* no image ever exceeds the screen: figures are sized off their own ratio
+     so the whole picture is visible at once, never cropped, never letterboxed */
+  --fig-max-h:72vh;
+  --hero-fig-max-h:60vh;
+  --hero-copy-h:300px;
   --accent:#2f6f6b;
   --band:#d7e8e6;
   --band-ink:#22403e;
@@ -47,10 +52,15 @@ a:hover{color:var(--accent)}
 }
 
 /* ── hero ────────────────────────────────────────────── */
+/* Hero copy sits at an identical position on every page: the block starts at a
+   fixed offset and the title reserves two lines, so kicker, h1 and lede never
+   shift between projects regardless of title length or image ratio. */
 .hero{
   display:grid;grid-template-columns:1fr 1.1fr;gap:var(--gutter);
-  align-items:center;padding:clamp(40px,6vw,72px) var(--margin) 0;
+  align-items:start;padding:clamp(40px,6vw,72px) var(--margin) 0;
 }
+.hero-copy{min-height:var(--hero-copy-h)}
+.hero .frame{--fig-max-h:var(--hero-fig-max-h)}
 .kicker{
   margin:0 0 24px;font-family:var(--sys);font-size:10px;
   letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
@@ -58,7 +68,7 @@ a:hover{color:var(--accent)}
 h1{
   margin:0 0 28px;font-family:var(--display);font-weight:400;
   font-size:clamp(44px,6vw,80px);line-height:.86;letter-spacing:.01em;
-  text-transform:uppercase;
+  text-transform:uppercase;min-height:1.72em;
 }
 .lede{margin:0;font-size:clamp(18px,1.7vw,22px);line-height:1.45;text-wrap:pretty}
 
@@ -93,13 +103,53 @@ h1{
    cropped or letterboxed. --ar is only the fallback. */
 .frame{
   aspect-ratio:var(--fr,var(--ar));background:var(--frame);
+  width:min(100%,calc(var(--fr,var(--ar)) * var(--fig-max-h)));
+  margin-inline:auto;
   display:grid;place-items:center;overflow:hidden;
 }
 .frame img,.frame video{width:100%;height:100%;object-fit:contain}
-.frame--fluid{aspect-ratio:auto}
-.frame--fluid video,.frame--fluid img{height:auto}
+.frame--fluid{aspect-ratio:auto;width:auto;max-width:100%}
+.frame--fluid video,.frame--fluid img{width:auto;max-width:100%;height:auto;max-height:var(--fig-max-h)}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+/* carousel: one figure, several plates, same viewport cap as .frame */
+.carousel{
+  position:relative;margin:0 auto;overflow:hidden;background:var(--frame);
+  aspect-ratio:var(--fr,var(--ar));
+  width:min(100%,calc(var(--fr,var(--ar)) * var(--fig-max-h)));
+}
+.car-track{display:flex;height:100%;transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+.car-track img{flex:0 0 100%;width:100%;height:100%;object-fit:contain}
+.car-nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:42px;height:42px;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(26,23,20,.62);color:#f0ece5;font-size:17px;line-height:1;
+  display:grid;place-items:center;transition:background .2s;
+}
+.car-nav:hover{background:rgba(26,23,20,.9)}
+.car-prev{left:14px}
+.car-next{right:14px}
+.car-dots{
+  position:absolute;left:0;right:0;bottom:14px;z-index:2;
+  display:flex;justify-content:center;gap:8px;
+}
+.car-dots button{
+  width:7px;height:7px;padding:0;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(26,23,20,.28);transition:background .2s,transform .2s;
+}
+.car-dots button[aria-current="true"]{background:var(--accent);transform:scale(1.4)}
+@media (max-width:600px){.car-nav{width:34px;height:34px}}
+
+/* detail shots: a magnified region of an image already shown in full above,
+   so no new photography is needed to give a piece a second read */
+.crop{
+  aspect-ratio:var(--fr,1.2);
+  width:min(100%,calc(var(--fr,1.2) * var(--fig-max-h)));
+  margin-inline:auto;background-color:var(--frame);
+  background-repeat:no-repeat;background-size:var(--z,240%) auto;
+  background-position:var(--ox,50%) var(--oy,50%);
+}
 .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.col > .cap{margin-top:-40px}
 .cap{
   margin:12px 0 0;font-family:var(--sys);font-size:12px;line-height:1.5;
   color:rgba(74,69,64,.62);
@@ -114,10 +164,10 @@ h1{
 .band-grid{display:grid;grid-template-columns:var(--rail-w) 1fr;gap:var(--gutter);align-items:end}
 .band-note{margin:0;font-size:16px;line-height:1.7;color:var(--band-ink)}
 .band .frame{background:rgba(255,255,255,.35)}
-.phones{display:flex;gap:32px;align-items:flex-start;justify-content:flex-end}
-.phones .frame{width:168px;flex:0 0 auto;aspect-ratio:.462;border-radius:20px;background:#1a1714}
-.phones .frame img{object-fit:cover}
-.phones .frame:nth-child(2){margin-top:72px}
+.phones{display:flex;gap:12px;align-items:flex-start;justify-content:flex-end}
+.phones .frame{width:min(268px,calc(.462 * var(--fig-max-h)));flex:0 0 auto;aspect-ratio:.462;border-radius:22px;background:#1a1714}
+.phones .frame img{object-fit:contain}
+.phones .frame:nth-child(2){margin-top:36px}
 
 /* ── credits + footer ────────────────────────────────── */
 .credits{
@@ -152,7 +202,9 @@ h1{
 
 /* ── responsive ──────────────────────────────────────── */
 @media (max-width:900px){
+  :root{--fig-max-h:64vh;--hero-fig-max-h:52vh}
   .hero{grid-template-columns:1fr;gap:32px}
+  .hero-copy{min-height:0}
   .body{grid-template-columns:1fr;gap:40px}
   .rail{position:static;flex-direction:row;flex-wrap:wrap;gap:14px 28px;padding-bottom:0}
   .rail-row{border-bottom:0;padding-bottom:0}

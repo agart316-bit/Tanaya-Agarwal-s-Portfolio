@@ -48,22 +48,30 @@
   setTimeout(revealAll, 4000);
   document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") revealAll(); });
 
-  var px = [].slice.call(document.querySelectorAll("[data-px] img, [data-px] video"));
-  if (!px.length) return;
-  var raf = null;
-  function onScroll() {
-    if (raf) return;
-    raf = requestAnimationFrame(function () {
-      raf = null;
-      var mid = window.innerHeight / 2;
-      px.forEach(function (img) {
-        var r = img.parentNode.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > window.innerHeight + 200) return;
-        var d = (r.top + r.height / 2 - mid) / window.innerHeight;
-        img.style.transform = "translateY(" + (d * -18).toFixed(2) + "px)";
-      });
-    });
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  // Parallax intentionally disabled: shifting the image inside a clipped frame
+  // shaved slivers off the top/bottom. Every image now shows in full.
+
+  [].slice.call(document.querySelectorAll("[data-carousel]")).forEach(function (car) {
+    var track = car.querySelector(".car-track");
+    var slides = track ? track.children.length : 0;
+    if (!slides) return;
+    var dots = car.querySelector(".car-dots");
+    var i = 0, btns = [];
+    function go(n) {
+      i = (n + slides) % slides;
+      track.style.transform = "translateX(" + (-i * 100) + "%)";
+      btns.forEach(function (b, k) { b.setAttribute("aria-current", k === i ? "true" : "false"); });
+    }
+    for (var k = 0; k < slides; k++) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Plate " + (k + 1));
+      (function (n) { b.addEventListener("click", function () { go(n); }); })(k);
+      dots.appendChild(b);
+      btns.push(b);
+    }
+    car.querySelector(".car-prev").addEventListener("click", function () { go(i - 1); });
+    car.querySelector(".car-next").addEventListener("click", function () { go(i + 1); });
+    go(0);
+  });
 })();

@@ -46,8 +46,8 @@ const dock          = document.querySelector(".dock");
 
 const PROJECTS = [
   { projectNum: "1",  title: "Men of Platinum",    url: "projects/1/index.html" },
-  { projectNum: "2",  title: "Now or Never",       url: "projects/2/index.html" },
   { projectNum: "3",  title: "Digital Illustrations", url: "projects/3/index.html" },
+  { projectNum: "15", title: "The Upside Down",    url: "projects/15/index.html" },
   { projectNum: "4",  title: "ArtsyDesign. co",    url: "projects/4/index.html" },
   { projectNum: "5",  title: "Dream Journals",     url: "projects/5/index.html" },
   { projectNum: "6",  title: "Lost in Translation", url: "projects/6/index.html" },
@@ -786,8 +786,8 @@ async function resolveManifestStackImages(paths = []){
 
 const WORK_PREVIEW_MANIFEST = {
   "1": ["projects/1/project-1-1.png", "assets/project-1.png"],
-  "2": ["projects/2/project-2-1.png", "assets/project-2.png"],
   "3": ["projects/3/project-3-1.jpg"],
+  "15": ["projects/15/project-15-2.jpg", "projects/15/project-15-1.jpg"],
   "4": ["projects/4/project-4-1.jpg", "assets/project-4.png"],
   "5": ["projects/5/project-5-3.jpg", "assets/project-5.png"],
   "6": ["projects/6/project-6-1.png"],
@@ -803,8 +803,8 @@ const WORK_PREVIEW_MANIFEST = {
 
 const DESKTOP_ICON_MANIFEST = {
   "1": "assets/project-1.png",
-  "2": "assets/project-2.png",
   "3": "projects/3/project-3-1.jpg",
+  "15": "projects/15/project-15-2.jpg",
   "4": "assets/project-4.png",
   "5": "assets/project-5.png",
   "6": "projects/6/project-6-1.png",
@@ -1557,8 +1557,8 @@ let isPage2Open = false;
 // Full list of all real projects (exclude empty placeholders 13/14 shown as Reflections placeholder)
 const ALL_PROJECTS_LIST = [
   { num: "1",  title: "Men of Platinum",      medium: "Digital Illustration & Motion" },
-  { num: "2",  title: "Now or Never",          medium: "Digital Illustration & Motion" },
   { num: "3",  title: "Digital Illustrations", medium: "Digital Illustration & Motion" },
+  { num: "15", title: "The Upside Down",       medium: "Digital Illustration & Motion" },
   { num: "4",  title: "ArtsyDesign.co",        medium: "Print & Editorial" },
   { num: "5",  title: "Dream Journals",        medium: "Print & Editorial" },
   { num: "6",  title: "Lost in Translation",   medium: "Print & Editorial" },
