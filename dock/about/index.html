@@ -4,120 +4,95 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&display=swap" />
   <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
-  <div class="viewport">
-    <main class="about-sheet" id="aboutSheet">
-      <section class="about-hero">
-        <img class="name-mark" src="./Name.png" alt="Tanaya Agarwal" />
-        <p class="about-copy">
-          Creative design student at Parsons School of Design with a multidisciplinary background spanning branding, visual storytelling, digital content, and self-initiated ventures. Interested in design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of evolving into a creative director. Comfortable collaborating across design, branding, and front-end-adjacent creative teams.
-        </p>
-      </section>
+  <div class="about-root">
 
-      <section class="about-roles" aria-label="Roles">
-        <div class="roles-marquee">
-          <div class="roles-track">
-            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
-            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
-            <span class="role-item">Art Director</span><span class="role-sep">|</span>
-            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
-            <span class="role-item">Photographer</span><span class="role-sep">|</span>
-            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
-            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
-            <span class="role-item">Art Director</span><span class="role-sep">|</span>
-            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
-            <span class="role-item">Photographer</span><span class="role-sep">|</span>
-          </div>
-          <div class="roles-track" aria-hidden="true">
-            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
-            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
-            <span class="role-item">Art Director</span><span class="role-sep">|</span>
-            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
-            <span class="role-item">Photographer</span><span class="role-sep">|</span>
-            <span class="role-item">Visual Designer</span><span class="role-sep">|</span>
-            <span class="role-item">Creative Coder</span><span class="role-sep">|</span>
-            <span class="role-item">Art Director</span><span class="role-sep">|</span>
-            <span class="role-item">Illustrator</span><span class="role-sep">|</span>
-            <span class="role-item">Photographer</span><span class="role-sep">|</span>
+    <main class="about-page">
+      <div class="about-top">
+        <div class="about-intro">
+          <img class="name-mark" src="./Name.png" alt="Tanaya Agarwal" />
+          <p class="about-copy">
+            Creative design student at Parsons School of Design with a multidisciplinary background spanning branding, visual storytelling, digital content, and self-initiated ventures. Interested in design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of evolving into a creative director. Comfortable collaborating across design, branding, and front-end-adjacent creative teams.
+          </p>
+          <div class="whoami-line">
+            <span class="prompt-sign">$</span>
+            <span class="prompt-cmd">whoami</span>
+            <span class="caret" aria-hidden="true"></span>
           </div>
         </div>
-      </section>
 
-      <section class="about-collage">
-        <figure class="polaroid">
-          <img src="./tanaya.JPG" alt="Portrait of Tanaya" />
-          <button class="polaroid-cta" id="polaroidCta" type="button">Click me!</button>
-        </figure>
-        <article class="note note--skills">
-          <img class="note-image" src="./sticky-3.png" alt="Skills sticky note" />
-        </article>
+        <div class="about-photo">
+          <div class="photo-frame">
+            <img src="./tanaya.JPG" alt="Portrait of Tanaya" />
+          </div>
+          <div class="photo-caption">
+            <span>portrait.jpg</span><span>Brooklyn, NY</span>
+          </div>
+        </div>
+      </div>
 
-        <article class="note note--about">
-          <img class="note-image" src="./sticky-1.png" alt="About me sticky note" />
-        </article>
+      <div class="about-panels">
+        <div class="panel">
+          <div class="panel-cmd"><span class="prompt-sign">$</span><span class="panel-cmd-text">cat about.txt</span></div>
+          <div class="panel-body">
+            <div><span class="line-num">01</span>&nbsp;&nbsp;Grew up in</div>
+            <div class="line-val">Mumbai, India</div>
+            <div class="line-gap"></div>
+            <div><span class="line-num">02</span>&nbsp;&nbsp;Now living in</div>
+            <div class="line-val">New York, United States</div>
+          </div>
+        </div>
 
-        <article class="note note--education">
-          <img class="note-image" src="./sticky-2.png" alt="Education sticky note" />
-        </article>
-      </section>
+        <div class="panel">
+          <div class="panel-cmd"><span class="prompt-sign">$</span><span class="panel-cmd-text">cat education.txt</span></div>
+          <div class="panel-body panel-body--edu">
+            <div>
+              <div class="edu-school">Parsons School of Design</div>
+              <div class="edu-degree">Communication Design, BFA</div>
+            </div>
+            <div>
+              <div class="edu-school">Dhirubhai Ambani Int'l School</div>
+              <div class="edu-degree">International Baccalaureate, DP</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-cmd"><span class="prompt-sign">$</span><span class="panel-cmd-text">ls skills/</span></div>
+          <div class="skills-grid">
+            <div>Adobe CS</div>
+            <div>Art Direction</div>
+            <div>Concept Dev</div>
+            <div>Storytelling</div>
+            <div>Branding</div>
+            <div>Layout Design</div>
+            <div>Design Thinking</div>
+            <div>Illustration</div>
+            <div>Photography</div>
+            <div>Canva</div>
+          </div>
+        </div>
+      </div>
     </main>
+
+    <div class="about-roles" aria-label="Roles">
+      <div class="roles-marquee">
+        <div class="roles-track">
+          <span>Visual Designer</span><span>|</span><span>Creative Coder</span><span>|</span><span>Art Director</span><span>|</span><span>Illustrator</span><span>|</span><span>Photographer</span><span>|</span>
+          <span>Visual Designer</span><span>|</span><span>Creative Coder</span><span>|</span><span>Art Director</span><span>|</span><span>Illustrator</span><span>|</span><span>Photographer</span><span>|</span>
+        </div>
+        <div class="roles-track" aria-hidden="true">
+          <span>Visual Designer</span><span>|</span><span>Creative Coder</span><span>|</span><span>Art Director</span><span>|</span><span>Illustrator</span><span>|</span><span>Photographer</span><span>|</span>
+          <span>Visual Designer</span><span>|</span><span>Creative Coder</span><span>|</span><span>Art Director</span><span>|</span><span>Illustrator</span><span>|</span><span>Photographer</span><span>|</span>
+        </div>
+      </div>
+    </div>
+
   </div>
-
-  <script>
-    const aboutSheet = document.getElementById("aboutSheet");
-    const aboutRoles = document.querySelector(".about-roles");
-    const polaroidEl = document.querySelector(".polaroid");
-    const noteSequence = [
-      document.querySelector(".note--about"),
-      document.querySelector(".note--skills"),
-      document.querySelector(".note--education")
-    ].filter(Boolean);
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 2.5;
-    let noteStage = 0;
-
-    function renderNotes() {
-      noteSequence.forEach((note, index) => {
-        note.classList.toggle("is-visible", index < noteStage);
-      });
-    }
-
-    function advanceNotes() {
-      noteStage = (noteStage + 1) % 4;
-      renderNotes();
-    }
-
-    function fitAboutSheet() {
-      if (!aboutSheet) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      const clampedZoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-      aboutSheet.style.zoom = clampedZoom;
-      aboutSheet.style.setProperty("--about-zoom", clampedZoom);
-
-      // Keep the marquee strip full-bleed to viewport edges despite sheet zoom.
-      if (aboutRoles) {
-        const stripWidth = window.innerWidth / clampedZoom;
-        const sideOffset = (BASE_WIDTH - stripWidth) / 2;
-        aboutRoles.style.width = `${stripWidth}px`;
-        aboutRoles.style.marginLeft = `${sideOffset}px`;
-        aboutRoles.style.marginRight = `${sideOffset}px`;
-      }
-    }
-
-    window.addEventListener("resize", fitAboutSheet);
-    window.addEventListener("load", () => {
-      fitAboutSheet();
-      renderNotes();
-    });
-    polaroidEl?.addEventListener("click", advanceNotes);
-    fitAboutSheet();
-    renderNotes();
-  </script>
 </body>
 </html>

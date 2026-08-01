@@ -20,9 +20,6 @@ const lockDate      = document.getElementById("lockDate");
 const unlockForm    = document.getElementById("unlockForm");
 const passwordInput = document.getElementById("passwordInput");
 const passwordCaret = document.getElementById("passwordCaret");
-const welcomeBanner = document.getElementById("welcomeBanner");
-const welcomeBannerClose = document.getElementById("welcomeBannerClose");
-
 const windowLayer   = document.getElementById("windowLayer");
 const windowTitle   = document.getElementById("windowTitle");
 const mainWindow    = document.getElementById("mainWindow");
@@ -43,7 +40,7 @@ const iconsCanvas   = document.getElementById("desktopIconsCanvas");
 const desktopIcons  = document.querySelectorAll(".desktop-icon");
 const desktopContextMenu = document.getElementById("desktopContextMenu");
 
-const dockItems     = document.querySelectorAll(".dock-item");
+const dockItems     = document.querySelectorAll(".dock-item:not(.dock-item--separator)");
 const dockTray      = document.getElementById("dockTray");
 const dock          = document.querySelector(".dock");
 
@@ -60,82 +57,28 @@ const PROJECTS = [
   { projectNum: "10", title: "Pottery",            url: "projects/10/index.html" },
   { projectNum: "11", title: "Installations",      url: "projects/11/index.html" },
   { projectNum: "12", title: "The Borges Stories", url: "projects/12/index.html" },
-  { projectNum: "13", title: "Ten Tab Open",       url: "projects/13/index.html" },
+  { projectNum: "13", title: "Reflections",         url: "projects/13/index.html" },
   { projectNum: "14", title: "Fashion History",    url: "projects/14/index.html" }
 ];
 
 const DESKTOP_GROUP_WINDOWS = {
-  motion:  { title: "Digital Illustration & Motion", src: "dock/media/index.html?group=motion" },
-  print:   { title: "Print & Editorial", src: "dock/media/index.html?group=print" },
-  fineart: { title: "Fine Art", src: "dock/media/index.html?group=fineart" },
-  spatial: { title: "Spatial / Installation", src: "dock/media/index.html?group=spatial" },
-  web:     { title: "Web Design", src: "dock/media/index.html?group=web" }
+  p1:  { title: "Men of Platinum",    src: "projects/1/index.html" },
+  p5:  { title: "Dream Journals",     src: "projects/5/index.html" },
+  p6:  { title: "Lost in Translation", src: "projects/6/index.html" },
+  p8:  { title: "Paintings",          src: "projects/8/index.html" },
+  p13: { title: "Reflections",        src: "projects/13/index.html" }
 };
 
 const DESKTOP_GROUP_PROJECTS = {
-  motion: ["1", "2", "3"],
-  print: ["4", "5", "6", "7"],
-  fineart: ["8", "9", "10"],
-  spatial: ["11"],
-  web: ["12", "13", "14"]
+  p1:  ["1"],
+  p5:  ["5"],
+  p6:  ["6"],
+  p8:  ["8"],
+  p13: ["13"]
 };
 
 const PROJECTS_BY_NUMBER = new Map(PROJECTS.map((project) => [project.projectNum, project]));
 
-function renderDesktopProjectBadges(){
-  desktopIcons.forEach((icon) => {
-    const groupKey = String(icon.dataset.group || "").toLowerCase();
-    if(!groupKey) return;
-    const count = (DESKTOP_GROUP_PROJECTS[groupKey] || []).length;
-    if(!count) return;
-
-    let badge = icon.querySelector(".desktop-icon-badge");
-    if(!badge){
-      badge = document.createElement("span");
-      badge.className = "desktop-icon-badge";
-      badge.setAttribute("aria-hidden", "true");
-      icon.appendChild(badge);
-    }
-    badge.dataset.target = String(count);
-    badge.dataset.animated = "0";
-    badge.textContent = "0";
-    badge.classList.remove("is-visible");
-  });
-}
-
-function animateDesktopBadgeCounter(icon){
-  const badge = icon?.querySelector(".desktop-icon-badge");
-  const target = Number.parseInt(badge?.dataset.target || "0", 10);
-
-  return new Promise((resolve) => {
-    if(!badge || !Number.isFinite(target) || target < 1){
-      resolve();
-      return;
-    }
-    if(badge.dataset.animated === "1"){
-      resolve();
-      return;
-    }
-
-    badge.dataset.animated = "1";
-    badge.classList.add("is-visible");
-
-    const stepMs = 220;
-    let value = 0;
-
-    const tick = () => {
-      value += 1;
-      badge.textContent = String(value);
-      if(value >= target){
-        resolve();
-        return;
-      }
-      window.setTimeout(tick, stepMs);
-    };
-
-    window.setTimeout(tick, 140);
-  });
-}
 
 /* =========================================================
    CLOCKS
@@ -163,7 +106,6 @@ setInterval(tickClocks, 15000);
 const DOTS_COUNT = 6;
 const DOT_CHAR   = "•";
 let typingDone = false;
-let welcomeBannerShown = false;
 let desktopLaunchAnimationPlayed = false;
 
 function showCaret(){ passwordCaret.classList.add("is-visible"); }
@@ -197,30 +139,6 @@ passwordInput.addEventListener("input", () => {
   passwordInput.value = DOT_CHAR.repeat(DOTS_COUNT);
 });
 
-function showWelcomeBanner(){
-  if(!welcomeBanner || welcomeBannerShown) return;
-  welcomeBannerShown = true;
-  welcomeBanner.hidden = false;
-  welcomeBanner.classList.remove("is-visible");
-  void welcomeBanner.offsetWidth;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      welcomeBanner.classList.add("is-visible");
-    });
-  });
-}
-
-function hideWelcomeBanner(){
-  if(!welcomeBanner) return;
-  welcomeBanner.classList.remove("is-visible");
-  welcomeBanner.addEventListener("transitionend", () => {
-    if(!welcomeBanner.classList.contains("is-visible")) {
-      welcomeBanner.hidden = true;
-    }
-  }, { once: true });
-}
-
-welcomeBannerClose?.addEventListener("click", hideWelcomeBanner);
 
 /* =========================================================
    LIQUID ETHER — initialise once on first unlock
@@ -296,9 +214,6 @@ function unlock(){
   hideCaret();
   lockscreen.addEventListener("transitionend", () => {
     lockscreen.style.display = "none";
-    launchPromise.finally(() => {
-      showWelcomeBanner();
-    });
   }, { once: true });
 }
 
@@ -775,6 +690,9 @@ function openDesktopGroupWindow(groupKey){
   const group = DESKTOP_GROUP_WINDOWS[String(groupKey || "").toLowerCase()];
   if(!group) return;
   openWindow(group.title, group.src);
+  // Sync the work panel active state if the src is a project
+  const projectNum = extractProjectNumberFromPath(group.src);
+  if(projectNum) setActiveWorkProject(projectNum);
 }
 
 function openDesktopIcon(icon){
@@ -804,81 +722,7 @@ function getGroupProjects(groupKey){
     .filter(Boolean);
 }
 
-function closeDesktopContextMenu(){
-  if(!desktopContextMenu || desktopContextMenu.hidden) return;
-  desktopContextMenu.classList.remove("open");
-  desktopContextMenu.addEventListener("transitionend", () => {
-    if(desktopContextMenu.classList.contains("open")) return;
-    desktopContextMenu.hidden = true;
-    desktopContextMenu.innerHTML = "";
-  }, { once: true });
-}
-
-function positionDesktopContextMenu(anchorIcon){
-  if(!desktopContextMenu || !anchorIcon) return;
-
-  const anchorRect = anchorIcon.getBoundingClientRect();
-  const menuRect = desktopContextMenu.getBoundingClientRect();
-  const margin = 10;
-
-  let left = anchorRect.right + 12;
-  let top = anchorRect.top + 2;
-
-  if (left + menuRect.width > window.innerWidth - margin) {
-    left = anchorRect.left - menuRect.width - 12;
-  }
-  if (left < margin) left = margin;
-  if (top + menuRect.height > window.innerHeight - margin) {
-    top = window.innerHeight - menuRect.height - margin;
-  }
-  if (top < margin) top = margin;
-
-  desktopContextMenu.style.left = `${left}px`;
-  desktopContextMenu.style.top = `${top}px`;
-}
-
-function openDesktopContextMenu(icon){
-  if(!desktopContextMenu || !icon) return;
-  const groupKey = icon.dataset.group;
-  const group = DESKTOP_GROUP_WINDOWS[groupKey];
-  const projects = getGroupProjects(groupKey);
-  if(!group || !projects.length) return;
-
-  desktopContextMenu.innerHTML = "";
-
-  const heading = document.createElement("p");
-  heading.className = "desktop-context-menu-header";
-  heading.textContent = group.title;
-
-  const list = document.createElement("ul");
-  list.className = "desktop-context-menu-list";
-
-  projects.forEach((project) => {
-    const item = document.createElement("li");
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "desktop-context-menu-item";
-    button.setAttribute("role", "menuitem");
-    button.textContent = project.title;
-    button.addEventListener("click", () => {
-      closeDesktopContextMenu();
-      openProjectWindow(project.projectNum);
-    });
-    item.appendChild(button);
-    list.appendChild(item);
-  });
-
-  desktopContextMenu.append(heading, list);
-  desktopContextMenu.hidden = false;
-  desktopContextMenu.classList.remove("open");
-  desktopContextMenu.style.left = "0px";
-  desktopContextMenu.style.top = "0px";
-
-  requestAnimationFrame(() => {
-    positionDesktopContextMenu(icon);
-    desktopContextMenu.classList.add("open");
-  });
-}
+function closeDesktopContextMenu(){ /* no-op: context menu removed */ }
 
 const ICON_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg", "PNG", "JPG", "JPEG", "WEBP", "SVG"];
 
@@ -1080,56 +924,20 @@ function createWorkCard(project, index){
 
 // Category grouping definition — order and labels for the Work panel
 const WORK_CATEGORIES = [
-  {
-    key: "motion",
-    label: "Digital Illustration & Motion",
-    projects: ["1", "2", "3"]
-  },
-  {
-    key: "print",
-    label: "Print & Editorial",
-    projects: ["4", "5", "6", "7"]
-  },
-  {
-    key: "fineart",
-    label: "Fine Art",
-    projects: ["8", "9", "10"]
-  },
-  {
-    key: "spatial",
-    label: "Spatial & Installation",
-    projects: ["11"]
-  },
-  {
-    key: "web",
-    label: "Web Design",
-    projects: ["12", "13", "14"]
-  }
+  { key: "p1",  label: "Men of Platinum",    projects: ["1"] },
+  { key: "p5",  label: "Dream Journals",     projects: ["5"] },
+  { key: "p6",  label: "Lost in Translation", projects: ["6"] },
+  { key: "p8",  label: "Paintings",          projects: ["8"] },
+  { key: "p13", label: "Reflections",        projects: ["13"] }
 ];
 
 function buildWorkPanel(){
   if(!workGrid) return;
   workGrid.innerHTML = "";
 
-  let cardIndex = 0;
-
-  WORK_CATEGORIES.forEach(cat => {
-    // Category header
-    const header = document.createElement("div");
-    header.className = `work-cat-header work-cat-header--${cat.key}`;
-    header.textContent = cat.label;
-    workGrid.appendChild(header);
-
-    // Cards for this category in a sub-grid
-    const catGrid = document.createElement("div");
-    catGrid.className = "work-cat-grid";
-    workGrid.appendChild(catGrid);
-
-    cat.projects.forEach(num => {
-      const project = PROJECTS_BY_NUMBER.get(num);
-      if (!project) return;
-      catGrid.appendChild(createWorkCard(project, cardIndex++));
-    });
+  // Flat list — all projects in order, no category headers
+  PROJECTS.forEach((project, index) => {
+    workGrid.appendChild(createWorkCard(project, index));
   });
 }
 
@@ -1270,12 +1078,14 @@ async function setDesktopIconImages(){
 
 const DESKTOP_ARTWORK_SIZE = { width: 1046, height: 1288 };
 const DESKTOP_ARTWORK_LAPTOP_SOURCE = { x: 0.73, y: 0.86 };
+// Icons land at fixed points on the artwork itself, so the cluster stays
+// locked to the figure at every viewport size.
 const DESKTOP_ARTWORK_GROUP_TARGETS = {
-  motion:  { x: 0.32, y: 0.20 }, // top-center
-  print:   { x: 0.07, y: 0.43 }, // left-mid
-  fineart: { x: 0.76, y: 0.32 }, // upper-right
-  spatial: { x: 0.84, y: 0.58 }, // right-mid
-  web:     { x: 0.05, y: 0.72 }  // lower-left
+  p1:  { x: 0.32, y: 0.20 }, // top-center
+  p5:  { x: 0.07, y: 0.43 }, // left-mid
+  p6:  { x: 0.76, y: 0.32 }, // upper-right
+  p8:  { x: 0.84, y: 0.58 }, // right-mid
+  p13: { x: 0.05, y: 0.72 }  // lower-left
 };
 
 const FALLBACK_ICON_PCTS = [
@@ -1403,7 +1213,6 @@ function animateDesktopIconLaunch(){
   if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches){
     Array.from(desktopIcons).forEach((icon) => {
       icon.classList.add("is-landed");
-      animateDesktopBadgeCounter(icon);
     });
     return Promise.resolve();
   }
@@ -1412,11 +1221,11 @@ function animateDesktopIconLaunch(){
   const source = artworkPointToSurfacePx(DESKTOP_ARTWORK_LAPTOP_SOURCE, w, h);
   const icons = Array.from(desktopIcons);
   const launchOrder = new Map([
-    ["spatial", 0],
-    ["fineart", 1],
-    ["motion", 2],
-    ["print", 3],
-    ["web", 4]
+    ["p8",  0],
+    ["p6",  1],
+    ["p1",  2],
+    ["p5",  3],
+    ["p13", 4]
   ]);
 
   iconsCanvas.classList.add("is-launching");
@@ -1439,8 +1248,7 @@ function animateDesktopIconLaunch(){
 
       if(!sourceSrc){
         icon.classList.add("is-landed");
-        animateDesktopBadgeCounter(icon);
-        resolve();
+          resolve();
         return;
       }
 
@@ -1513,8 +1321,7 @@ function animateDesktopIconLaunch(){
       animation.addEventListener("finish", () => {
         ghost.remove();
         icon.classList.add("is-landed");
-        animateDesktopBadgeCounter(icon);
-        resolve();
+          resolve();
       }, { once: true });
     });
   });
@@ -1530,7 +1337,6 @@ function refreshDesktopIconLayout(){
 }
 
 initWorkPanel();
-renderDesktopProjectBadges();
 
 syncSiteMinSizeFromIcons();
 window.addEventListener("load", refreshDesktopIconLayout);
@@ -1539,9 +1345,6 @@ window.addEventListener("load", setDesktopIconImages);
 /* Drag + click logic */
 let dragIcon = null, dragOffX = 0, dragOffY = 0;
 let dragMoved = false, dragStartX = 0, dragStartY = 0;
-let longPressTimer = null;
-let longPressTriggered = false;
-const LONG_PRESS_MS = 420;
 const LONG_PRESS_MOVE_THRESHOLD = 8;
 
 function getClientXY(e){
@@ -1549,24 +1352,6 @@ function getClientXY(e){
   return [e.clientX, e.clientY];
 }
 
-function clearLongPressTimer(){
-  if(longPressTimer !== null){
-    clearTimeout(longPressTimer);
-    longPressTimer = null;
-  }
-}
-
-function scheduleLongPress(icon){
-  clearLongPressTimer();
-  longPressTriggered = false;
-  longPressTimer = window.setTimeout(() => {
-    longPressTimer = null;
-    if(!dragIcon || dragIcon !== icon || dragMoved) return;
-    longPressTriggered = true;
-    icon.classList.remove("is-dragging");
-    openDesktopContextMenu(icon);
-  }, LONG_PRESS_MS);
-}
 
 function onIconPointerDown(e){
   if(e.button !== undefined && e.button !== 0) return;
@@ -1581,8 +1366,6 @@ function onIconPointerDown(e){
 
   desktopIcons.forEach(i => i.classList.remove("is-selected"));
   icon.classList.add("is-selected");
-  closeDesktopContextMenu();
-
   const rect = icon.getBoundingClientRect();
   const [cx, cy] = getClientXY(e);
 
@@ -1592,7 +1375,6 @@ function onIconPointerDown(e){
   dragMoved  = false;
   dragStartX = cx;
   dragStartY = cy;
-  scheduleLongPress(icon);
 
   icon.classList.add("is-dragging");
   e.preventDefault();
@@ -1607,10 +1389,7 @@ function onPointerMove(e){
     Math.abs(cy - dragStartY) > LONG_PRESS_MOVE_THRESHOLD;
   if(movedPastPressThreshold){
     dragMoved = true;
-    clearLongPressTimer();
   }
-
-  if(longPressTriggered) return;
 
   const { w, h } = getSurfaceSize();
   let newLeft = cx - dragOffX;
@@ -1627,14 +1406,7 @@ function onPointerMove(e){
 
 function onPointerUp(){
   if(!dragIcon) return;
-  clearLongPressTimer();
   dragIcon.classList.remove("is-dragging");
-
-  if(longPressTriggered){
-    longPressTriggered = false;
-    dragIcon = null;
-    return;
-  }
 
   if(!dragMoved){
     openDesktopIcon(dragIcon);
@@ -1647,18 +1419,12 @@ function onPointerUp(){
     dragIcon.dataset.manualPosition = "1";
   }
   dragIcon = null;
-  longPressTriggered = false;
 }
 
 desktopIcons.forEach(icon => {
   icon.addEventListener("mousedown", onIconPointerDown);
   icon.addEventListener("touchstart", onIconPointerDown, { passive: false });
-  icon.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-    desktopIcons.forEach(i => i.classList.remove("is-selected"));
-    icon.classList.add("is-selected");
-    openDesktopContextMenu(icon);
-  });
+  icon.addEventListener("contextmenu", (e) => { e.preventDefault(); });
   icon.addEventListener("click", (e) => {
     const hasModifier = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
     if (icon.tagName === "A" && !hasModifier) {
@@ -1677,19 +1443,6 @@ window.addEventListener("touchmove", onPointerMove, { passive: false });
 window.addEventListener("mouseup", onPointerUp);
 window.addEventListener("touchend", onPointerUp);
 window.addEventListener("touchcancel", onPointerUp);
-window.addEventListener("resize", () => {
-  if(!desktopContextMenu || desktopContextMenu.hidden) return;
-  closeDesktopContextMenu();
-});
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape") closeDesktopContextMenu();
-});
-document.addEventListener("pointerdown", (e) => {
-  if(!desktopContextMenu || desktopContextMenu.hidden) return;
-  if(e.target.closest("#desktopContextMenu")) return;
-  if(e.target.closest(".desktop-icon")) return;
-  closeDesktopContextMenu();
-});
 
 surface?.addEventListener("mousedown", e => {
   if(e.target === surface || e.target === iconsCanvas) {
@@ -1790,3 +1543,169 @@ window.addEventListener("message", (e) => {
     }
   }
 });
+
+/* =========================================================
+   PAGE 2 — ALL PROJECTS
+========================================================= */
+const allProjectsPage  = document.getElementById("allProjectsPage");
+const allProjectsBack  = document.getElementById("allProjectsBack");
+const allProjectsList  = document.getElementById("allProjectsList");
+const allProjectsFrame = document.getElementById("allProjectsFrame");
+const allProjectsPlaceholder = document.getElementById("allProjectsPlaceholder");
+let isPage2Open = false;
+
+// Full list of all real projects (exclude empty placeholders 13/14 shown as Reflections placeholder)
+const ALL_PROJECTS_LIST = [
+  { num: "1",  title: "Men of Platinum",      medium: "Digital Illustration & Motion" },
+  { num: "2",  title: "Now or Never",          medium: "Digital Illustration & Motion" },
+  { num: "3",  title: "Digital Illustrations", medium: "Digital Illustration & Motion" },
+  { num: "4",  title: "ArtsyDesign.co",        medium: "Print & Editorial" },
+  { num: "5",  title: "Dream Journals",        medium: "Print & Editorial" },
+  { num: "6",  title: "Lost in Translation",   medium: "Print & Editorial" },
+  { num: "7",  title: "Physics Textbook",      medium: "Print & Editorial" },
+  { num: "8",  title: "Paintings",             medium: "Fine Art" },
+  { num: "9",  title: "Black N White",         medium: "Fine Art" },
+  { num: "10", title: "Pottery",               medium: "Fine Art" },
+  { num: "11", title: "Installations",         medium: "Spatial / Installation" },
+  { num: "12", title: "The Borges Stories",    medium: "Web Design" },
+  { num: "13", title: "Reflections",           medium: "Web Design" },
+  { num: "14", title: "Fashion History",       medium: "Web Design" }
+];
+
+
+function buildAllProjectsList() {
+  if (!allProjectsList) return;
+  allProjectsList.innerHTML = "";
+
+  // Group by medium
+  const categories = [];
+  const seen = new Set();
+  ALL_PROJECTS_LIST.forEach(p => {
+    if (!seen.has(p.medium)) { seen.add(p.medium); categories.push(p.medium); }
+  });
+
+  categories.forEach(cat => {
+    const catEl = document.createElement("li");
+    catEl.className = "all-projects-list-category";
+    catEl.textContent = cat;
+    allProjectsList.appendChild(catEl);
+
+    ALL_PROJECTS_LIST.filter(p => p.medium === cat).forEach(project => {
+      const li = document.createElement("li");
+      li.className = "all-projects-list-item";
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "all-projects-list-btn";
+      btn.dataset.project = project.num;
+      btn.setAttribute("aria-label", `View ${project.title}`);
+
+      const titleEl = document.createElement("span");
+      titleEl.className = "all-projects-list-btn-title";
+      titleEl.textContent = project.title;
+
+      btn.appendChild(titleEl);
+      btn.addEventListener("click", () => selectAllProjectsItem(project.num, btn));
+      li.appendChild(btn);
+      allProjectsList.appendChild(li);
+    });
+  });
+}
+
+function selectAllProjectsItem(projectNum, btn) {
+  // Deactivate all
+  allProjectsList.querySelectorAll(".all-projects-list-btn").forEach(b => b.classList.remove("is-active"));
+  btn.classList.add("is-active");
+
+  // Load into frame
+  const src = `projects/${projectNum}/index.html`;
+  if (allProjectsPlaceholder) allProjectsPlaceholder.style.display = "none";
+  if (allProjectsFrame) {
+    allProjectsFrame.removeAttribute("hidden");
+    allProjectsFrame.src = src;
+  }
+}
+
+function openPage2() {
+  if (isPage2Open) return;
+  isPage2Open = true;
+
+  // Close any open window first
+  if (!windowLayer.classList.contains("is-hidden")) closeWindow();
+
+  desktop.classList.add("is-page2");
+  allProjectsPage.removeAttribute("hidden");
+
+  // Trap scroll on desktop
+  document.body.style.overflow = "hidden";
+}
+
+function closePage2() {
+  if (!isPage2Open) return;
+  isPage2Open = false;
+
+  desktop.classList.remove("is-page2");
+  document.body.style.overflow = "";
+
+  // Wait for slide-out transition then re-hide
+  allProjectsPage.addEventListener("transitionend", () => {
+    if (!isPage2Open) {
+      allProjectsPage.setAttribute("hidden", "");
+      // Reset frame
+      if (allProjectsFrame) {
+        allProjectsFrame.setAttribute("hidden", "");
+        allProjectsFrame.src = "";
+      }
+      if (allProjectsPlaceholder) allProjectsPlaceholder.style.display = "";
+      allProjectsList.querySelectorAll(".all-projects-list-btn").forEach(b => b.classList.remove("is-active"));
+    }
+  }, { once: true });
+}
+
+// Back button
+allProjectsBack?.addEventListener("click", closePage2);
+
+// Dock All Work button
+document.getElementById("dockAllWork")?.addEventListener("click", openPage2);
+
+// Escape key closes page 2
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && isPage2Open) closePage2();
+});
+
+// ── Swipe detection on desktop (3-finger swipe right) ──
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeTracking = false;
+const SWIPE_THRESHOLD = 55;
+const SWIPE_MAX_Y_DRIFT = 90;
+const SWIPE_MIN_FINGERS = 3;
+
+desktop?.addEventListener("touchstart", (e) => {
+  if (isPage2Open) return;
+  if (e.touches.length < SWIPE_MIN_FINGERS) return;
+  swipeStartX = e.touches[0].clientX;
+  swipeStartY = e.touches[0].clientY;
+  swipeTracking = true;
+}, { passive: true });
+
+desktop?.addEventListener("touchend", (e) => {
+  if (!swipeTracking) return;
+  swipeTracking = false;
+  const touch = e.changedTouches[0];
+  const dx = touch.clientX - swipeStartX;
+  const dy = Math.abs(touch.clientY - swipeStartY);
+  // 3-finger swipe RIGHT opens page 2
+  if (dx > SWIPE_THRESHOLD && dy < SWIPE_MAX_Y_DRIFT) openPage2();
+}, { passive: true });
+
+// ── Mouse drag / click on page dots ──
+// ── Arrow-key right on desktop opens page 2 ──
+document.addEventListener("keydown", (e) => {
+  if (windowLayer && !windowLayer.classList.contains("is-hidden")) return;
+  if (isPage2Open) return;
+  if (e.key === "ArrowRight" && !e.metaKey && !e.ctrlKey) openPage2();
+});
+
+// Build the list once
+buildAllProjectsList();

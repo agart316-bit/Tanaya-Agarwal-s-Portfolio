@@ -4,209 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Men Of Platinum</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=4" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <link rel="stylesheet" href="../rail.css?v=4" />
 </head>
-<body>
-  <div class="viewport">
-    <main class="journal" id="journal">
-      <section class="panel panel--hero">
-        <div class="image-slot image-slot--hero">
-          <img src="project-1-1.png" alt="Men of Platinum hero visual" />
-        </div>
+<body style="--ar:1.5;--accent:#4a525e;--band:#e0e4e9;--band-ink:#2b323c">
 
-        <h1>MEN OF PLATINUM</h1>
-        <p class="meta">Year : 2025 &nbsp;&nbsp;&nbsp; Skills : Illustration, Adobe, Production</p>
-        <p class="meta">Medium : A5 book designed using Adobe Illustrator &amp; Photoshop</p>
+  <header class="topbar">
+    <span>01 / 12</span>
+  </header>
 
-        <div class="copy copy--hero">
-          <p>During my internship at Famous Innovations, Mumbai, I worked on the social media campaign for Men of Platinum's MS Dhoni Signature Collection. Men of Platinum is a platinum jewellery brand by PGI India, and this collection was a collaboration with MS Dhoni, celebrating his values of composure, self-belief, and quiet strength.</p>
-          <p>I led the ideation, research, and execution. My concept was to take viewers from blueprint to finished piece, showing the design process behind each product before it becomes something you wear. It was a way of making the craftsmanship visible, not just the result.</p>
-        </div>
-      </section>
-
-      <section class="panel panel--carousel">
-        <div class="split-slider reveal-carousel" id="menuSlider" aria-label="Project image carousel">
-
-          <!-- Left column -->
-          <div class="split-col split-col--left">
-            <div class="split-track" id="trackLeft">
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-2.png" alt="Slide 1 left" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-4.png" alt="Slide 2 left" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-7.png" alt="Slide 3 left" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-9.png" alt="Slide 4 left" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-3.png" alt="Slide 5 left" /></div></div>
-            </div>
-          </div>
-
-          <!-- Right column -->
-          <div class="split-col split-col--right">
-            <div class="split-track" id="trackRight">
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-11.png" alt="Slide 1 right" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-5.png" alt="Slide 2 right" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-8.png" alt="Slide 3 right" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-10.png" alt="Slide 4 right" /></div></div>
-              <div class="split-cell"><div class="image-slot image-slot--split"><img src="project-1-12.png" alt="Slide 5 right" /></div></div>
-            </div>
-          </div>
-
-          <!-- Controls -->
-          <div class="menu-slider-controls" aria-label="Carousel controls">
-            <button class="menu-arrow" id="menuPrev" type="button" aria-label="Previous slide">
-              <span aria-hidden="true">&#8592;</span>
-            </button>
-            <button class="menu-arrow" id="menuNext" type="button" aria-label="Next slide">
-              <span aria-hidden="true">&#8594;</span>
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-      <section class="panel panel--bottom">
-        <div class="copy copy--bottom">
-          <p>I hand illustrated each product in the collection across multiple versions and angles. These were handed off to the video editing team, who used them as the base for reels and social posts. The final content went live across Men of Platinum's channels as part of the collection launch.</p>
-        </div>
-
-        <figure class="solo-figure">
-          <div class="image-slot image-slot--solo">
-            <video src="project-1-13.mp4" aria-label="Men of Platinum closing video" autoplay muted loop playsinline preload="metadata"></video>
-          </div>
-        </figure>
-      </section>
-    </main>
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="kicker rv">Illustration & Motion</p>
+      <h1 class="rv">Men Of<br />Platinum</h1>
+      <p class="lede rv">A social campaign for the MS Dhoni Signature Collection that shows the platinum before it becomes jewellery — blueprint to finished piece.</p>
+    </div>
+    <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-1-1.png" alt="Men of Platinum campaign key visual" /></figure>
   </div>
 
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 1.85;
+  <div class="body">
+    <aside class="rail">
+        <div class="rail-row"><span class="rail-label">Role</span><span class="rail-val">Concept, research &amp; illustration</span></div>
+        <div class="rail-row"><span class="rail-label">Year</span><span class="rail-val">2025</span></div>
+        <div class="rail-row"><span class="rail-label">Medium</span><span class="rail-val">Illustration for social — Illustrator, Photoshop</span></div>
+        <div class="rail-row"><span class="rail-label">Client</span><span class="rail-val">Famous Innovations, for Men of Platinum</span></div>
+      <div class="tags"><span>Illustration</span><span>Campaign</span><span>Motion</span></div>
+    </aside>
 
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-    }
+    <div class="col">
+        <p class="para rv">Men of Platinum is a platinum jewellery brand by PGI India, and this collection was a collaboration with MS Dhoni built around composure, self-belief and quiet strength. I led ideation, research and execution. The concept was to take viewers from blueprint to finished piece — making the craftsmanship visible rather than only the result.</p>
+        <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-1-4.png" alt="Illustrated product, finished state" /></figure>
+        <section class="block rv">
+          <h2>Hand-illustrated, handed off</h2>
+          <p class="para">I illustrated every product in the collection across multiple versions and angles, then handed the files to the video team, who used them as the base for reels and social posts. Working in illustration rather than product photography meant the construction of each piece could stay visible — the blueprint reads as a drawing, not a render.</p>
+        </section>
+        <div class="pair">
+          <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-1-2.png" alt="Illustration, blueprint stage" /></figure>
+          <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-1-11.png" alt="Illustration, finished stage" /></figure>
+        </div>
+        <div class="pair">
+          <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-1-7.png" alt="Product illustration, alternate angle" /></figure>
+          <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-1-5.png" alt="Product illustration, detail" /></figure>
+        </div>
+    </div>
+  </div>
 
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
-      if (!supportsLineWrap) {
-        item.classList.add("reveal-text-raw");
-        return;
-      }
+  <section class="band">
+    <p class="band-label rv">Live</p>
+    <div class="band-grid">
+      <p class="band-note rv">Published across Men of Platinum’s social channels during the collection launch.</p>
+      <figure class="frame rv rv--img frame--fluid"><video src="project-1-13.mp4" aria-label="Campaign video cut" autoplay muted loop playsinline preload="metadata"></video></figure>
+    </div>
+  </section>
 
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
+  <p class="credits rv">Credits — Made at Famous Innovations, Mumbai, for Men of Platinum (PGI India). Video editing by the in-house motion team.</p>
 
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
+  <footer class="foot">
+    <a href="../2/index.html">
+      <span class="next-label">Next</span>
+      <span class="next-title">Now Or Never →</span>
+    </a>
+    <a class="mail" href="mailto:tanayaagarwal11@gmail.com">tanayaagarwal11@gmail.com</a>
+  </footer>
 
-    function setupReveals() {
-      const revealSelector = "h1, .meta, .copy p, .image-slot:not(.image-slot--split), .reveal-carousel, .menu-slider-controls";
-      const revealItems = document.querySelectorAll(revealSelector);
-
-      revealItems.forEach((item) => {
-        item.classList.add("reveal-item");
-        if (item.matches(".image-slot") || item.matches(".reveal-carousel")) {
-          item.classList.add("reveal-image");
-        } else {
-          item.classList.add("reveal-text");
-          prepareRevealText(item);
-        }
-        item.style.setProperty("--reveal-delay", "0ms");
-      });
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-      );
-
-      revealItems.forEach((item) => observer.observe(item));
-    }
-
-    function setupMenuSlider() {
-      const prevBtn = document.getElementById("menuPrev");
-      const nextBtn = document.getElementById("menuNext");
-      const trackLeft = document.getElementById("trackLeft");
-      const trackRight = document.getElementById("trackRight");
-      if (!prevBtn || !nextBtn || !trackLeft || !trackRight) return;
-
-      const TOTAL = trackLeft.children.length;
-      let index = 0;
-      let isAnimating = false;
-
-      function slideTo(newIndex, withTransition) {
-        const firstCell = trackLeft.children[0];
-        if (!firstCell) return;
-        const cellH = firstCell.getBoundingClientRect().height;
-        const offset = -newIndex * cellH;
-        const easing = "cubic-bezier(0.77, 0, 0.175, 1)";
-        const dur = "700ms";
-
-        trackLeft.style.transition = withTransition ? `transform ${dur} ${easing}` : "none";
-        trackLeft.style.transform = `translateY(${offset}px)`;
-
-        // Right column moves opposite, anchored to valid rows (no blank space).
-        const rightOffset = -offset - (TOTAL - 1) * cellH;
-        trackRight.style.transition = withTransition ? `transform ${dur} ${easing} 60ms` : "none";
-        trackRight.style.transform = `translateY(${rightOffset}px)`;
-      }
-
-      function move(dir) {
-        if (isAnimating) return;
-        isAnimating = true;
-        index = ((index + dir) % TOTAL + TOTAL) % TOTAL;
-        slideTo(index, true);
-        setTimeout(() => { isAnimating = false; }, 800);
-      }
-
-      prevBtn.addEventListener("click", (e) => { e.preventDefault(); move(-1); });
-      nextBtn.addEventListener("click", (e) => { e.preventDefault(); move(1); });
-
-      window.addEventListener("resize", () => slideTo(index, false));
-      slideTo(0, false);
-    }
-
-    function setupSoloVideoAspectRatio() {
-      const soloSlot = document.querySelector(".image-slot--solo");
-      const soloVideo = soloSlot?.querySelector("video");
-      if (!soloSlot || !soloVideo) return;
-
-      const applyRatio = () => {
-        if (!soloVideo.videoWidth || !soloVideo.videoHeight) return;
-        soloSlot.style.aspectRatio = `${soloVideo.videoWidth} / ${soloVideo.videoHeight}`;
-      };
-
-      if (soloVideo.readyState >= 1) {
-        applyRatio();
-      } else {
-        soloVideo.addEventListener("loadedmetadata", applyRatio, { once: true });
-      }
-    }
-
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupMenuSlider();
-      setupSoloVideoAspectRatio();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+  <script src="../rail.js?v=4"><\/script>
 </body>
 </html>

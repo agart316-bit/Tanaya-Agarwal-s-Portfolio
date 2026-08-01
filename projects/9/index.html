@@ -4,147 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Black N White</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=1" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <link rel="stylesheet" href="../rail.css?v=4" />
 </head>
-<body>
-  <div class="viewport">
-    <main class="journal" id="journal">
-      <section class="panel panel--hero">
-        <h1>BLACK N WHITE</h1>
-        <p class="meta meta--row">
-          <span><strong>Year :</strong> 2022 - 2024</span>
-          <span><strong>Skills :</strong> Illustration, Adobe, Procreate</span>
-        </p>
-        <p class="meta"><strong>Medium :</strong> A5 book designed using Adobe Illustrator &amp; Photoshop</p>
-      </section>
+<body style="--ar:1.25;--accent:#26221e;--band:#e6e4e0;--band-ink:#26221e">
 
-      <section class="panel panel--upside">
-        <h2>THE UPSIDE DOWN</h2>
-        <div class="split split--top">
-          <div class="copy copy--narrow">
-            <p>Inspired by Candyland, the board game I loved as a kid. Growing up has a way of putting a hard layer over the softer parts of you — the things you liked, the way you used to see the world. This is my version of Candyland: what it looks like when that softness gets pushed under. Ink and hatching draw the contrast between what shows and what doesn't.</p>
-          </div>
-          <figure>
-            <figcaption>[ caption ]</figcaption>
-            <div class="image-slot image-slot--upside">
-              <img src="project-9-1.jpg" alt="Black and white fantasy sketch" />
-            </div>
-          </figure>
-        </div>
-      </section>
+  <header class="topbar">
+    <span>09 / 12</span>
+  </header>
 
-      <section class="panel panel--spacer"></section>
-
-      <section class="panel panel--memory">
-        <h2>VEHICLES OF MEMORY</h2>
-        <div class="copy copy--section">
-          <p>You can't hold onto moments, only the things that remind you of them. This piece is a collection of objects I kept over the years — each one carrying a memory I wasn't ready to let go of. Drawn in stippling: a thousand dots forming one image, the same way a thousand small moments form one memory.</p>
-        </div>
-        <figure class="feature feature--memory">
-          <div class="image-slot image-slot--memory">
-            <img src="project-9-2.jpg" alt="Grid of black and white object sketches" />
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--spacer"></section>
-
-      <section class="panel panel--juhu">
-        <h2>SLIDES FROM JUHU</h2>
-        <div class="split split--bottom">
-          <figure>
-            <figcaption>[ caption ]</figcaption>
-            <div class="copy">
-              <p>Juhu is my childhood neighbourhood and still the place I think of as home. Over time I went back to the same spots and drew them live, letting the charcoal do what a photo can't — carry the weight of what those places mean. The grid of drawings is like flipping through an old photo album. Black and white because memory has its own kind of rawness.</p>
-            </div>
-          </figure>
-          <figure>
-            <figcaption>[ caption ]</figcaption>
-            <div class="image-slot image-slot--juhu">
-              <img src="project-9-3.jpg" alt="Black and white observational sketch collage" />
-            </div>
-          </figure>
-        </div>
-      </section>
-
-      <section class="panel panel--end"></section>
-    </main>
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="kicker rv">Fine Art</p>
+      <h1 class="rv">Black N<br />White</h1>
+      <p class="lede rv">Three series in ink, stippling and charcoal, all about what memory keeps and what it flattens.</p>
+    </div>
+    <figure class="frame rv rv--img" style="--fr:2.411" data-px><img src="project-9-2.jpg" alt="Vehicles of Memory, stippled objects" /></figure>
   </div>
 
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 1.85;
-    const REVEAL_SELECTOR = "h1, h2, .meta, .copy p, figcaption, .image-slot";
+  <div class="body">
+    <aside class="rail">
+        <div class="rail-row"><span class="rail-label">Role</span><span class="rail-val">Drawing</span></div>
+        <div class="rail-row"><span class="rail-label">Year</span><span class="rail-val">2022 – 2024</span></div>
+        <div class="rail-row"><span class="rail-label">Medium</span><span class="rail-val">Ink, charcoal, stippling</span></div>
+        <div class="rail-row"><span class="rail-label">Output</span><span class="rail-val">3 series</span></div>
+      <div class="tags"><span>Fine Art</span><span>Drawing</span></div>
+    </aside>
 
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-    }
+    <div class="col">
+        <section class="block rv">
+          <h2>The Upside Down</h2>
+          <p class="para">Inspired by Candyland, the board game I loved as a kid. Growing up has a way of putting a hard layer over the softer parts of you — the things you liked, the way you used to see the world. This is my version of Candyland: what it looks like when that softness gets pushed under. Ink and hatching draw the contrast between what shows and what does not.</p>
+        </section>
+        <figure class="frame rv rv--img" style="--fr:0.708" data-px><img src="project-9-1.jpg" alt="The Upside Down, ink and hatching" /></figure>
+        <section class="block rv">
+          <h2>Vehicles of Memory</h2>
+          <p class="para">You cannot hold onto moments, only the things that remind you of them. This piece collects objects I kept over the years, each one carrying a memory I was not ready to let go of. Drawn in stippling: a thousand dots forming one image, the same way a thousand small moments form one memory.</p>
+        </section>
+        <section class="block rv">
+          <h2>Slides from Juhu</h2>
+          <p class="para">Juhu is my childhood neighbourhood and still the place I think of as home. I went back to the same spots and drew them live, letting charcoal do what a photograph cannot — carry the weight of what those places mean. The grid reads like flipping through an old photo album, in black and white because memory has its own rawness.</p>
+        </section>
+        <figure class="frame rv rv--img" style="--fr:0.76" data-px><img src="project-9-3.jpg" alt="Slides from Juhu, charcoal collage" /></figure>
+    </div>
+  </div>
 
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
-      if (!supportsLineWrap) {
-        item.classList.add("reveal-text-raw");
-        return;
-      }
 
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
 
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
+  <p class="credits rv">Credits — Ink, charcoal and stippling. Drawing and photography: Tanaya Agarwal.</p>
 
-    function setupReveals() {
-      const panels = document.querySelectorAll(".panel");
-      panels.forEach((panel) => {
-        const items = panel.querySelectorAll(REVEAL_SELECTOR);
-        items.forEach((item) => {
-          item.classList.add("reveal-item");
-          if (item.matches(".image-slot")) {
-            item.classList.add("reveal-image");
-          } else if (item.matches("figcaption")) {
-            item.classList.add("reveal-caption");
-            prepareRevealText(item);
-          } else {
-            item.classList.add("reveal-text");
-            prepareRevealText(item);
-          }
-          item.style.setProperty("--reveal-delay", "0ms");
-        });
-      });
+  <footer class="foot">
+    <a href="../10/index.html">
+      <span class="next-label">Next</span>
+      <span class="next-title">Pottery →</span>
+    </a>
+    <a class="mail" href="mailto:tanayaagarwal11@gmail.com">tanayaagarwal11@gmail.com</a>
+  </footer>
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-      );
-
-      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
-    }
-
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+  <script src="../rail.js?v=4"><\/script>
 </body>
 </html>

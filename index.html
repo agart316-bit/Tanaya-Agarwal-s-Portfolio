@@ -109,35 +109,35 @@
 
       <!-- Nameplate watermark — spans the page behind icons -->
       <div class="desktop-nameplate" aria-hidden="true">
-        <span class="nameplate-name">Tanaya Agarwal's <br class="nameplate-mobile-break">Portfolio</span>
+        <span class="nameplate-name">Tanaya Agarwal</span>
       </div>
 
       <div class="desktop-icons-canvas" id="desktopIconsCanvas">
 
-        <!-- 5 Medium apps -->
-        <a class="desktop-icon" data-group="motion" href="dock/media/index.html?group=motion">
-          <img class="desktop-icon-img" src="assets/project-1.png" alt="Digital Illustration and Motion app icon" draggable="false" />
-          <span class="desktop-icon-label">Digital Illustration &amp; Motion</span>
+        <!-- 5 Featured project apps -->
+        <a class="desktop-icon" data-group="p1" href="projects/1/index.html">
+          <img class="desktop-icon-img" src="assets/project-1.png" alt="Men of Platinum app icon" draggable="false" />
+          <span class="desktop-icon-label">Men of Platinum</span>
         </a>
 
-        <a class="desktop-icon" data-group="print" href="dock/media/index.html?group=print">
-          <img class="desktop-icon-img" src="assets/project-4.png" alt="Print and Editorial app icon" draggable="false" />
-          <span class="desktop-icon-label">Print &amp; Editorial</span>
+        <a class="desktop-icon" data-group="p5" href="projects/5/index.html">
+          <img class="desktop-icon-img" src="assets/project-5.png" alt="Dream Journals app icon" draggable="false" />
+          <span class="desktop-icon-label">Dream Journals</span>
         </a>
 
-        <a class="desktop-icon" data-group="fineart" href="dock/media/index.html?group=fineart">
-          <img class="desktop-icon-img" src="assets/project-9.png" alt="Fine Art app icon" draggable="false" />
-          <span class="desktop-icon-label">Fine Art</span>
+        <a class="desktop-icon" data-group="p6" href="projects/6/index.html">
+          <img class="desktop-icon-img" src="projects/6/project-6-1.png" alt="Lost in Translation app icon" draggable="false" />
+          <span class="desktop-icon-label">Lost in Translation</span>
         </a>
 
-        <a class="desktop-icon" data-group="spatial" href="dock/media/index.html?group=spatial">
-          <img class="desktop-icon-img" src="assets/project-11.png" alt="Spatial and Installation app icon" draggable="false" />
-          <span class="desktop-icon-label">Spatial / Installation</span>
+        <a class="desktop-icon" data-group="p8" href="projects/8/index.html">
+          <img class="desktop-icon-img" src="projects/8/project-8-1.jpg" alt="Paintings app icon" draggable="false" />
+          <span class="desktop-icon-label">Paintings</span>
         </a>
 
-        <a class="desktop-icon" data-group="web" href="dock/media/index.html?group=web">
-          <img class="desktop-icon-img" src="assets/project-12.png" alt="Web Design app icon" draggable="false" />
-          <span class="desktop-icon-label">Web Design</span>
+        <a class="desktop-icon" data-group="p13" href="projects/13/index.html">
+          <img class="desktop-icon-img" src="assets/project-12.png" alt="Reflections app icon" draggable="false" />
+          <span class="desktop-icon-label">Reflections</span>
         </a>
       </div>
 
@@ -179,33 +179,22 @@
           <button class="dock-app" type="button" aria-label="Photos" data-window="dock-photos"></button>
         </div>
 
+        <div class="dock-item dock-item--separator"></div>
+
+        <div class="dock-item">
+          <div class="dock-tooltip">All Work</div>
+          <button class="dock-app dock-app--allwork" type="button" aria-label="All Work" id="dockAllWork">
+            <svg class="dock-allwork-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
+              <rect x="20" y="4" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
+              <rect x="4" y="20" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
+              <rect x="20" y="20" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
+            </svg>
+          </button>
+        </div>
+
       </div>
     </nav>
-
-    <aside id="welcomeBanner" class="ios-notification" role="status" aria-live="polite" hidden>
-      <div class="ios-notification-card">
-        <button
-          id="welcomeBannerClose"
-          class="ios-notification-close"
-          type="button"
-          aria-label="Close notification"
-        >
-          ×
-        </button>
-        <div class="ios-notification-icon" aria-hidden="true">
-          <span class="ios-notification-icon-dot dot-blue"></span>
-          <span class="ios-notification-icon-dot dot-red"></span>
-          <span class="ios-notification-icon-dot dot-gold"></span>
-        </div>
-        <div class="ios-notification-copy">
-          <span class="ios-notification-kicker">TIME SENSITIVE</span>
-          <span class="ios-notification-title">Portfolio</span>
-          <p class="ios-notification-body">
-            Welcome to Tanaya's portfolio. Explore the apps to view my work.
-          </p>
-        </div>
-      </div>
-    </aside>
 
     <!-- Window -->
     <section id="windowLayer" class="window-layer is-hidden" aria-label="Window layer">
@@ -297,6 +286,40 @@
       </div>
 
       <button class="window-layer-backdrop" data-action="close" aria-label="Close window"></button>
+    </section>
+
+    <!-- =====================
+         ALL PROJECTS PAGE (Page 2)
+    ====================== -->
+    <section id="allProjectsPage" class="all-projects-page" aria-label="All Projects" hidden>
+
+      <!-- Left column: project list -->
+      <nav class="all-projects-nav" id="allProjectsNav" aria-label="Project list">
+        <ul class="all-projects-list" id="allProjectsList"></ul>
+      </nav>
+
+      <!-- Right panel: project viewer -->
+      <div class="all-projects-viewer" id="allProjectsViewer">
+        <div class="all-projects-placeholder" id="allProjectsPlaceholder">
+          <span>← Select a project</span>
+        </div>
+        <iframe
+          id="allProjectsFrame"
+          class="all-projects-frame"
+          title="Project content"
+          src=""
+          hidden
+        ></iframe>
+      </div>
+
+      <!-- Back button -->
+      <button class="all-projects-back" id="allProjectsBack" type="button" aria-label="Back to desktop">
+        <svg width="9" height="14" viewBox="0 0 9 14" fill="none">
+          <path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Desktop
+      </button>
+
     </section>
 
   </main>

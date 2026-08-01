@@ -4,161 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Paintings</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=1" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <link rel="stylesheet" href="../rail.css?v=4" />
 </head>
-<body>
-  <div class="viewport">
-    <main class="journal" id="journal">
-      <section class="panel panel--hero">
-        <h1>PAINTINGS</h1>
-        <p class="meta">Year : 2022 - 2024 &nbsp;&nbsp;&nbsp; Skills : Illustration, Adobe, Procreate</p>
-        <p class="meta">Medium : Acrylic on canvas</p>
-      </section>
+<body style="--ar:1.25;--accent:#c4622e;--band:#f6e3d4;--band-ink:#5c2b12">
 
-      <section class="panel panel--eclipsed">
-        <h2>ECLIPSED GAZE</h2>
-        <div class="copy copy--section">
-          <p>A portrait where the eyes are covered — not by accident but by the painting itself. A loose sweep of blue and green cuts across her face, dripping down. She's still, calm, chin resting in her hand. The eclipse is the point: something is hidden, and she doesn't seem to mind. I was interested in what it looks like to be seen partially, and how much of a person still comes through.</p>
-        </div>
-        <figure class="feature feature--small">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--portrait">
-            <img src="project-8-1.jpg" alt="Eclipsed Gaze painting" />
-          </div>
-        </figure>
-      </section>
+  <header class="topbar">
+    <span>08 / 12</span>
+  </header>
 
-      <section class="panel panel--spacer"></section>
-
-      <section class="panel panel--refuge">
-        <h2>REFUGE</h2>
-        <div class="copy copy--section">
-          <p>This is about home — the place that holds every memory you create. The painting layers two gardens: my grandmother's childhood home and the one I grew up in. The dense overgrowth of leaves was intentional — I wanted them to spill toward the viewer, pulling you into the space rather than just showing it to you. The canvas is large for the same reason. Safety feels immersive, not distant.</p>
-        </div>
-        <figure class="feature feature--tall">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--tall">
-            <img src="project-8-2.jpg" alt="Refuge painting" />
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--spacer panel--spacer-blue"></section>
-
-      <section class="panel panel--edge">
-        <h2>ESCAPE TO THE EDGE</h2>
-        <div class="copy copy--section">
-          <p>Nostalgia pulls you back to places, not just times. For me it has always been beaches — Mumbai, Abu Dhabi, Koh Samui. This triptych, inspired by the work of Hema Upadhyay, looks at those coastlines from a bird's eye view: shapes, textures, the way land and water meet. The urge to just drop into a place that makes you feel okay the moment you see it.</p>
-        </div>
-        <figure class="triptych-wrap">
-          <figcaption>[ option ]</figcaption>
-          <div class="triptych">
-            <div class="image-slot image-slot--triptych">
-              <img src="project-8-3.jpg" alt="Escape to the Edge painting left panel" class="triptych-part triptych-part--left" />
-            </div>
-            <div class="image-slot image-slot--triptych">
-              <img src="project-8-4.jpg" alt="Escape to the Edge painting center panel" class="triptych-part triptych-part--center" />
-            </div>
-            <div class="image-slot image-slot--triptych">
-              <img src="project-8-5.jpg" alt="Escape to the Edge painting right panel" class="triptych-part triptych-part--right" />
-            </div>
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--spacer panel--spacer-pink"></section>
-
-      <section class="panel panel--boulevard">
-        <h2>BOULEVARD OF<br />BROKEN HEARTS</h2>
-        <div class="copy copy--section">
-          <p>Ideas collect. Tattoo concepts, images, lines — things you want to put on your body but never quite do. For me, they just kept accumulating. This painting is what that pile looks like: everything that built up in my head, put onto one canvas. Tattoos are how I process identity, and this is what it looks like when that process has nowhere to go but inward. Bold colours that stick with you.</p>
-        </div>
-        <figure class="feature feature--wide">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-8-6.jpg" alt="Boulevard of Broken Hearts painting" />
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--end"></section>
-    </main>
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="kicker rv">Fine Art</p>
+      <h1 class="rv">Paintings</h1>
+      <p class="lede rv">Four canvases about being partly seen, and about the places that hold what you remember.</p>
+    </div>
+    <figure class="frame rv rv--img" style="--fr:1.014" data-px><img src="project-8-1.jpg" alt="Eclipsed Gaze, acrylic on canvas" /></figure>
   </div>
 
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 1.85;
-    const REVEAL_SELECTOR = "h1, h2, .meta, .copy p, figcaption, .image-slot";
+  <div class="body">
+    <aside class="rail">
+        <div class="rail-row"><span class="rail-label">Role</span><span class="rail-val">Painting</span></div>
+        <div class="rail-row"><span class="rail-label">Year</span><span class="rail-val">2022 – 2024</span></div>
+        <div class="rail-row"><span class="rail-label">Medium</span><span class="rail-val">Acrylic on canvas</span></div>
+        <div class="rail-row"><span class="rail-label">Output</span><span class="rail-val">4 original works</span></div>
+      <div class="tags"><span>Fine Art</span><span>Colour</span></div>
+    </aside>
 
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-    }
+    <div class="col">
+        <section class="block rv">
+          <h2>Eclipsed Gaze</h2>
+          <p class="para">A portrait where the eyes are covered — not by accident but by the painting itself. A loose sweep of blue and green cuts across her face and drips down. She is still, calm, chin resting in her hand. The eclipse is the point: something is hidden and she does not seem to mind. I was interested in what it looks like to be seen partially, and how much of a person still comes through.</p>
+        </section>
+        <section class="block rv">
+          <h2>Refuge</h2>
+          <p class="para">Home as the place that holds every memory you make in it. The painting layers two gardens: my grandmother’s childhood home and the one I grew up in. The dense overgrowth was intentional — the leaves spill toward the viewer to pull you into the space rather than show it to you. The canvas is large for the same reason. Safety feels immersive, not distant.</p>
+        </section>
+        <figure class="frame rv rv--img" style="--fr:0.636;--ar:.78" data-px><img src="project-8-2.jpg" alt="Refuge, acrylic on canvas" /></figure>
+        <section class="block rv">
+          <h2>Escape to the Edge</h2>
+          <p class="para">Nostalgia pulls you back to places, not only times. For me it has always been beaches — Mumbai, Abu Dhabi, Koh Samui. This triptych, inspired by the work of Hema Upadhyay, looks at those coastlines from a bird’s-eye view: shapes, textures, the way land and water meet. The urge to drop into a place that makes you feel alright the moment you see it.</p>
+        </section>
+        <div class="trio">
+          <figure class="frame rv rv--img" style="--fr:0.99" data-px><img src="project-8-3.jpg" alt="Escape to the Edge, left panel" /></figure>
+          <figure class="frame rv rv--img" style="--fr:0.988" data-px><img src="project-8-4.jpg" alt="Escape to the Edge, centre panel" /></figure>
+          <figure class="frame rv rv--img" style="--fr:0.994" data-px><img src="project-8-5.jpg" alt="Escape to the Edge, right panel" /></figure>
+        </div>
+        <section class="block rv">
+          <h2>Boulevard of Broken Hearts</h2>
+          <p class="para">Ideas collect — tattoo concepts, images, lines you want to put on your body but never quite do. Mine kept accumulating. This painting is what that pile looks like when it is all put onto one canvas. Tattoos are how I process identity, and this is that process with nowhere to go but inward, in colours that stick with you.</p>
+        </section>
+        <figure class="frame rv rv--img" style="--fr:2.001" data-px><img src="project-8-6.jpg" alt="Boulevard of Broken Hearts, acrylic on canvas" /></figure>
+    </div>
+  </div>
 
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
-      if (!supportsLineWrap) {
-        item.classList.add("reveal-text-raw");
-        return;
-      }
 
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
 
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
+  <p class="credits rv">Credits — Acrylic on canvas. Painting and photography: Tanaya Agarwal.</p>
 
-    function setupReveals() {
-      const panels = document.querySelectorAll(".panel");
-      panels.forEach((panel) => {
-        const items = panel.querySelectorAll(REVEAL_SELECTOR);
-        items.forEach((item) => {
-          item.classList.add("reveal-item");
-          if (item.matches(".image-slot")) {
-            item.classList.add("reveal-image");
-          } else if (item.matches("figcaption")) {
-            item.classList.add("reveal-caption");
-            prepareRevealText(item);
-          } else {
-            item.classList.add("reveal-text");
-            prepareRevealText(item);
-          }
-          item.style.setProperty("--reveal-delay", "0ms");
-        });
-      });
+  <footer class="foot">
+    <a href="../9/index.html">
+      <span class="next-label">Next</span>
+      <span class="next-title">Black N White →</span>
+    </a>
+    <a class="mail" href="mailto:tanayaagarwal11@gmail.com">tanayaagarwal11@gmail.com</a>
+  </footer>
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-      );
-
-      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
-    }
-
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+  <script src="../rail.js?v=4"><\/script>
 </body>
 </html>

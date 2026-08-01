@@ -4,135 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Now Or Never</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=1" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <link rel="stylesheet" href="../rail.css?v=4" />
 </head>
-<body>
-  <div class="viewport">
-    <main class="journal" id="journal">
-      <section class="panel panel--hero">
-        <figure class="cover">
-          <div class="image-slot image-slot--cover">
-            <img src="project-2-2.png" alt="Now or Never neon pink poster" />
-          </div>
-        </figure>
-        <h1>NOW OR NEVER</h1>
-        <p class="meta meta--row">
-          <span><strong>Year :</strong> 2020</span>
-          <span><strong>Skills :</strong> Illustration, Adobe, Production</span>
-        </p>
-        <p class="meta"><strong>Medium :</strong> A5 book designed using Adobe Illustrator &amp; Photoshop</p>
-      </section>
+<body style="--ar:1.5;--accent:#d6297f;--band:#fbd8e8;--band-ink:#6b1140">
 
-      <section class="panel panel--pink">
-        <figure class="feature feature--right">
-          <figcaption>[ option ]</figcaption>
-          <div class="image-slot image-slot--poster">
-            <img src="project-2-1.png" alt="Now or Never grayscale poster" />
-          </div>
-        </figure>
+  <header class="topbar">
+    <span>02 / 12</span>
+  </header>
 
-        <div class="copy copy--section">
-          <p>A typography project from Parsons. The brief was to pick a mantra and express it across both print and motion. I chose Now or Never because it felt less like a quote to live by and more like something you'd see glowing above a bar on a Friday night. The vibe I was going for was happy hour, going out, putting yourself out there.</p>
-          <p>For print I went with a sticker, intentionally small. Something you stick on your laptop or notebook, or that a bar hands out to customers. It lives in the moment without making a statement of it. The motion piece is a glitching neon sign in hot pink, referencing the neon aesthetic that was everywhere around 2016. It flickers like it has been on too long, which felt exactly right.</p>
-        </div>
-      </section>
-
-      <section class="panel panel--dark">
-        <figure class="feature feature--video">
-          <div class="video-wrap">
-            <video
-              class="solo-video"
-              src="project-2-3.mp4"
-              poster="project-2-1.png"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-              aria-label="Now or Never animated poster video"
-            ></video>
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--end"></section>
-    </main>
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="kicker rv">Type & Motion</p>
+      <h1 class="rv">Now Or<br />Never</h1>
+      <p class="lede rv">A mantra taken literally: a sticker small enough to live in the moment, and a neon sign that flickers like it has been on too long.</p>
+    </div>
+    <figure class="frame rv rv--img" style="--fr:0.792" data-px><img src="project-2-2.png" alt="Now or Never neon pink poster" /></figure>
   </div>
 
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM = 0.8;
-    const MAX_ZOOM = 1.85;
-    const REVEAL_SELECTOR = "h1, .meta, .copy p, figcaption, .image-slot, .video-wrap";
+  <div class="body">
+    <aside class="rail">
+        <div class="rail-row"><span class="rail-label">Role</span><span class="rail-val">Design &amp; animation</span></div>
+        <div class="rail-row"><span class="rail-label">Year</span><span class="rail-val">2020</span></div>
+        <div class="rail-row"><span class="rail-label">Medium</span><span class="rail-val">Print + motion — Illustrator, Photoshop</span></div>
+        <div class="rail-row"><span class="rail-label">Output</span><span class="rail-val">Sticker and looping neon sign</span></div>
+      <div class="tags"><span>Typography</span><span>Motion</span></div>
+    </aside>
 
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-    }
+    <div class="col">
+        <p class="para rv">I chose <em>Now or Never</em> because it felt less like a quote to live by and more like something glowing above a bar on a Friday night — happy hour, going out, putting yourself out there. For print I went small on purpose: a sticker you put on a laptop or a bar hands out, living in the moment without making a statement of it.</p>
+        <figure class="frame rv rv--img" style="--fr:1" data-px><img src="project-2-1.png" alt="Now or Never, grayscale poster" /></figure>
+        <section class="block rv">
+          <h2>Flickering on purpose</h2>
+          <p class="para">The motion piece is a glitching hot-pink neon sign, referencing the neon aesthetic that was everywhere around 2016. It stutters and drops out like a tube that has been lit too long, which is the whole argument of the phrase — the thing is about to go out, so decide now.</p>
+        </section>
+    </div>
+  </div>
 
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, figcaption");
-      if (!supportsLineWrap) {
-        item.classList.add("reveal-text-raw");
-        return;
-      }
+  <section class="band">
+    <p class="band-label rv">In motion</p>
+    <div class="band-grid">
+      <p class="band-note rv">The loop as it plays — hot pink on black, flickering off beat.</p>
+      <figure class="frame rv rv--img frame--fluid"><video src="project-2-3.mp4" aria-label="Neon sign motion loop" autoplay muted loop playsinline preload="metadata"></video></figure>
+    </div>
+  </section>
 
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
+  <p class="credits rv">Credits — Design, illustration and animation: Tanaya Agarwal.</p>
 
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
+  <footer class="foot">
+    <a href="../3/index.html">
+      <span class="next-label">Next</span>
+      <span class="next-title">Digital Illustrations →</span>
+    </a>
+    <a class="mail" href="mailto:tanayaagarwal11@gmail.com">tanayaagarwal11@gmail.com</a>
+  </footer>
 
-    function setupReveals() {
-      const panels = document.querySelectorAll(".panel");
-      panels.forEach((panel) => {
-        const items = panel.querySelectorAll(REVEAL_SELECTOR);
-        items.forEach((item) => {
-          item.classList.add("reveal-item");
-          if (item.matches(".image-slot, .video-wrap")) {
-            item.classList.add("reveal-image");
-          } else if (item.matches("figcaption")) {
-            item.classList.add("reveal-caption");
-            prepareRevealText(item);
-          } else {
-            item.classList.add("reveal-text");
-            prepareRevealText(item);
-          }
-          item.style.setProperty("--reveal-delay", "0ms");
-        });
-      });
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-      );
-
-      document.querySelectorAll(".reveal-item").forEach((item) => observer.observe(item));
-    }
-
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+  <script src="../rail.js?v=4"><\/script>
 </body>
 </html>

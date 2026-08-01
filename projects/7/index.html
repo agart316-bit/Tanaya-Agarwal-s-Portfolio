@@ -4,188 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Physics Textbook</title>
-  <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=2" />
-  <link rel="stylesheet" href="../project-layout.css?v=1" />
+  <link rel="stylesheet" href="../rail.css?v=4" />
 </head>
-<body>
-  <div class="viewport">
-    <main class="journal" id="journal">
+<body style="--ar:1.5;--accent:#33406e;--band:#dee2ef;--band-ink:#1e2848">
 
-      <!-- ── HERO ──────────────────────────────────────── -->
-      <section class="panel panel--hero">
-        <div class="image-slot image-slot--hero">
-          <img src="project-7-1.png" alt="Physics Textbook — cover" />
-        </div>
-        <h1>PHYSICS TEXTBOOK</h1>
-        <span class="rule"></span>
-        <p class="meta meta--row">
-          <span><strong>Year :</strong> 2022</span>
-          <span><strong>Skills :</strong> Book Design, Grid Systems, InDesign</span>
-        </p>
-        <p class="meta"><strong>Medium :</strong> Academic textbook designed in Adobe InDesign</p>
-      </section>
+  <header class="topbar">
+    <span>07 / 12</span>
+  </header>
 
-      <!-- ── SECTION 1 : Full cover spread ─────────────── -->
-      <section class="panel panel--slate">
-        <figure class="feature feature--wide">
-          <figcaption>[ cover &amp; spine ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-7-2.png" alt="Physics Textbook cover and spine" />
-          </div>
-        </figure>
-      </section>
-
-      <!-- ── SECTION 2 : Concept + grid detail ─────────── -->
-      <section class="panel panel--linen">
-        <div class="copy copy--section">
-          <p>A reimagined physics textbook for secondary school students — where rigorous content is presented through a clear, modular grid system. The design philosophy treats scientific diagrams as primary visual elements, complemented by a precise typographic hierarchy.</p>
-          <p>Each chapter opener uses large-scale numerals and full-bleed field photography to ground abstract concepts in the tangible world.</p>
-        </div>
-        <figure class="feature feature--center" style="margin-top: 18px;">
-          <figcaption>[ chapter opener — mechanics ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-7-3.png" alt="Physics Textbook chapter opener" />
-          </div>
-        </figure>
-      </section>
-
-      <!-- ── SECTION 3 : Interior spreads pair ─────────── -->
-      <section class="panel panel--fog">
-        <div class="spread-pair">
-          <figure>
-            <figcaption>[ spread — diagrams ]</figcaption>
-            <div class="image-slot image-slot--square">
-              <img src="project-7-4.png" alt="Diagram spread left" />
-            </div>
-          </figure>
-          <figure>
-            <figcaption>[ spread — body text ]</figcaption>
-            <div class="image-slot image-slot--square">
-              <img src="project-7-5.png" alt="Body text spread right" />
-            </div>
-          </figure>
-        </div>
-      </section>
-
-      <!-- ── SECTION 4 : Annotation callout ────────────── -->
-      <section class="panel panel--linen">
-        <figure class="feature feature--center">
-          <figcaption>[ diagram layout — force vectors ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-7-6.png" alt="Force vector diagram page" />
-          </div>
-        </figure>
-        <p class="annotation" style="margin-top:14px;">Diagram labels use a dedicated condensed typeface, kept distinct from body copy to create a clear visual hierarchy between explanatory prose and technical annotation.</p>
-      </section>
-
-      <!-- ── SECTION 5 : Three pages ───────────────────── -->
-      <section class="panel panel--slate">
-        <div class="triptych">
-          <figure>
-            <figcaption>[ ch. 3 ]</figcaption>
-            <div class="image-slot image-slot--portrait">
-              <img src="project-7-7.png" alt="Chapter 3 page" />
-            </div>
-          </figure>
-          <figure>
-            <figcaption>[ ch. 5 ]</figcaption>
-            <div class="image-slot image-slot--portrait">
-              <img src="project-7-8.png" alt="Chapter 5 page" />
-            </div>
-          </figure>
-          <figure>
-            <figcaption>[ ch. 7 ]</figcaption>
-            <div class="image-slot image-slot--portrait">
-              <img src="project-7-9.png" alt="Chapter 7 page" />
-            </div>
-          </figure>
-        </div>
-      </section>
-
-      <!-- ── SECTION 6 : Shift-stack spreads ───────────── -->
-      <section class="panel panel--buff">
-        <figure class="feature feature--left" style="margin-bottom:0;">
-          <figcaption>[ problems &amp; exercises ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-7-10.png" alt="Problems and exercises spread" />
-          </div>
-        </figure>
-        <figure class="feature feature--right">
-          <figcaption>[ index &amp; appendix ]</figcaption>
-          <div class="image-slot image-slot--wide">
-            <img src="project-7-11.png" alt="Index spread" />
-          </div>
-        </figure>
-      </section>
-
-      <section class="panel panel--end"></section>
-
-    </main>
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="kicker rv">Print & Editorial</p>
+      <h1 class="rv">Physics<br />Textbook</h1>
+      <p class="lede rv">A secondary-school physics textbook rebuilt on a modular grid, where the diagrams lead and the type gets out of the way.</p>
+    </div>
+    <figure class="frame rv rv--img" style="--fr:1.5" data-px><img src="project-7-1.png" alt="Physics Textbook, cover" /></figure>
   </div>
 
-  <script>
-    const journal = document.getElementById("journal");
-    const BASE_WIDTH   = 312;
-    const TARGET_RATIO = 0.65;
-    const MIN_ZOOM     = 0.8;
-    const MAX_ZOOM = 1.85;
-    const REVEAL_SELECTOR = "h1, h2, .meta, .copy p, .annotation, figcaption, .image-slot, .rule";
+  <div class="body">
+    <aside class="rail">
+        <div class="rail-row"><span class="rail-label">Role</span><span class="rail-val">Design &amp; typesetting</span></div>
+        <div class="rail-row"><span class="rail-label">Year</span><span class="rail-val">2022</span></div>
+        <div class="rail-row"><span class="rail-label">Medium</span><span class="rail-val">Print — InDesign, Illustrator</span></div>
+        <div class="rail-row"><span class="rail-label">Output</span><span class="rail-val">Full textbook redesign</span></div>
+      <div class="tags"><span>Editorial</span><span>Systems</span><span>Typography</span></div>
+    </aside>
 
-    function fitJournal() {
-      if (!journal) return;
-      const effectiveWidth = Math.min(window.innerWidth, 1400);
-      const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-      journal.style.zoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-    }
+    <div class="col">
+        <p class="para rv">Rigorous content presented through a clear modular grid. Scientific diagrams are treated as primary visual elements rather than illustrations dropped beside the text, and a precise typographic hierarchy holds the reading order. Each chapter opener uses large-scale numerals and full-bleed field photography to ground abstract concepts in something tangible.</p>
+        <figure class="frame rv rv--img" style="--fr:0.666" data-px><img src="project-7-3.png" alt="Chapter opener" /></figure>
+        <section class="block rv">
+          <h2>One grid, every page type</h2>
+          <p class="para">The same grid carries a chapter opener, a dense diagram spread, running body text, worked problems and the index. The modules change and the measure does not, which is what lets a student move between a vector diagram and a page of prose without re-learning where to look.</p>
+        </section>
+        <div class="pair">
+          <figure class="frame rv rv--img" style="--fr:1.5" data-px><img src="project-7-4.png" alt="Diagram spread" /></figure>
+          <figure class="frame rv rv--img" style="--fr:1.5" data-px><img src="project-7-5.png" alt="Body text spread" /></figure>
+        </div>
+        <figure class="frame rv rv--img" style="--fr:1.5" data-px><img src="project-7-6.png" alt="Force vector diagram page" /></figure>
+        <div class="pair">
+          <figure class="frame rv rv--img" style="--fr:1.5" data-px><img src="project-7-8.png" alt="Chapter page" /></figure>
+          <figure class="frame rv rv--img" style="--fr:1.5" data-px><img src="project-7-9.png" alt="Chapter page" /></figure>
+        </div>
+    </div>
+  </div>
 
-    function prepareRevealText(item) {
-      const supportsLineWrap = item.matches("h1, h2, .meta, .copy p, .annotation, figcaption");
-      if (!supportsLineWrap) { item.classList.add("reveal-text-raw"); return; }
-      const existingLine = item.firstElementChild;
-      if (existingLine && existingLine.classList.contains("reveal-line")) return;
-      item.classList.add("reveal-clip");
-      const line = document.createElement("span");
-      line.className = "reveal-line";
-      while (item.firstChild) line.appendChild(item.firstChild);
-      item.appendChild(line);
-    }
+  <section class="band">
+    <p class="band-label rv">In hand</p>
+    <div class="band-grid">
+      <p class="band-note rv">Cover and spine, printed and bound at textbook scale.</p>
+      <figure class="frame rv rv--img" style="--fr:0.438" data-px><img src="project-7-2.png" alt="Textbook cover and spine" /></figure>
+    </div>
+  </section>
 
-    function setupReveals() {
-      document.querySelectorAll(".panel").forEach(panel => {
-        panel.querySelectorAll(REVEAL_SELECTOR).forEach((item, i) => {
-          item.classList.add("reveal-item");
-          item.style.setProperty("--reveal-delay", `${i * 55}ms`);
-          if (item.matches(".image-slot")) {
-            item.classList.add("reveal-image");
-          } else if (item.matches("figcaption")) {
-            item.classList.add("reveal-caption");
-            prepareRevealText(item);
-          } else {
-            item.classList.add("reveal-text");
-            prepareRevealText(item);
-          }
-        });
-      });
+  <p class="credits rv">Credits — Design and typesetting: Tanaya Agarwal.</p>
 
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("revealed");
-          observer.unobserve(entry.target);
-        });
-      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+  <footer class="foot">
+    <a href="../8/index.html">
+      <span class="next-label">Next</span>
+      <span class="next-title">Paintings →</span>
+    </a>
+    <a class="mail" href="mailto:tanayaagarwal11@gmail.com">tanayaagarwal11@gmail.com</a>
+  </footer>
 
-      document.querySelectorAll(".reveal-item").forEach(item => observer.observe(item));
-    }
-
-    window.addEventListener("resize", fitJournal);
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-      fitJournal();
-      setupReveals();
-    });
-    fitJournal();
-  </script>
+  <script src="../rail.js?v=4"><\/script>
 </body>
 </html>
