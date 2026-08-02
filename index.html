@@ -4,8 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tanaya Agarwal</title>
-  <link rel="stylesheet" href="shared/base.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <!-- Desktop styles apply from 560px up; below that the mobile version takes over. -->
+  <link rel="stylesheet" href="shared/base.css?v=1" media="(min-width: 560px)" />
+  <link rel="stylesheet" href="styles.css?v=5" media="(min-width: 560px)" />
+  <link rel="stylesheet" href="mobile.css?v=1" media="(max-width: 559px)" />
+  <script>
+    /* Which build of the site runs. Re-checked on resize (see foot of body). */
+    window.__IS_MOBILE__ = window.matchMedia("(max-width: 559px)").matches;
+  </script>
   <style>
     /* Cursor-replacing tooltip */
     .cursor-tooltip {
@@ -60,9 +66,10 @@
       <div class="lockscreen-loginblock">
         <img
           class="lockscreen-avatar"
-          src="assets/user.jpg"
+          src="assets/user.webp"
           alt="User avatar"
           onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22rgba(255,255,255,.12)%22/></svg>';"
+        /><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22rgba(255,255,255,.12)%22/></svg>';"
         />
         <div class="lockscreen-username">Tanaya's Portfolio</div>
 
@@ -91,7 +98,7 @@
             </button>
           </div>
 
-          <div class="lockscreen-hint">Touch ID or Enter Password</div>
+          <div class="lockscreen-hint">Click anywhere to enter</div>
         </form>
       </div>
     </div>
@@ -116,28 +123,28 @@
 
         <!-- 5 Featured project apps -->
         <a class="desktop-icon" data-group="p1" href="projects/1/index.html">
-          <img class="desktop-icon-img" src="assets/project-1.png" alt="Men of Platinum app icon" draggable="false" />
+          <img class="desktop-icon-img" src="assets/thumbs/icon-1.webp" alt="Men of Platinum app icon" draggable="false" />
           <span class="desktop-icon-label">Men of Platinum</span>
         </a>
 
         <a class="desktop-icon" data-group="p5" href="projects/5/index.html">
-          <img class="desktop-icon-img" src="assets/project-5.png" alt="Dream Journals app icon" draggable="false" />
+          <img class="desktop-icon-img" src="assets/thumbs/icon-5.webp" alt="Dream Journals app icon" draggable="false" />
           <span class="desktop-icon-label">Dream Journals</span>
         </a>
 
         <a class="desktop-icon" data-group="p6" href="projects/6/index.html">
-          <img class="desktop-icon-img" src="projects/6/project-6-1.png" alt="Lost in Translation app icon" draggable="false" />
+          <img class="desktop-icon-img" src="assets/thumbs/icon-6.webp" alt="Lost in Translation app icon" draggable="false" />
           <span class="desktop-icon-label">Lost in Translation</span>
         </a>
 
-        <a class="desktop-icon" data-group="p8" href="projects/8/index.html">
-          <img class="desktop-icon-img" src="projects/8/project-8-1.jpg" alt="Paintings app icon" draggable="false" />
-          <span class="desktop-icon-label">Paintings</span>
+        <a class="desktop-icon" data-group="p13" href="projects/13/index.html">
+          <img class="desktop-icon-img" src="assets/thumbs/icon-13.webp" alt="The Upside Down app icon" draggable="false" />
+          <span class="desktop-icon-label">The Upside Down</span>
         </a>
 
-        <a class="desktop-icon" data-group="p13" href="projects/13/index.html">
-          <img class="desktop-icon-img" src="assets/project-12.png" alt="Reflections app icon" draggable="false" />
-          <span class="desktop-icon-label">Reflections</span>
+        <a class="desktop-icon" data-group="p12" href="projects/12/index.html">
+          <img class="desktop-icon-img" src="assets/thumbs/icon-12.webp" alt="The Borges Stories app icon" draggable="false" />
+          <span class="desktop-icon-label">The Borges Stories</span>
         </a>
       </div>
 
@@ -174,10 +181,12 @@
           <button class="dock-app" type="button" aria-label="Contacts" data-window="dock-contacts"></button>
         </div>
 
+        <!-- Photos app - temporarily removed, to be added back later
         <div class="dock-item">
           <div class="dock-tooltip">Photos</div>
           <button class="dock-app" type="button" aria-label="Photos" data-window="dock-photos"></button>
         </div>
+        -->
 
         <div class="dock-item dock-item--separator"></div>
 
@@ -265,6 +274,7 @@
             title="Window content"
             src=""
             loading="eager"
+            allow="autoplay; fullscreen"
           ></iframe>
 
           <div id="windowBlank" class="window-placeholder">
@@ -309,6 +319,7 @@
           title="Project content"
           src=""
           hidden
+          allow="autoplay; fullscreen"
         ></iframe>
       </div>
 
@@ -330,6 +341,7 @@
   <script src="liquid-ether-vanilla.js"></script>
   <script>
     (function() {
+      if (window.__IS_MOBILE__) return;
       const tooltip = document.getElementById('cursorTooltip');
       const desktop = document.getElementById('desktop');
       if (!tooltip || !desktop) return;
@@ -384,7 +396,21 @@
       desktop.addEventListener('mouseleave', () => hideTooltip());
     })();
   </script>
-  <!-- Main portfolio script -->
-  <script src="script.js?v=2"></script>
+  <!-- Main portfolio script: desktop build above 560px, mobile build below it -->
+  <script>
+    (function () {
+      var s = document.createElement('script');
+      s.src = window.__IS_MOBILE__ ? 'mobile.js?v=1' : 'script.js?v=3';
+      document.body.appendChild(s);
+
+      /* Crossing the breakpoint (rotation, window resize) swaps builds. */
+      var mq = window.matchMedia('(max-width: 559px)');
+      var onChange = function () {
+        if (mq.matches !== window.__IS_MOBILE__) window.location.reload();
+      };
+      if (mq.addEventListener) mq.addEventListener('change', onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    })();
+  </script>
 </body>
 </html>

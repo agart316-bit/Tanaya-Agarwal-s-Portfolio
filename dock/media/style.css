@@ -119,6 +119,38 @@ body {
   background: #ffffff;
 }
 
+/* Placeholder card for projects with no page yet. */
+.media-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 260px;
+  background: #f2f1ef;
+  border: 1px dashed rgba(26, 23, 20, 0.18);
+  color: rgba(26, 23, 20, 0.45);
+  text-align: center;
+  padding: 48px 24px;
+  box-sizing: border-box;
+}
+
+.media-soon-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(26, 23, 20, 0.6);
+}
+
+.media-soon-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(26, 23, 20, 0.2);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
 @media (max-width: 860px) {
   .media-page {
     padding-bottom: 20px;

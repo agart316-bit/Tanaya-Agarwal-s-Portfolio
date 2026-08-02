@@ -8,7 +8,7 @@ const MIN_ZOOM = 0.8;
 const MAX_ZOOM = 2.5;
 const PREVIEW_OFFSET_X = 14;
 const PREVIEW_OFFSET_Y = 18;
-const PROJECT_IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG", "webp", "WEBP"];
+const PROJECT_IMAGE_EXTENSIONS = ["webp", "WEBP", "jpg", "jpeg", "png", "JPG", "JPEG", "PNG"];
 const PROJECT_IMAGE_INDEXES = [1, 0];
 
 /* ─── Floating layer (Cappen's work__list__layer) ─────────────────
@@ -414,3 +414,17 @@ window.addEventListener("load", async () => {
 });
 
 syncProjectCopySize();
+
+/* ─── "View project" links ──────────────────────────────
+   Inside the portfolio shell this page lives in an iframe, so following the
+   href would navigate the whole app away. Ask the shell to open the project
+   in its window instead; fall back to a normal navigation when standalone. */
+document.querySelectorAll(".experience-project-link").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    if (window.parent === window) return; // standalone: let the href work
+    const match = link.getAttribute("href").match(/projects\/(\d+)\//);
+    if (!match) return;
+    event.preventDefault();
+    window.parent.postMessage({ type: "open-project", projectNum: match[1] }, "*");
+  });
+});

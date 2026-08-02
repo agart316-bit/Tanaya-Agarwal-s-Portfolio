@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&display=swap" />
   <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
   <div class="about-root">
@@ -15,30 +15,25 @@
     <main class="about-page">
       <div class="about-top">
         <div class="about-intro">
-          <img class="name-mark" src="./Name.png" alt="Tanaya Agarwal" />
+          <img class="name-mark" src="./Name.webp" alt="Tanaya Agarwal" fetchpriority="high" />
           <p class="about-copy">
             Creative design student at Parsons School of Design with a multidisciplinary background spanning branding, visual storytelling, digital content, and self-initiated ventures. Interested in design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of evolving into a creative director. Comfortable collaborating across design, branding, and front-end-adjacent creative teams.
           </p>
-          <div class="whoami-line">
-            <span class="prompt-sign">$</span>
-            <span class="prompt-cmd">whoami</span>
-            <span class="caret" aria-hidden="true"></span>
-          </div>
         </div>
 
         <div class="about-photo">
           <div class="photo-frame">
-            <img src="./tanaya.JPG" alt="Portrait of Tanaya" />
+            <img src="./tanaya.webp" alt="Portrait of Tanaya" loading="lazy" decoding="async" />
           </div>
           <div class="photo-caption">
-            <span>portrait.jpg</span><span>Brooklyn, NY</span>
+            <span>portrait.jpg</span><span>Manhattan, NY</span>
           </div>
         </div>
       </div>
 
       <div class="about-panels">
         <div class="panel">
-          <div class="panel-cmd"><span class="prompt-sign">$</span><span class="panel-cmd-text">cat about.txt</span></div>
+          <div class="panel-cmd"><span class="panel-cmd-text">about.txt</span></div>
           <div class="panel-body">
             <div><span class="line-num">01</span>&nbsp;&nbsp;Grew up in</div>
             <div class="line-val">Mumbai, India</div>
@@ -49,7 +44,7 @@
         </div>
 
         <div class="panel">
-          <div class="panel-cmd"><span class="prompt-sign">$</span><span class="panel-cmd-text">cat education.txt</span></div>
+          <div class="panel-cmd"><span class="panel-cmd-text">education.txt</span></div>
           <div class="panel-body panel-body--edu">
             <div>
               <div class="edu-school">Parsons School of Design</div>
@@ -63,7 +58,7 @@
         </div>
 
         <div class="panel">
-          <div class="panel-cmd"><span class="prompt-sign">$</span><span class="panel-cmd-text">ls skills/</span></div>
+          <div class="panel-cmd"><span class="panel-cmd-text">skills/</span></div>
           <div class="skills-grid">
             <div>Adobe CS</div>
             <div>Art Direction</div>

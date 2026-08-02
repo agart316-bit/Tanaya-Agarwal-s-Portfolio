@@ -47,34 +47,33 @@ const dock          = document.querySelector(".dock");
 const PROJECTS = [
   { projectNum: "1",  title: "Men of Platinum",    url: "projects/1/index.html" },
   { projectNum: "3",  title: "Digital Illustrations", url: "projects/3/index.html" },
-  { projectNum: "15", title: "The Upside Down",    url: "projects/15/index.html" },
   { projectNum: "4",  title: "ArtsyDesign. co",    url: "projects/4/index.html" },
   { projectNum: "5",  title: "Dream Journals",     url: "projects/5/index.html" },
   { projectNum: "6",  title: "Lost in Translation", url: "projects/6/index.html" },
-  { projectNum: "7",  title: "Physics Textbook",   url: "projects/7/index.html" },
+  { projectNum: "7",  title: "Black Hole",         url: "projects/7/index.html" },
   { projectNum: "8",  title: "Paintings",          url: "projects/8/index.html" },
   { projectNum: "9",  title: "Black N White",      url: "projects/9/index.html" },
+  { projectNum: "13", title: "The Upside Down",    url: "projects/13/index.html" },
   { projectNum: "10", title: "Pottery",            url: "projects/10/index.html" },
   { projectNum: "11", title: "Installations",      url: "projects/11/index.html" },
   { projectNum: "12", title: "The Borges Stories", url: "projects/12/index.html" },
-  { projectNum: "13", title: "Reflections",         url: "projects/13/index.html" },
-  { projectNum: "14", title: "Fashion History",    url: "projects/14/index.html" }
+  { projectNum: "14", title: "Bindaas",            url: "projects/14/index.html" }
 ];
 
 const DESKTOP_GROUP_WINDOWS = {
   p1:  { title: "Men of Platinum",    src: "projects/1/index.html" },
   p5:  { title: "Dream Journals",     src: "projects/5/index.html" },
   p6:  { title: "Lost in Translation", src: "projects/6/index.html" },
-  p8:  { title: "Paintings",          src: "projects/8/index.html" },
-  p13: { title: "Reflections",        src: "projects/13/index.html" }
+  p13: { title: "The Upside Down",   src: "projects/13/index.html" },
+  p12: { title: "The Borges Stories", src: "projects/12/index.html" }
 };
 
 const DESKTOP_GROUP_PROJECTS = {
   p1:  ["1"],
   p5:  ["5"],
   p6:  ["6"],
-  p8:  ["8"],
-  p13: ["13"]
+  p13: ["13"],
+  p12: ["12"]
 };
 
 const PROJECTS_BY_NUMBER = new Map(PROJECTS.map((project) => [project.projectNum, project]));
@@ -111,20 +110,35 @@ let desktopLaunchAnimationPlayed = false;
 function showCaret(){ passwordCaret.classList.add("is-visible"); }
 function hideCaret(){ passwordCaret.classList.remove("is-visible"); }
 
+let autoTypeInterval = null;
+
 function autoTypeDots(){
   passwordInput.value = "";
   typingDone = false;
   let i = 0;
   showCaret();
 
-  const iv = setInterval(() => {
+  autoTypeInterval = setInterval(() => {
     i++;
     passwordInput.value = DOT_CHAR.repeat(i);
     if(i >= DOTS_COUNT){
-      clearInterval(iv);
+      clearInterval(autoTypeInterval);
+      autoTypeInterval = null;
       typingDone = true;
     }
   }, 95);
+}
+
+/* Skip straight to a filled password field — used when the visitor
+   acts before the auto-type animation has finished. */
+function finishTypingNow(){
+  if (autoTypeInterval) {
+    clearInterval(autoTypeInterval);
+    autoTypeInterval = null;
+  }
+  passwordInput.value = DOT_CHAR.repeat(DOTS_COUNT);
+  showCaret();
+  typingDone = true;
 }
 
 window.addEventListener("load", () => {
@@ -170,23 +184,39 @@ function initLiquidEther() {
 /* =========================================================
    UNLOCK
 ========================================================= */
+function lockscreenIsActive(){
+  return lockscreen.style.display !== "none"
+    && !lockscreen.classList.contains("is-unlocking");
+}
+
+/* Any deliberate action enters the desktop immediately. The auto-type
+   animation is decoration, never a gate — if it is still running we
+   fast-forward it so the field reads as filled on the way out. */
+function unlockNow(){
+  if (!lockscreenIsActive()) return;
+  finishTypingNow();
+  unlock();
+}
+
 unlockForm.addEventListener("submit", e => {
   e.preventDefault();
-  unlock();
+  unlockNow();
 });
 
 lockscreen.addEventListener("click", e => {
-  if(e.target.closest("button,input,form")) return;
-  if(typingDone) unlock();
+  if(e.target.closest("input")) return;
+  e.preventDefault();
+  unlockNow();
 });
 
 window.addEventListener("keydown", (e) => {
-  if (!typingDone) return;
-  if (lockscreen.style.display === "none" || lockscreen.classList.contains("is-unlocking")) return;
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    unlock();
-  }
+  if (!lockscreenIsActive()) return;
+  // Let people use the browser and OS normally: modifier combos,
+  // Tab, and Escape should not fire the unlock.
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === "Tab" || e.key === "Escape") return;
+  e.preventDefault();
+  unlockNow();
 });
 
 function unlock(){
@@ -698,6 +728,8 @@ function openDesktopGroupWindow(groupKey){
 function openDesktopIcon(icon){
   if(!icon) return;
   closeDesktopContextMenu();
+  // Placeholder icons have no page yet — selecting them should do nothing.
+  if(icon.dataset.soon === "1") return;
   const projectNum = icon.dataset.project;
   if(projectNum) {
     openProjectWindow(projectNum);
@@ -724,7 +756,7 @@ function getGroupProjects(groupKey){
 
 function closeDesktopContextMenu(){ /* no-op: context menu removed */ }
 
-const ICON_IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "svg", "PNG", "JPG", "JPEG", "WEBP", "SVG"];
+const ICON_IMAGE_EXTENSIONS = ["webp", "png", "jpg", "jpeg", "svg", "WEBP", "PNG", "JPG", "JPEG", "SVG"];
 
 function resolveIconImage(basePath){
   return new Promise((resolve) => {
@@ -749,19 +781,19 @@ function resolveIconImage(basePath){
 
 const STACKED_PROJECT_IMAGE_MANIFEST = {
   "3": [
-    "projects/3/project-3-1.jpg",
-    "projects/3/project-3-2.jpg",
-    "projects/3/project-3-3.jpg",
-    "projects/3/project-3-4.jpg",
-    "projects/3/project-3-5.jpg"
+    "projects/3/project-3-1.webp",
+    "projects/3/project-3-2.webp",
+    "projects/3/project-3-3.webp",
+    "projects/3/project-3-4.webp",
+    "projects/3/project-3-5.webp"
   ],
   "8": [
-    "projects/8/project-8-1.jpg",
-    "projects/8/project-8-2.jpg",
-    "projects/8/project-8-3.jpg",
-    "projects/8/project-8-4.jpg",
-    "projects/8/project-8-5.jpg",
-    "projects/8/project-8-6.jpg"
+    "projects/8/project-8-1.webp",
+    "projects/8/project-8-2.webp",
+    "projects/8/project-8-3.webp",
+    "projects/8/project-8-4.webp",
+    "projects/8/project-8-5.webp",
+    "projects/8/project-8-6.webp"
   ]
 };
 
@@ -787,7 +819,6 @@ async function resolveManifestStackImages(paths = []){
 const WORK_PREVIEW_MANIFEST = {
   "1": ["projects/1/project-1-1.png", "assets/project-1.png"],
   "3": ["projects/3/project-3-1.jpg"],
-  "15": ["projects/15/project-15-2.jpg", "projects/15/project-15-1.jpg"],
   "4": ["projects/4/project-4-1.jpg", "assets/project-4.png"],
   "5": ["projects/5/project-5-3.jpg", "assets/project-5.png"],
   "6": ["projects/6/project-6-1.png"],
@@ -797,14 +828,13 @@ const WORK_PREVIEW_MANIFEST = {
   "10": ["projects/10/project-10-1.jpg", "assets/project-10.png"],
   "11": ["projects/11/project-11-1.jpg", "assets/project-11.png"],
   "12": ["projects/12/project-12-1.png", "assets/project-12.png"],
-  "13": ["assets/work.jpg"],
-  "14": ["assets/work.jpg"]
+  "13": ["projects/13/project-13-2.jpg", "projects/13/project-13-1.jpg"],
+  "14": ["projects/14/project-14-1.png"]
 };
 
 const DESKTOP_ICON_MANIFEST = {
   "1": "assets/project-1.png",
   "3": "projects/3/project-3-1.jpg",
-  "15": "projects/15/project-15-2.jpg",
   "4": "assets/project-4.png",
   "5": "assets/project-5.png",
   "6": "projects/6/project-6-1.png",
@@ -814,8 +844,8 @@ const DESKTOP_ICON_MANIFEST = {
   "10": "assets/project-10.png",
   "11": "assets/project-11.png",
   "12": "assets/project-12.png",
-  "13": "assets/work.jpg",
-  "14": "assets/work.jpg"
+  "13": "projects/13/project-13-2.jpg",
+  "14": "projects/14/project-14-1.png"
 };
 
 function setWorkPanelOpen(shouldOpen){
@@ -853,6 +883,9 @@ function getProjectPreviewCandidates(projectNum){
   const base = `projects/${projectNum}/project-${projectNum}-1`;
   const manifest = WORK_PREVIEW_MANIFEST[projectNum] || [];
   const candidates = [
+    // 400px WebP thumbs first — the WORKS cards render at ~120px, so the
+    // full-size sources below are only a fallback if a thumb is missing.
+    `assets/thumbs/project-${projectNum}.webp`,
     ...manifest,
     `${base}.png`,
     `${base}.jpg`,
@@ -891,8 +924,16 @@ function createWorkCard(project, index){
   card.className = "work-card";
   card.type = "button";
   card.dataset.project = project.projectNum;
-  card.setAttribute("aria-label", `Open ${project.title}`);
   card.style.setProperty("--work-delay", `${index * 38}ms`);
+
+  if (project.soon) {
+    card.classList.add("is-soon");
+    card.disabled = true;
+    card.setAttribute("aria-disabled", "true");
+    card.setAttribute("aria-label", `${project.title} — in progress`);
+  } else {
+    card.setAttribute("aria-label", `Open ${project.title}`);
+  }
 
   const preview = document.createElement("div");
   preview.className = "work-card-preview";
@@ -911,12 +952,28 @@ function createWorkCard(project, index){
   title.textContent = project.title;
 
   meta.appendChild(title);
-  card.append(preview, meta);
 
-  card.addEventListener("click", () => {
-    openProjectWindow(project.projectNum);
-    setWorkPanelOpen(false);
-  });
+  if (project.soon) {
+    const soon = document.createElement("span");
+    soon.className = "work-card-soon";
+    soon.textContent = "In progress";
+    meta.appendChild(soon);
+  }
+
+  // Safari wraps a <button>'s children in an anonymous box, which swallows any
+  // layout applied to the button itself. An explicit single wrapper child gives
+  // the preview/meta stack a real box to size against.
+  const inner = document.createElement("span");
+  inner.className = "work-card-inner";
+  inner.append(preview, meta);
+  card.append(inner);
+
+  if (!project.soon) {
+    card.addEventListener("click", () => {
+      openProjectWindow(project.projectNum);
+      setWorkPanelOpen(false);
+    });
+  }
 
   void hydrateWorkCardPreview(project, image);
   return card;
@@ -927,8 +984,8 @@ const WORK_CATEGORIES = [
   { key: "p1",  label: "Men of Platinum",    projects: ["1"] },
   { key: "p5",  label: "Dream Journals",     projects: ["5"] },
   { key: "p6",  label: "Lost in Translation", projects: ["6"] },
-  { key: "p8",  label: "Paintings",          projects: ["8"] },
-  { key: "p13", label: "Reflections",        projects: ["13"] }
+  { key: "p13", label: "The Upside Down",   projects: ["13"] },
+  { key: "p12", label: "The Borges Stories", projects: ["12"] }
 ];
 
 function buildWorkPanel(){
@@ -1046,7 +1103,11 @@ async function setDesktopIconImages(){
       return;
     }
 
-    let iconSrc = await resolveImagePath(DESKTOP_ICON_MANIFEST[projectNum]);
+    // 400px WebP thumb first; the manifest originals are the fallback.
+    let iconSrc = await resolveImagePath(`assets/thumbs/icon-${projectNum}.webp`);
+    if (!iconSrc) {
+      iconSrc = await resolveImagePath(DESKTOP_ICON_MANIFEST[projectNum]);
+    }
     if (!iconSrc) {
       iconSrc = await resolveIconImage(`assets/project-${projectNum}`);
     }
@@ -1084,8 +1145,8 @@ const DESKTOP_ARTWORK_GROUP_TARGETS = {
   p1:  { x: 0.32, y: 0.20 }, // top-center
   p5:  { x: 0.07, y: 0.43 }, // left-mid
   p6:  { x: 0.76, y: 0.32 }, // upper-right
-  p8:  { x: 0.84, y: 0.58 }, // right-mid
-  p13: { x: 0.05, y: 0.72 }  // lower-left
+  p13: { x: 0.84, y: 0.58 }, // right-mid
+  p12: { x: 0.05, y: 0.72 }  // lower-left
 };
 
 const FALLBACK_ICON_PCTS = [
@@ -1221,11 +1282,11 @@ function animateDesktopIconLaunch(){
   const source = artworkPointToSurfacePx(DESKTOP_ARTWORK_LAPTOP_SOURCE, w, h);
   const icons = Array.from(desktopIcons);
   const launchOrder = new Map([
-    ["p8",  0],
+    ["p13", 0],
     ["p6",  1],
     ["p1",  2],
     ["p5",  3],
-    ["p13", 4]
+    ["p12", 4]
   ]);
 
   iconsCanvas.classList.add("is-launching");
@@ -1533,6 +1594,21 @@ window.addEventListener("message", (e) => {
     return;
   }
 
+  // Project-open relay: a page inside an iframe (e.g. the resume's
+  // "View project" link) asks the shell to open a project in this window
+  // rather than navigating the whole page away.
+  if (e.data.type === "open-project") {
+    const num = String(e.data.projectNum || "");
+    if (PROJECTS_BY_NUMBER.has(num)) {
+      if (isPage2Open) {
+        const btn = allProjectsList?.querySelector(`.all-projects-list-btn[data-project="${num}"]`);
+        if (btn) { selectAllProjectsItem(num, btn); return; }
+      }
+      openProjectWindow(num);
+    }
+    return;
+  }
+
   // Height relay: media page reports its true stacked content height
   // so we can size projectFrame so windowContent has something to scroll.
   if (e.data.type === "media-total-height") {
@@ -1554,22 +1630,22 @@ const allProjectsFrame = document.getElementById("allProjectsFrame");
 const allProjectsPlaceholder = document.getElementById("allProjectsPlaceholder");
 let isPage2Open = false;
 
-// Full list of all real projects (exclude empty placeholders 13/14 shown as Reflections placeholder)
+// Full list of all projects, in running order. Entries flagged `soon` have no
+// page yet and render as non-interactive "In progress" rows.
 const ALL_PROJECTS_LIST = [
   { num: "1",  title: "Men of Platinum",      medium: "Digital Illustration & Motion" },
   { num: "3",  title: "Digital Illustrations", medium: "Digital Illustration & Motion" },
-  { num: "15", title: "The Upside Down",       medium: "Digital Illustration & Motion" },
   { num: "4",  title: "ArtsyDesign.co",        medium: "Print & Editorial" },
   { num: "5",  title: "Dream Journals",        medium: "Print & Editorial" },
   { num: "6",  title: "Lost in Translation",   medium: "Print & Editorial" },
-  { num: "7",  title: "Physics Textbook",      medium: "Print & Editorial" },
+  { num: "7",  title: "Black Hole",            medium: "Print & Editorial" },
   { num: "8",  title: "Paintings",             medium: "Fine Art" },
   { num: "9",  title: "Black N White",         medium: "Fine Art" },
+  { num: "13", title: "The Upside Down",       medium: "Fine Art" },
   { num: "10", title: "Pottery",               medium: "Fine Art" },
   { num: "11", title: "Installations",         medium: "Spatial / Installation" },
   { num: "12", title: "The Borges Stories",    medium: "Web Design" },
-  { num: "13", title: "Reflections",           medium: "Web Design" },
-  { num: "14", title: "Fashion History",       medium: "Web Design" }
+  { num: "14", title: "Bindaas",               medium: "App Design" }
 ];
 
 
@@ -1598,14 +1674,27 @@ function buildAllProjectsList() {
       btn.type = "button";
       btn.className = "all-projects-list-btn";
       btn.dataset.project = project.num;
-      btn.setAttribute("aria-label", `View ${project.title}`);
 
       const titleEl = document.createElement("span");
       titleEl.className = "all-projects-list-btn-title";
       titleEl.textContent = project.title;
-
       btn.appendChild(titleEl);
-      btn.addEventListener("click", () => selectAllProjectsItem(project.num, btn));
+
+      if (project.soon) {
+        li.classList.add("is-soon");
+        btn.classList.add("is-soon");
+        btn.disabled = true;
+        btn.setAttribute("aria-disabled", "true");
+        btn.setAttribute("aria-label", `${project.title} — in progress`);
+        const soonEl = document.createElement("span");
+        soonEl.className = "all-projects-list-btn-soon";
+        soonEl.textContent = "In progress";
+        btn.appendChild(soonEl);
+      } else {
+        btn.setAttribute("aria-label", `View ${project.title}`);
+        btn.addEventListener("click", () => selectAllProjectsItem(project.num, btn));
+      }
+
       li.appendChild(btn);
       allProjectsList.appendChild(li);
     });

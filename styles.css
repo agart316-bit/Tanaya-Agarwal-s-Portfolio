@@ -9,9 +9,9 @@
   --dur-fast: 160ms;
   --dur-mid:  320ms;
   --dur-slow: 600ms;
-  --lock-bg:    url("assets/lockscreen-bg.jpg");
+  --lock-bg:    url("assets/lockscreen-bg.webp");
   --lock-bg-dim: 0.7;
-  --desktop-art-bg: url("assets/desktop-crouching-folders.png");
+  --desktop-art-bg: url("assets/desktop-crouching-folders.webp");
   --desktop-art-offset-y: 54px;
   --dock-size:  50px;
   --dock-gap:   18px;
@@ -376,10 +376,9 @@ body {
   box-shadow: none;
 }
 
-/* Spatial icon asset has a light matte; blend + no shadow keeps only the pink cube visible. */
-.desktop-icon[data-group="p8"] .desktop-icon-img {
+/* The Upside Down board art is a dark full-bleed image — no matte to blend away. */
+.desktop-icon[data-group="p13"] .desktop-icon-img {
   box-shadow: none;
-  mix-blend-mode: multiply;
 }
 
 .desktop-icon--stacked .desktop-icon-stack {
@@ -661,23 +660,23 @@ body {
 }
 
 .dock-app[data-window="dock-about"]::before {
-  background-image: url("assets/about.jpg");
+  background-image: url("assets/about.webp");
 }
 
 .dock-app[data-window="dock-resume"]::before {
-  background-image: url("assets/resume.jpg");
+  background-image: url("assets/resume.webp");
 }
 
 .dock-app[data-window="dock-references"]::before {
-  background-image: url("assets/references.jpg");
+  background-image: url("assets/references.webp");
 }
 
 .dock-app[data-window="dock-contacts"]::before {
-  background-image: url("assets/contact.jpg");
+  background-image: url("assets/contact.webp");
 }
 
 .dock-app[data-window="dock-photos"]::before {
-  background-image: url("assets/photos.jpg");
+  background-image: url("assets/photos.webp");
 }
 
 /* Dock separator */
@@ -960,26 +959,27 @@ body {
 }
 
 #workTab .window-navTab-dot {
-  background-image: url("assets/work.jpg");
+  background-image: url("assets/work.webp");
 }
 
 #headerTabAbout .window-navTab-dot {
-  background-image: url("assets/about.jpg");
+  background-image: url("assets/about.webp");
 }
 
 #headerTabResume .window-navTab-dot {
-  background-image: url("assets/resume.jpg");
+  background-image: url("assets/resume.webp");
 }
 
 #headerTabContact .window-navTab-dot {
-  background-image: url("assets/contact.jpg");
+  background-image: url("assets/contact.webp");
 }
 
 #headerTabReferences .window-navTab-dot {
-  background-image: url("assets/references.jpg");
+  background-image: url("assets/references.webp");
 }
 
 .window-navTab-label {
+  color: #111111;
   opacity: 0;
   max-width: 0;
   transform: translateX(-8px);
@@ -1105,8 +1105,12 @@ body {
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  padding: 8px 16px 16px;
+  gap: 28px;
+  padding: 12px 18px 26px;
+  /* Never let a card stretch to its row height — each sizes to its own
+     square and the gap stays intact between rows. */
+  align-items: start;
+  grid-auto-rows: auto;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -1135,9 +1139,15 @@ body {
   text-align: left;
   padding: 0;
   min-height: 0;
-  aspect-ratio: 1 / 1;
-  display: grid;
-  grid-template-rows: 70% 30%;
+  /* Plain block flow. Flex/grid ratios inside a <button> collapse in some
+     browsers (the anonymous button content box swallows them), which is what
+     squeezed the title strip to zero height. Instead the preview owns its own
+     square aspect-ratio and the meta strip sizes to its text, so the card
+     height is always image + name. */
+  display: block;
+  width: 100%;
+  font: inherit;
+  line-height: 0;
   transition:
     transform 170ms var(--spring),
     box-shadow 170ms ease,
@@ -1159,15 +1169,28 @@ body {
   outline-offset: -2px;
 }
 
+.work-card-inner {
+  display: block;
+  width: 100%;
+}
+
+/* padding-top:100% makes a square that every engine agrees on — `aspect-ratio`
+   is unreliable on a <button> subtree in Safari. */
 .work-card-preview {
   position: relative;
-  min-height: 0;
+  display: block;
+  width: 100%;
+  height: 0;
+  padding-top: 100%;
   border-bottom: 0;
   background: #ececef;
   overflow: hidden;
 }
 
+/* Absolutely positioned so the image can never contribute to card height. */
 .work-card-preview img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1183,6 +1206,8 @@ body {
 }
 
 .work-card-fallback {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: grid;
@@ -1202,9 +1227,13 @@ body {
 
 .work-card-meta {
   background: #b4b5b8;
-  padding: 8px 12px 9px;
+  padding: 9px 12px 11px;
   display: flex;
   align-items: flex-start;
+  gap: 8px;
+  min-height: 42px;
+  line-height: 1.24;
+  overflow: hidden;
 }
 
 .work-card-title {
@@ -1212,6 +1241,7 @@ body {
   color: #2f2f31;
   line-height: 1.24;
   margin: 0;
+  flex: 1 1 auto;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1224,6 +1254,60 @@ body {
 
 .work-card-url {
   display: none !important;
+}
+
+/* Work cards for projects with no page yet. */
+.work-card.is-soon {
+  cursor: default;
+  filter: grayscale(1);
+  opacity: 0.62;
+}
+
+.work-card.is-soon:hover {
+  transform: none;
+  box-shadow: none;
+  filter: grayscale(1);
+}
+
+.work-card.is-soon .work-card-meta {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.work-card-soon {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5c5c5f;
+  border: 1px solid rgba(47, 47, 49, 0.28);
+  border-radius: 999px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  flex: none;
+  transform: translateY(-120%);
+  transition: transform 430ms var(--ease-out);
+  transition-delay: calc(var(--work-delay, 0ms) + 120ms);
+}
+
+.window-workPanel.is-open .work-card-soon {
+  transform: translateY(0);
+}
+
+/* Desktop placeholder icon. */
+.desktop-icon.is-soon .desktop-icon-img {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+.desktop-icon.is-soon .desktop-icon-label {
+  color: rgba(48, 48, 48, 0.7);
+}
+
+.desktop-icon.is-soon .desktop-icon-label em {
+  font-style: normal;
+  opacity: 0.7;
+  font-size: 0.86em;
 }
 
 /* Non-mobile floor: keep typography legible as width tightens. */
@@ -1294,7 +1378,7 @@ body {
   }
 
   .work-grid {
-    gap: 14px;
+    gap: 32px;
   }
 }
 
@@ -1451,6 +1535,33 @@ body {
   font-weight: 500;
 }
 
+/* Projects with no page yet — listed, but not selectable. */
+.all-projects-list-btn.is-soon {
+  cursor: default;
+  color: rgba(26, 23, 20, 0.32);
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.all-projects-list-btn.is-soon:hover {
+  color: rgba(26, 23, 20, 0.32);
+  background: none;
+}
+
+.all-projects-list-btn-soon {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(26, 23, 20, 0.3);
+  border: 1px solid rgba(26, 23, 20, 0.18);
+  border-radius: 999px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  flex: none;
+}
+
 /* Right viewer */
 .all-projects-viewer {
   flex: 1;
@@ -1538,10 +1649,10 @@ body {
 
 /* Category separators in nav */
 .all-projects-list-category {
-  padding: 20px 28px 6px;
-  font: 400 9px/1 "Bebas Neue", sans-serif;
-  letter-spacing: 0.18em;
-  color: rgba(26, 23, 20, 0.3);
+  padding: 26px 28px 8px;
+  font: 400 16px/1.05 "Bebas Neue", sans-serif;
+  letter-spacing: 0.12em;
+  color: #FE5BAC;
   text-transform: uppercase;
 }
 
@@ -1560,5 +1671,9 @@ body {
   .all-projects-list-category {
     padding-left: 16px;
     padding-right: 16px;
+  }
+  .all-projects-list-category {
+    font-size: 14px;
+    letter-spacing: 0.1em;
   }
 }

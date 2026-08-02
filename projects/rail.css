@@ -111,6 +111,7 @@ h1{
 .frame--fluid{aspect-ratio:auto;width:auto;max-width:100%}
 .frame--fluid video,.frame--fluid img{width:auto;max-width:100%;height:auto;max-height:var(--fig-max-h)}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
 /* carousel: one figure, several plates, same viewport cap as .frame */
 .carousel{
   position:relative;margin:0 auto;overflow:hidden;background:var(--frame);
@@ -213,5 +214,8 @@ h1{
 }
 @media (max-width:600px){
   .pair,.trio{grid-template-columns:1fr}
+  /* .quad stays 2x2 at every width — it reads as a set of four, and the
+     project pages are often embedded in a narrow iframe. */
+  .quad{grid-template-columns:1fr 1fr;gap:12px}
   .col{gap:40px}
 }

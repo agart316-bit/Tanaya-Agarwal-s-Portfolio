@@ -75,3 +75,41 @@
     go(0);
   });
 })();
+
+/* =========================================================
+   LAZY VIDEO
+   Sources stay in data-src until the video is close to the
+   viewport, so a project page costs its images and nothing
+   more until you actually scroll to the film.
+========================================================= */
+(function () {
+  var videos = document.querySelectorAll("video[data-autoplay-in-view]");
+  if (!videos.length) return;
+
+  function load(video) {
+    if (video.dataset.loaded === "1") return;
+    video.dataset.loaded = "1";
+    var sources = video.querySelectorAll('source[data-src]');
+    for (var i = 0; i < sources.length; i++) {
+      sources[i].src = sources[i].dataset.src;
+    }
+    video.load();
+    var playing = video.play();
+    if (playing && playing.catch) playing.catch(function () { /* user can hit play */ });
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    Array.prototype.forEach.call(videos, load);
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      load(entry.target);
+      io.unobserve(entry.target);
+    });
+  }, { rootMargin: "200px 0px" });
+
+  Array.prototype.forEach.call(videos, function (v) { io.observe(v); });
+})();

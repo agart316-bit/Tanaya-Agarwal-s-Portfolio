@@ -1,0 +1,117 @@
+/* ==========================================================================
+   Mobile portfolio — styles
+   Ported from the "Mobile Portfolio v2" prototype. Loaded only below 560px
+   (see index.html) or unconditionally by mobile.html for desktop preview.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+/* Everything except the mobile app is hidden while the mobile view is active. */
+body > *:not(#mobile-root) {
+  display: none !important;
+}
+
+#mobile-root,
+#mobile-root *,
+#mobile-root *::before,
+#mobile-root *::after {
+  box-sizing: border-box;
+}
+
+#mobile-root img {
+  display: block;
+  max-width: 100%;
+}
+
+#mobile-root button {
+  font: inherit;
+  color: inherit;
+}
+
+#mobile-root a {
+  color: #fe5bac;
+  text-decoration: none;
+}
+
+#mobile-root a:hover {
+  color: #d94a91;
+}
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes nameplateReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes winOpen {
+  0% { opacity: 0; transform: scale(.94); filter: blur(2px); }
+  68% { opacity: 1; transform: scale(1.01); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes lockUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100%); opacity: 0; }
+}
+
+@keyframes pageIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes panelIn {
+  from { transform: translateX(102%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes rolesScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* --------------------------------------------------------------------------
+   Desktop preview frame — only used by mobile.html (html.m-preview)
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 560px) {
+  html.m-preview body { background: #0d0d0f; }
+
+  html.m-preview .m-shell {
+    background: radial-gradient(120% 90% at 50% 0%, #1e1e22 0%, #0b0b0d 70%) !important;
+  }
+
+  html.m-preview .m-frame {
+    width: 402px !important;
+    height: 874px !important;
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(var(--phone-scale, 1));
+    border-radius: 44px !important;
+    box-shadow: 0 0 0 11px #17171a, 0 0 0 12px #38383d, 0 40px 90px rgba(0, 0, 0, .6) !important;
+  }
+}

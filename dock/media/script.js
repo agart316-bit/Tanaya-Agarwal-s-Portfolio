@@ -1,29 +1,29 @@
 const GROUPS = {
   motion: {
     title: "Digital Illustration & Motion",
-    intro: "Men of Platinum, Digital Illustrations, The Upside Down",
+    intro: "Men of Platinum, Digital Illustrations",
     projects: [
       { id: "1", title: "Men of Platinum" },
-      { id: "3", title: "Digital Illustrations" },
-      { id: "15", title: "The Upside Down" }
+      { id: "3", title: "Digital Illustrations" }
     ]
   },
   print: {
     title: "Print & Editorial",
-    intro: "ArtsyDesign. co, Dream Journals, Lost in Translation, Physics Textbook",
+    intro: "ArtsyDesign. co, Dream Journals, Lost in Translation, Black Hole",
     projects: [
       { id: "4", title: "ArtsyDesign. co" },
       { id: "5", title: "Dream Journals" },
       { id: "6", title: "Lost in Translation" },
-      { id: "7", title: "Physics Textbook" }
+      { id: "7", title: "Black Hole" }
     ]
   },
   fineart: {
     title: "Fine Art",
-    intro: "Paintings, Black N White, Pottery",
+    intro: "Paintings, Black N White, The Upside Down, Pottery",
     projects: [
       { id: "8", title: "Paintings" },
       { id: "9", title: "Black N White" },
+      { id: "13", title: "The Upside Down" },
       { id: "10", title: "Pottery" }
     ]
   },
@@ -36,11 +36,16 @@ const GROUPS = {
   },
   web: {
     title: "Web Design",
-    intro: "The Borges Stories, Ten Tab Open, Fashion History",
+    intro: "The Borges Stories",
     projects: [
-      { id: "12", title: "The Borges Stories" },
-      { id: "13", title: "Ten Tab Open" },
-      { id: "14", title: "Fashion History" }
+      { id: "12", title: "The Borges Stories" }
+    ]
+  },
+  app: {
+    title: "App Design",
+    intro: "Bindaas",
+    projects: [
+      { id: "14", title: "Bindaas" }
     ]
   }
 };
@@ -177,8 +182,22 @@ function createProjectItem(project, index, observer) {
   const item = document.createElement("article");
   item.className = "media-item";
 
+  // No page yet — render a placeholder card instead of a 404 iframe.
+  if (project.soon) {
+    item.classList.add("media-item--soon");
+    const card = document.createElement("div");
+    card.className = "media-soon";
+    card.innerHTML =
+      `<span class="media-soon-title"></span><span class="media-soon-label">In progress</span>`;
+    card.querySelector(".media-soon-title").textContent = project.title;
+    item.append(card);
+    observer.observe(item);
+    return item;
+  }
+
   const frame = document.createElement("iframe");
   frame.className = "media-frame";
+  frame.setAttribute("allow", "autoplay; fullscreen");
   frame.title = `${project.title} content`;
   frame.loading = index === 0 ? "eager" : "lazy";
   frame.src = `../../projects/${project.id}/index.html`;

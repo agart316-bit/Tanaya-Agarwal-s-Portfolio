@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contacts</title>
   <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=5" />
 </head>
 <body>
   <main class="contacts-page" aria-label="Contact profile">
     <section class="contacts-shell">
       <header class="identity">
         <figure class="avatar-wrap">
-          <img class="avatar" src="../../assets/user.jpg" alt="Tanaya Agarwal profile photo" />
+          <img class="avatar" src="../../assets/user.webp" alt="Tanaya Agarwal profile photo" fetchpriority="high" />
         </figure>
         <p class="pronouns">SHE, HER, HERS</p>
         <h1>Tanaya Agarwal</h1>
@@ -20,7 +20,7 @@
 
       <section class="share-card" aria-label="Share settings">
         <div class="share-left">
-          <img class="share-avatar" src="../../assets/user.jpg" alt="" aria-hidden="true" />
+          <img class="share-avatar" src="../../assets/user.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
           <div class="share-copy">
             <p class="share-title">Shared Name and Photo</p>
             <p class="share-subtitle">Sharing Off</p>
@@ -53,9 +53,23 @@
         </article>
       </section>
 
-      <section class="message-card" aria-label="Send message">
+      <a
+        class="message-card"
+        href="sms:+13475441628"
+        target="_top"
+        aria-label="Send a message to +1 (347) 544-1628"
+      >
         <p>Send Message</p>
-      </section>
+      </a>
+
+      <a
+        class="message-card"
+        href="mailto:tanayaagarwal11@gmail.com?subject=Hello%20Tanaya"
+        target="_top"
+        aria-label="Send an email to tanayaagarwal11@gmail.com"
+      >
+        <p>Send Email</p>
+      </a>
     </section>
   </main>
   <script src="script.js"></script>
