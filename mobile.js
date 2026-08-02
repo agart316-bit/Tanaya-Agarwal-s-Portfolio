@@ -557,7 +557,7 @@ function allWorkHTML() {
     rows += '<div style="padding:26px 20px 8px;font:400 16px/1.05 \'Bebas Neue\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,23,20,.42)">' + esc(cat) + '</div>';
     ORDER.filter(function (k) { return PROJECTS[k].cat === cat; }).forEach(function (k) {
       var pr = PROJECTS[k];
-      var meta = pr.kicker + " · " + pr.index.split(" / ")[0];
+      var meta = pr.kicker;
       rows += '' +
         '<a data-app="' + k + '" href="#" style="display:flex;align-items:center;gap:14px;width:100%;padding:12px 20px;border-left:2px solid transparent;text-decoration:none;color:rgba(26,23,20,.5);font:400 13px/1.3 \'Helvetica Neue\',Arial,sans-serif">' +
           '<span style="flex:0 0 auto;width:52px;height:52px;border-radius:8px;overflow:hidden;background:#e2ded7"><img src="' + thumbFor(k) + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></span>' +
