@@ -1644,8 +1644,8 @@ const ALL_PROJECTS_LIST = [
   { num: "13", title: "The Upside Down",       medium: "Fine Art" },
   { num: "10", title: "Pottery",               medium: "Fine Art" },
   { num: "11", title: "Installations",         medium: "Spatial / Installation" },
-  { num: "12", title: "The Borges Stories",    medium: "Web Design" },
-  { num: "14", title: "Bindaas",               medium: "App Design" }
+  { num: "12", title: "The Borges Stories",    medium: "Web & App Design" },
+  { num: "14", title: "Bindaas",               medium: "Web & App Design" }
 ];
 
 

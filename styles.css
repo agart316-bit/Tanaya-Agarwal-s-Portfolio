@@ -117,6 +117,10 @@ body {
 }
 
 .lockscreen-username {
+  /* nudged up toward the avatar; `relative` so the password field
+     and hint below keep their exact positions */
+  position: relative;
+  top: -4px;
   font-size: 13px;
   font-weight: 400;
   color: #FE5BAC;

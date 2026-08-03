@@ -272,7 +272,7 @@ const PROJECTS = {
   },
 
   p12: {
-    num: "12", index: "12 / 13", cat: "Web Design", title: "The Borges Stories",
+    num: "12", index: "12 / 13", cat: "Web & App Design", title: "The Borges Stories",
     kicker: "Web Design", accent: "#2f6f6b",
     lede: "Three Borges stories rebuilt as three websites, each interface designed to behave the way its story behaves.",
     hero: "projects/12/project-12-1.webp", heroAlt: "Entry screen asking the reader one question",
@@ -297,7 +297,7 @@ const PROJECTS = {
   },
 
   p13: {
-    num: "13", index: "09 / 13", cat: "Web Design", title: "The Upside Down",
+    num: "13", index: "09 / 13", cat: "Fine Art", title: "The Upside Down",
     kicker: "Fine Art", accent: "#26221e",
     lede: "Candy Land redrawn in ink for a generation raised on collapsing certainties — a playable board where the thing waiting at the end is an empty wrapper.",
     hero: "projects/13/project-13-2.webp", heroAlt: "The Upside Down game board, ink and hatching",
@@ -322,7 +322,7 @@ const PROJECTS = {
   },
 
   p14: {
-    num: "14", index: "13 / 13", cat: "Web Design", title: "Bindaas",
+    num: "14", index: "13 / 13", cat: "Web & App Design", title: "Bindaas",
     kicker: "App Design", accent: "#16309b",
     lede: "A travel guide for girls backpacking solo across India, where every listing is verified by a girl who went there herself.",
     hero: "projects/14/project-14-1.webp", heroAlt: "Home screen, Rishikesh",
@@ -354,7 +354,7 @@ const PROJECTS = {
 };
 
 const ORDER = ["p1","p3","p4","p5","p6","p7","p8","p9","p10","p11","p12","p13","p14"];
-const CATS = ["Illustration & Motion","Print & Editorial","Fine Art","Spatial / Installation","Web Design"];
+const CATS = ["Illustration & Motion","Print & Editorial","Fine Art","Spatial / Installation","Web & App Design"];
 const DOCK_TITLES = { about: "About", resume: "Resume", references: "References", contacts: "Contacts", photos: "Photos" };
 
 const EXPERIENCES = [
