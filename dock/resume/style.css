@@ -226,7 +226,8 @@ body {
 }
 
 .experience-detail-inner {
-  padding: 12px 22px 20px 28px;
+  display: flow-root;
+  padding: 12px 30px 24px 28px;
 }
 
 .experience-detail p {
@@ -255,17 +256,14 @@ body {
 
 .experience-project-link {
   display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  align-items: baseline;
+  gap: 5px;
   float: right;
-  margin-top: 14px;
-  padding: 7px 14px;
-  border: 1px solid rgba(254, 91, 172, 0.42);
-  border-radius: 999px;
-  font-family: var(--font-system);
-  font-weight: 500;
+  margin-top: 6px;
+  font-family: inherit;
+  font-weight: 400;
   font-size: var(--project-copy-size, 7.1px);
-  line-height: 1;
+  line-height: 1.45;
   color: #fe5bac;
   text-decoration: none;
   white-space: nowrap;
@@ -275,8 +273,6 @@ body {
   transition:
     opacity 460ms ease,
     transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 180ms ease,
-    border-color 180ms ease,
     color 180ms ease;
 }
 
@@ -289,9 +285,7 @@ body {
 
 .experience-project-link:hover,
 .experience-project-link:focus-visible {
-  background: #fe5bac;
-  border-color: #fe5bac;
-  color: #ffffff;
+  color: #e23f92;
 }
 
 .experience-project-link-arrow {
