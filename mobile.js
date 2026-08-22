@@ -128,24 +128,26 @@ const PROJECTS = {
   p6: {
     num: "6", index: "05 / 13", cat: "Print & Editorial", title: "Lost in Translation",
     kicker: "Print & Editorial", accent: "#5b6068",
-    lede: "A book about words with no English equivalent, typeset so the reader keeps losing something on the way across the gutter.",
-    hero: "projects/6/project-6-1.webp", heroAlt: "Lost in Translation, printed copies",
+    lede: "A self-published booklet about Indian craft rebranded as Western trend — typeset so the footnotes carry more weight than the headlines.",
+    hero: "projects/6/project-6-1.webp", heroAlt: "Lost in Translation, two copies of the printed cover",
     rail: [
-      { label: "Role", value: "Design & typesetting" },
-      { label: "Year", value: "2021" },
+      { label: "Role", value: "Interviews, design & typesetting" },
+      { label: "Year", value: "2026" },
       { label: "Medium", value: "Print — InDesign, Illustrator" },
-      { label: "Output", value: "Perfect-bound book" }
+      { label: "Output", value: "94-page booklet, US Letter, saddle stitched" }
     ],
-    tags: ["Editorial", "Typography"],
+    tags: ["Editorial", "Typography", "Publishing"],
     blocks: [
-      L("Untranslatable words — mono no aware, saudade, hiraeth — sit inside a familiar serif body text that is repeatedly interrupted. A word breaks across the spread, a definition runs into the margin and stops, a page withholds the term it spent two paragraphs setting up. The typography is the argument, not the decoration: the reader is made to feel the loss the book is describing."),
-      I("projects/6/project-6-2.webp", "Cover spread"),
-      G(["projects/6/project-6-4.webp", "Interior spread"], ["projects/6/project-6-5.webp", "Interior spread"]),
-      I("projects/6/project-6-3.webp", "Chapter opener"),
-      G(["projects/6/project-6-7.webp", "Interior page"], ["projects/6/project-6-9.webp", "Interior page"])
+      L("Indian culture has been trending for a while now — turmeric lattes, Prada sandals, mangal sutras rebranded as minimalist jewellery — and the closer you look, the harder it is to find the people who actually made any of it. This book sits with that gap. Three conversations across fashion, wellness and jewellery ask the people who work closest to these traditions what gets taken, what gets renamed, and what gets left behind."),
+      I("projects/6/project-6-2.webp", "Abstract page, centred monospace text on an otherwise empty spread"),
+      H("Hierarchy, set in type", "The argument of the book is about who gets to speak first. A Western brand takes centre stage and the origin is reduced to an aesthetic, so the typography reverses that order. Questions are set in Chandira, a display face that references Devanagari letterforms without borrowing them, and they interrupt the page rather than introduce it. The answers sit in plain monospace, unembellished, so the voices are never dramatised. Where a conversation turns, a single phrase is pulled out at full scale and left alone."),
+      G(["projects/6/project-6-3.webp", "WORN, the opening section with Akshata Bhojania, illuminated capitals in pink"], ["projects/6/project-6-4.webp", "Question spread, the question in Chandira and the answer in monospace with footnotes below"]),
+      I("projects/6/project-6-5.webp", "A pulled quote at full scale facing the running answer"),
+      H("Footnotes as the foundation", "Kolhapuri chappals, chikankari, vastu, ayurveda, turmeric, kanji — each term is struck through where it appears and rebuilt underneath. The footnotes are not small academic asides; they are given size and space, because context is the first thing that gets cut. Each interview carries its own colour over one restrained structure, and nothing bleeds off the page, which keeps the whole thing printable at home. The white space is doing the same work as the footnotes: it marks what is missing."),
+      G(["projects/6/project-6-7.webp", "Wellness section, a phrase from the interview built across the spread in type and image"], ["projects/6/project-6-9.webp", "ADORNED, the jewellery section with Neetu Agarwal, illuminated capitals in blue"])
     ],
-    band: { label: "In hand", bg: "#e3e5e7", ink: "#33373c", note: "Offset printed and perfect bound. The interruptions only land at full size, in sequence, in the hand.", cols: "1fr", images: [{ src: "projects/6/project-6-12.webp", alt: "Closing spread, printed and bound" }] },
-    credits: "Credits — Offset printed, perfect bound. Design, typesetting and photography: Tanaya Agarwal.",
+    band: { label: "In hand", bg: "#e3e5e7", ink: "#33373c", note: "Printed two-up on standard copy paper, folded, stapled and glued — the assembly instructions are bound into the back. It is published through Invisible Press, a distributed DIY imprint that only exists when someone prints it: the reader becomes the publisher.", cols: "1fr", images: [{ src: "projects/6/project-6-12.webp", alt: "Assembly instructions facing the colophon at the end of the book" }] },
+    credits: "Credits — Published through Invisible Press, New York City, 2026. Interviews with Akshata Bhojania and Neetu Agarwal. Typefaces: Chandira, DejaVu Sans Mono, Zapfino. Design and typesetting: Tanaya Agarwal.",
     nextKey: "p7", nextTitle: "Black Hole"
   },
 
