@@ -849,7 +849,7 @@ function getGroupProjects(groupKey){
 
 function closeDesktopContextMenu(){ /* no-op: context menu removed */ }
 
-const ICON_IMAGE_EXTENSIONS = ["webp", "png", "jpg", "jpeg", "svg", "WEBP", "PNG", "JPG", "JPEG", "SVG"];
+const ICON_IMAGE_EXTENSIONS = ["webp", "svg"];
 
 function resolveIconImage(basePath){
   return new Promise((resolve) => {
@@ -910,35 +910,35 @@ async function resolveManifestStackImages(paths = []){
 }
 
 const WORK_PREVIEW_MANIFEST = {
-  "1": ["projects/men-of-platinum/men-of-platinum-1.png", "assets/covers/men-of-platinum.png"],
-  "3": ["projects/digital-illustrations/digital-illustrations-1.jpg"],
-  "4": ["projects/artsy-design-co/artsy-design-co-1.jpg", "assets/covers/artsy-design-co.png"],
-  "5": ["projects/dream-journals/dream-journals-3.jpg", "assets/covers/dream-journals.png"],
-  "6": ["projects/lost-in-translation/lost-in-translation-1.png"],
-  "7": ["projects/black-hole/black-hole-1.png"],
-  "8": ["projects/paintings/paintings-1.jpg"],
-  "9": ["projects/black-n-white/black-n-white-1.jpg", "assets/covers/black-n-white.png"],
-  "10": ["projects/pottery/pottery-1.jpg", "assets/covers/pottery.png"],
-  "11": ["projects/installations/installations-1.jpg", "assets/covers/installations.png"],
-  "12": ["projects/the-borges-stories/the-borges-stories-1.png", "assets/covers/the-borges-stories.png"],
-  "13": ["projects/the-upside-down/the-upside-down-2.jpg", "projects/the-upside-down/the-upside-down-1.jpg"],
-  "14": ["projects/bindaas/bindaas-1.png"]
+  "1": ["projects/men-of-platinum/men-of-platinum-1.webp", "assets/thumbs/men-of-platinum.webp"],
+  "3": ["projects/digital-illustrations/digital-illustrations-1.webp"],
+  "4": ["projects/artsy-design-co/artsy-design-co-1.webp", "assets/thumbs/artsy-design-co.webp"],
+  "5": ["projects/dream-journals/dream-journals-3.webp", "assets/thumbs/dream-journals.webp"],
+  "6": ["projects/lost-in-translation/lost-in-translation-1.webp"],
+  "7": ["projects/black-hole/black-hole-1.webp"],
+  "8": ["projects/paintings/paintings-1.webp"],
+  "9": ["projects/black-n-white/black-n-white-1.webp", "assets/thumbs/black-n-white.webp"],
+  "10": ["projects/pottery/pottery-1.webp", "assets/thumbs/pottery.webp"],
+  "11": ["projects/installations/installations-1.webp", "assets/thumbs/installations.webp"],
+  "12": ["projects/the-borges-stories/the-borges-stories-1.webp", "assets/thumbs/the-borges-stories.webp"],
+  "13": ["projects/the-upside-down/the-upside-down-2.webp", "projects/the-upside-down/the-upside-down-1.webp"],
+  "14": ["projects/bindaas/bindaas-1.webp"]
 };
 
 const DESKTOP_ICON_MANIFEST = {
-  "1": "assets/covers/men-of-platinum.png",
-  "3": "projects/digital-illustrations/digital-illustrations-1.jpg",
-  "4": "assets/covers/artsy-design-co.png",
-  "5": "assets/covers/dream-journals.png",
-  "6": "projects/lost-in-translation/lost-in-translation-1.png",
-  "7": "projects/black-hole/black-hole-1.png",
-  "8": "projects/paintings/paintings-1.jpg",
-  "9": "assets/covers/black-n-white.png",
-  "10": "assets/covers/pottery.png",
-  "11": "assets/covers/installations.png",
-  "12": "assets/covers/the-borges-stories.png",
-  "13": "projects/the-upside-down/the-upside-down-2.jpg",
-  "14": "projects/bindaas/bindaas-1.png"
+  "1": "assets/thumbs/men-of-platinum.webp",
+  "3": "projects/digital-illustrations/digital-illustrations-1.webp",
+  "4": "assets/thumbs/artsy-design-co.webp",
+  "5": "assets/thumbs/dream-journals.webp",
+  "6": "projects/lost-in-translation/lost-in-translation-1.webp",
+  "7": "projects/black-hole/black-hole-1.webp",
+  "8": "projects/paintings/paintings-1.webp",
+  "9": "assets/thumbs/black-n-white.webp",
+  "10": "assets/thumbs/pottery.webp",
+  "11": "assets/thumbs/installations.webp",
+  "12": "assets/thumbs/the-borges-stories.webp",
+  "13": "projects/the-upside-down/the-upside-down-2.webp",
+  "14": "projects/bindaas/bindaas-1.webp"
 };
 
 function setWorkPanelOpen(shouldOpen){
@@ -980,13 +980,8 @@ function getProjectPreviewCandidates(projectNum){
     // full-size sources below are only a fallback if a thumb is missing.
     `assets/thumbs/${projectSlug(projectNum)}.webp`,
     ...manifest,
-    `${base}.png`,
-    `${base}.jpg`,
-    `${base}.jpeg`,
-    `${base}.JPG`,
-    `${base}.JPEG`,
-    `assets/covers/${projectSlug(projectNum)}.png`,
-    "assets/desktop-bg.jpg"
+    `${base}.webp`,
+    "assets/desktop-bg.webp"
   ];
   return Array.from(new Set(candidates));
 }
@@ -1216,16 +1211,16 @@ async function setDesktopIconImages(){
       iconSrc = await resolveImagePath(DESKTOP_ICON_MANIFEST[projectNum]);
     }
     if (!iconSrc) {
-      iconSrc = await resolveIconImage(`assets/covers/${projectSlug(projectNum)}`);
+      iconSrc = await resolveImagePath(`assets/thumbs/${projectSlug(projectNum)}.webp`);
     }
     if (!iconSrc) {
-      iconSrc = await resolveImagePath("assets/work.jpg");
+      iconSrc = await resolveImagePath("assets/work.webp");
     }
     if (!iconSrc) return;
 
     thumb.src = iconSrc;
 
-    const hoverSrc = await resolveIconImage(`assets/covers/${projectSlug(projectNum)}-hover`);
+    const hoverSrc = await resolveIconImage(`assets/thumbs/${projectSlug(projectNum)}-hover`);
     if (!hoverSrc || icon.dataset.hoverBound === "1") return;
 
     icon.addEventListener("mouseenter", () => {

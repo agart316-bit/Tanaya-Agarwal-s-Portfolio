@@ -14,7 +14,7 @@ const MIN_ZOOM = 0.8;
 const MAX_ZOOM = 2.5;
 const PREVIEW_OFFSET_X = 14;
 const PREVIEW_OFFSET_Y = 18;
-const PROJECT_IMAGE_EXTENSIONS = ["webp", "WEBP", "jpg", "jpeg", "png", "JPG", "JPEG", "PNG"];
+const PROJECT_IMAGE_EXTENSIONS = ["webp"];
 const PROJECT_IMAGE_INDEXES = [1, 0];
 
 /* ─── Floating layer (Cappen's work__list__layer) ─────────────────

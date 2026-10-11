@@ -33,7 +33,7 @@ const PROJECTS = {
       L("Men of Platinum is a platinum jewellery brand by PGI India, and this collection was a collaboration with MS Dhoni built around composure, self-belief and quiet strength. I led ideation, research and execution. The concept was to take viewers from blueprint to finished piece — making the craftsmanship visible rather than only the result."),
       I("projects/men-of-platinum/men-of-platinum-4.webp", "Illustrated product, finished state"),
       H("Hand-illustrated, handed off", "I illustrated every product in the collection across multiple versions and angles, then handed the files to the video team, who used them as the base for reels and social posts. Working in illustration rather than product photography meant the construction of each piece could stay visible — the blueprint reads as a drawing, not a render."),
-      G(["projects/men-of-platinum/men-of-platinum-2.webp", "Illustration, blueprint stage"], ["projects/men-of-platinum/men-of-platinum-11.webp", "Illustration, finished stage"], ["projects/men-of-platinum/men-of-platinum-7.webp", "Product illustration, alternate angle"], ["projects/men-of-platinum/men-of-platinum-5.webp", "Product illustration, detail"])
+      G(["projects/men-of-platinum/men-of-platinum-2.webp", "Illustration, blueprint stage"], ["projects/men-of-platinum/men-of-platinum-1.webp", "Illustration, finished stage"], ["projects/men-of-platinum/men-of-platinum-7.webp", "Product illustration, alternate angle"], ["projects/men-of-platinum/men-of-platinum-5.webp", "Product illustration, detail"])
     ],
     band: { label: "Live", bg: "#e0e4e9", ink: "#2b323c", note: "Published across Men of Platinum’s social channels during the collection launch.", cols: "1fr", images: [{ src: "projects/men-of-platinum/men-of-platinum-13-poster.webp", alt: "Campaign video still" }] },
     credits: "Credits — Made at Famous Innovations, Mumbai, for Men of Platinum (PGI India). Video editing by the in-house motion team.",
@@ -902,10 +902,10 @@ function photosHTML() {
   var shots = [
     ["assets/about.webp", "About cover"],
     ["assets/user.webp", "Portrait"],
-    ["assets/covers/men-of-platinum.webp", "Project 1 cover"],
-    ["assets/covers/dream-journals.webp", "Project 5 cover"],
+    ["projects/men-of-platinum/men-of-platinum-2.webp", "Project 1 cover"],
+    ["dock/photos/dream-journals.webp", "Project 5 cover"],
     ["projects/paintings/paintings-1.webp", "Paintings cover"],
-    ["assets/covers/pottery.webp", "Project 10 cover"]
+    ["dock/photos/pottery.webp", "Project 10 cover"]
   ].map(function (x) {
     return '<figure style="margin:0;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#ececec"><img src="' + x[0] + '" alt="' + esc(x[1]) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"></figure>';
   }).join("");
