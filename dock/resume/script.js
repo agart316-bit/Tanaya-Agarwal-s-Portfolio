@@ -422,9 +422,11 @@ syncProjectCopySize();
 document.querySelectorAll(".experience-project-link").forEach((link) => {
   link.addEventListener("click", (event) => {
     if (window.parent === window) return; // standalone: let the href work
-    const match = link.getAttribute("href").match(/projects\/(\d+)\//);
-    if (!match) return;
+    // Cmd/Ctrl/Shift-click or middle-click: let the browser open a new tab.
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    const num = link.dataset.projectNum;
+    if (!num) return;
     event.preventDefault();
-    window.parent.postMessage({ type: "open-project", projectNum: match[1] }, "*");
+    window.parent.postMessage({ type: "open-project", projectNum: num, from: "experiences" }, "*");
   });
 });

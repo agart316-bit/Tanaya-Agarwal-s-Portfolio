@@ -357,7 +357,7 @@ const PROJECTS = {
 
 const ORDER = ["p1","p3","p4","p5","p6","p7","p8","p9","p10","p11","p12","p13","p14"];
 const CATS = ["Illustration & Motion","Print & Editorial","Fine Art","Spatial / Installation","Web & App Design"];
-const DOCK_TITLES = { about: "About", resume: "Resume", references: "References", contacts: "Contacts", photos: "Photos" };
+const DOCK_TITLES = { about: "About", resume: "Experiences", references: "References", contacts: "Contacts", photos: "Photos" };
 
 const EXPERIENCES = [
   { id:"artsy", company:"Artsy Design.Co", date:"2021", tags:["Internship","Branding","Illustrator"],
@@ -372,15 +372,18 @@ const EXPERIENCES = [
   { id:"artclub", company:"Art Club", date:"2022", tags:["Events","Organiser"],
     body:"I coordinated artistic initiatives, developing project plans and facilitating collaborations. Supported students' artistic growth, hosted exhibitions, and fostered a collaborative creative environment.",
     projectKey:null },
-  { id:"kalakaar", company:"Kalakaar", date:"2023", tags:["Art Direction","Leadership"],
-    body:"I raised funds for underfunded organisations by hosting an event showcasing creativity and supporting social causes. Collaborated with NGOs, incorporating stalls, games, and activities to engage attendees, increase awareness, and foster community participation.",
+  { id:"kalakaar", company:"Kalakaar", date:"2022-2023", tags:["Art Direction","Leadership"],
+    body:"I was part of Kalakaar across two editions. In 2022 I exhibited eight of my paintings and created the event’s art gallery, and in 2023 I raised funds for underfunded organisations by hosting an event showcasing creativity and supporting social causes. Collaborated with NGOs, incorporating stalls, games, and activities to engage attendees, increase awareness, and foster community participation.",
     projectKey:null },
   { id:"designera", company:"Design Era", date:"2024", tags:["Exhibition","Curation","Artist"],
     body:"Presented selected work in a public showcase, shaping narrative flow, curation, and presentation format to communicate process and final outcomes.",
     projectKey:null },
   { id:"famous", company:"Famous Innovations", date:"2025", tags:["Internship","Strategy","Illustrator"],
     body:"I designed visual assets and layouts for digital and print campaigns across multiple brand clients. Supported pitch development through concept ideation, reference research, and visual storytelling. Collaborated with cross-functional creative teams in fast-paced agency environments.",
-    projectKey:"p1" }
+    projectKey:"p1" },
+  { id:"insiders", company:"Industry Insiders", date:"Aug 2026-Present", tags:["Head of Design","Posters","Social Media"],
+    body:"As Head of Design for Industry Insiders, a student club at The New School, I lead all of the club’s design work. I create event posters, social media content, and promotional material for its programming, building a consistent visual identity across every touchpoint so each event reaches and engages the student community.",
+    projectKey:null }
 ];
 
 const LETTERS = [
@@ -422,6 +425,7 @@ var state = {
   unlocking: false,
   screen: null,
   allWork: false,
+  from: null,          /* "allwork" | "resume" — drives the window's back button */
   workOpen: false,
   openExp: null,
   openLetter: null,
@@ -454,6 +458,83 @@ function $(sel) {
   return root ? root.querySelector(sel) : null;
 }
 
+/* --------------------------------------------------------------------------
+   Routes — same URLs as the desktop build, so links can be shared and
+   long-pressed to open in a new tab.
+   -------------------------------------------------------------------------- */
+
+var PROJECT_SLUGS = {
+  "1": "men-of-platinum", "3": "digital-illustrations", "4": "artsy-design-co",
+  "5": "dream-journals", "6": "lost-in-translation", "7": "black-hole",
+  "8": "paintings", "9": "black-n-white", "10": "pottery", "11": "installations",
+  "12": "the-borges-stories", "13": "the-upside-down", "14": "bindaas"
+};
+var SCREEN_ROUTES = { about: "about", resume: "experiences", references: "references", contacts: "contact", photos: "photos" };
+var ROUTE_SCREENS = { about: "about", experiences: "resume", resume: "resume", references: "references", contact: "contacts", contacts: "contacts" };
+
+function keyForNum(num) {
+  for (var k in PROJECTS) { if (PROJECTS[k].num === String(num)) return k; }
+  return null;
+}
+
+function routeFor(key, from) {
+  if (key === "allwork") return "#/all-work";
+  if (PROJECTS[key]) {
+    var slug = PROJECT_SLUGS[PROJECTS[key].num];
+    return from === "allwork" ? "#/all-work/" + slug : "#/projects/" + slug;
+  }
+  return SCREEN_ROUTES[key] ? "#/" + SCREEN_ROUTES[key] : "#";
+}
+
+function currentRoute() {
+  if (state.screen) return routeFor(state.screen, state.from);
+  if (state.allWork) return "#/all-work";
+  return "";
+}
+
+function syncRoute() {
+  var target = currentRoute();
+  if (target === location.hash) return;
+  try {
+    history.pushState(null, "", target || (location.pathname + location.search));
+  } catch (e) { /* ignore */ }
+}
+
+function parseRoute() {
+  var parts = String(location.hash || "").replace(/^#\/?/, "").split("/").filter(Boolean);
+  var next = { allWork: false, screen: null, from: null };
+  if (!parts.length) return next;
+  var a = parts[0].toLowerCase(), b = (parts[1] || "").toLowerCase();
+  var slugKey = null;
+  if (b) {
+    for (var n in PROJECT_SLUGS) { if (PROJECT_SLUGS[n] === b) slugKey = keyForNum(n); }
+  }
+  if (a === "all-work") {
+    next.allWork = true;
+    if (slugKey) { next.screen = slugKey; next.from = "allwork"; }
+  } else if (a === "projects" && slugKey) {
+    next.screen = slugKey;
+  } else if (ROUTE_SCREENS[a]) {
+    next.screen = ROUTE_SCREENS[a];
+  }
+  return next;
+}
+
+function applyRoute() {
+  var r = parseRoute();
+  if (state.locked && (r.screen || r.allWork)) { state.locked = false; renderLock(); }
+  state.allWork = r.allWork;
+  state.screen = r.screen;
+  state.from = r.from;
+  state.workOpen = false;
+  renderAllWork();
+  renderWindow();
+}
+
+function isNewTabClick(e) {
+  return !!(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button !== undefined && e.button !== 0));
+}
+
 /* ==========================================================================
    Markup — home screen, dock, lock screen
    ========================================================================== */
@@ -468,7 +549,7 @@ var HOME_ICONS = [
 
 var DOCK_APPS = [
   { key: "about",      icon: "assets/about.webp",      label: "About" },
-  { key: "resume",     icon: "assets/resume.webp",     label: "Resume" },
+  { key: "resume",     icon: "assets/resume.webp",     label: "Experiences" },
   { key: "references", icon: "assets/references.webp", label: "References" },
   { key: "contacts",   icon: "assets/contact.webp",    label: "Contacts" }
 ];
@@ -476,14 +557,14 @@ var DOCK_APPS = [
 function homeHTML() {
   var icons = HOME_ICONS.map(function (a) {
     return '' +
-      '<a data-app="' + a.key + '" href="#" style="position:absolute;left:' + a.left + ';top:' + a.top + ';width:96px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;border-radius:10px;text-decoration:none">' +
+      '<a data-app="' + a.key + '" href="' + routeFor(a.key) + '" style="position:absolute;left:' + a.left + ';top:' + a.top + ';width:96px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;border-radius:10px;text-decoration:none">' +
         '<img src="' + a.icon + '" alt="' + esc(a.alt) + '" draggable="false" style="max-width:66px;max-height:66px;width:auto;height:auto">' +
         '<span style="display:block;width:100%;font-size:12px;line-height:1.14;text-align:center;color:rgb(48,48,48);text-shadow:0 1px 6px rgba(0,0,0,.28)">' + esc(a.label) + '</span>' +
       '</a>';
   }).join("");
 
   var dockIcons = DOCK_APPS.map(function (a) {
-    return '<a data-app="' + a.key + '" href="#" aria-label="' + esc(a.label) + '" style="display:block;width:46px;height:46px;margin:0 5px;border-radius:11px;overflow:hidden;background:rgba(255,255,255,.10)">' +
+    return '<a data-app="' + a.key + '" href="' + routeFor(a.key) + '" aria-label="' + esc(a.label) + '" style="display:block;width:46px;height:46px;margin:0 5px;border-radius:11px;overflow:hidden;background:rgba(255,255,255,.10)">' +
       '<img src="' + a.icon + '" alt="" style="width:100%;height:100%;object-fit:cover"></a>';
   }).join("");
 
@@ -508,7 +589,7 @@ function homeHTML() {
         '<div style="pointer-events:auto;display:flex;align-items:flex-end;padding:9px 12px;border-radius:22px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 6px 32px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.14)">' +
           dockIcons +
           '<div style="width:1px;height:30px;margin:0 4px 8px;align-self:flex-end;background:rgba(255,255,255,.22)"></div>' +
-          '<a data-app="allwork" href="#" aria-label="All Work" style="display:flex;align-items:center;justify-content:center;width:46px;height:46px;margin:0 5px;border-radius:11px;background:rgba(163,160,155,.92);color:rgba(45,42,38,.95)">' +
+          '<a data-app="allwork" href="#/all-work" aria-label="All Work" style="display:flex;align-items:center;justify-content:center;width:46px;height:46px;margin:0 5px;border-radius:11px;background:rgba(163,160,155,.92);color:rgba(45,42,38,.95)">' +
             '<svg viewBox="0 0 36 36" fill="none" style="width:54%;height:54%">' +
               '<rect x="4" y="4" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"></rect>' +
               '<rect x="20" y="4" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"></rect>' +
@@ -561,7 +642,7 @@ function allWorkHTML() {
       var pr = PROJECTS[k];
       var meta = pr.kicker;
       rows += '' +
-        '<a data-app="' + k + '" href="#" style="display:flex;align-items:center;gap:14px;width:100%;padding:12px 20px;border-left:2px solid transparent;text-decoration:none;color:rgba(26,23,20,.5);font:400 13px/1.3 \'Helvetica Neue\',Arial,sans-serif">' +
+        '<a data-app="' + k + '" data-from="allwork" href="' + routeFor(k, "allwork") + '" style="display:flex;align-items:center;gap:14px;width:100%;padding:12px 20px;border-left:2px solid transparent;text-decoration:none;color:rgba(26,23,20,.5);font:400 13px/1.3 \'Helvetica Neue\',Arial,sans-serif">' +
           '<span style="flex:0 0 auto;width:52px;height:52px;border-radius:8px;overflow:hidden;background:#e2ded7"><img src="' + thumbFor(k) + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></span>' +
           '<span style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px">' +
             '<span style="font-size:13px;font-weight:500;color:#1a1714">' + esc(pr.title) + '</span>' +
@@ -573,11 +654,14 @@ function allWorkHTML() {
 
   return '' +
     '<div style="position:absolute;inset:0;z-index:60;display:flex;flex-direction:column;background:#ede9e3;animation:pageIn 480ms cubic-bezier(.32,.72,0,1) both">' +
-      '<button type="button" data-allwork-back="1" style="position:absolute;top:16px;left:16px;z-index:2;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border:0;border-radius:999px;background:rgba(26,23,20,.06);color:rgba(26,23,20,.65);font-size:12.5px;letter-spacing:.02em;cursor:pointer">' +
-        '<svg width="9" height="14" viewBox="0 0 9 14" fill="none"><path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>' +
-        'Desktop' +
-      '</button>' +
-      '<div style="flex:1;overflow-y:auto;padding:64px 0 40px">' + rows + '</div>' +
+      '<div style="flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(26,23,20,.08)">' +
+        '<button type="button" data-allwork-back="1" aria-label="Back to desktop" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:0;border-radius:999px;background:rgba(26,23,20,.07);color:rgba(26,23,20,.8);font-size:13px;letter-spacing:.02em;cursor:pointer">' +
+          '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true"><path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>' +
+          'Desktop' +
+        '</button>' +
+        '<h1 style="margin:0;font:400 22px/1 \'Bebas Neue\',sans-serif;letter-spacing:.06em;color:#1a1714">All Work</h1>' +
+      '</div>' +
+      '<div style="flex:1;min-height:0;overflow-y:auto;padding:4px 0 40px">' + rows + '</div>' +
     '</div>';
 }
 
@@ -588,17 +672,34 @@ function allWorkHTML() {
 var TABS = [
   { tab: "work",       icon: "assets/work.webp",       label: "Work" },
   { tab: "about",      icon: "assets/about.webp",      label: "About" },
-  { tab: "resume",     icon: "assets/resume.webp",     label: "Resume" },
+  { tab: "resume",     icon: "assets/resume.webp",     label: "Experiences" },
   { tab: "references", icon: "assets/references.webp", label: "References" },
   { tab: "contacts",   icon: "assets/contact.webp",    label: "Contact" }
 ];
 
 function tabsHTML() {
   return TABS.map(function (t) {
-    return '<button type="button" data-tab="' + t.tab + '" style="flex:0 0 auto;height:34px;padding:0 11px;display:inline-flex;align-items:center;gap:7px;border-radius:17px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-family:\'Bebas Neue\',sans-serif;font-size:14px;letter-spacing:.03em;color:#111;cursor:pointer">' +
+    var isLink = t.tab !== "work";
+    var open = isLink ? '<a data-tab="' + t.tab + '" href="' + routeFor(t.tab) + '" style="text-decoration:none;' : '<button type="button" data-tab="' + t.tab + '" style="';
+    return open + 'flex:0 0 auto;height:34px;padding:0 11px;display:inline-flex;align-items:center;gap:7px;border-radius:17px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-family:\'Bebas Neue\',sans-serif;font-size:14px;letter-spacing:.03em;color:#111;cursor:pointer">' +
       '<span style="width:20px;height:20px;border-radius:5px;flex-shrink:0;background:url(\'' + t.icon + '\') center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)"></span>' + t.label +
-      '</button>';
+      (isLink ? '</a>' : '</button>');
   }).join("");
+}
+
+/* Back button under the tabs, only when the project was opened from
+   All Work or from Experiences. It sits in the header (not over content). */
+function backRowHTML() {
+  if (!PROJECTS[state.screen]) return "";
+  var label = state.from === "allwork" ? "All Work" : state.from === "resume" ? "Experiences" : null;
+  if (!label) return "";
+  return '' +
+    '<div style="padding:0 10px 9px">' +
+      '<button type="button" data-back="1" aria-label="Back to ' + label + '" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 14px;border-radius:22px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.3);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-family:\'Bebas Neue\',sans-serif;font-size:16px;letter-spacing:.04em;color:#111;cursor:pointer">' +
+        '<svg width="8" height="13" viewBox="0 0 9 14" fill="none" aria-hidden="true"><path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>' +
+        'Back to ' + label +
+      '</button>' +
+    '</div>';
 }
 
 function windowHTML() {
@@ -623,6 +724,7 @@ function windowHTML() {
           '</div>' +
 
           '<div style="display:flex;gap:6px;padding:0 10px 9px;overflow-x:auto;scrollbar-width:none">' + tabsHTML() + '</div>' +
+          backRowHTML() +
         '</div>' +
 
         '<div id="m-content" style="flex:1 1 auto;position:relative;overflow-y:auto;overflow-x:hidden;background:#fff;-webkit-overflow-scrolling:touch">' +
@@ -659,7 +761,7 @@ function aboutHTML() {
         '</div>' +
         '<div>' +
           '<img src="dock/about/Name.webp" alt="Tanaya Agarwal" style="width:min(300px,100%);height:auto;margin-bottom:22px">' +
-          '<p style="margin:0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">Creative design student at Parsons School of Design with a multidisciplinary background spanning branding, visual storytelling, digital content, and self-initiated ventures. Interested in design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of evolving into a creative director. Comfortable collaborating across design, branding, and front-end-adjacent creative teams.</p>' +
+          '<p style="margin:0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">I’m a creative design student at Parsons School of Design, and my work spans branding, visual storytelling, digital content, and self-initiated ventures. My foundation is classical craft: a trained eye for composition, typography, and narrative that shows up whether I’m sketching by hand or directing a generative workflow.</p><p style="margin:12px 0 0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">For me, AI is an amplifier rather than an author. It lets me explore more directions, iterate faster, and push ideas further than traditional methods allow, while my instincts decide what’s worth keeping and every final choice remains mine. The result is work that moves at the speed of new tools without losing the intent, taste, and point of view behind it.</p><p style="margin:12px 0 0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">I’m drawn to design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of becoming a creative director, and I collaborate easily across design, branding, and front-end-adjacent teams.</p>' +
         '</div>' +
         '<div style="display:flex;flex-direction:column;gap:16px">' +
           '<div style="border:1px solid rgba(254,91,172,.45);border-radius:14px;background:#f7f7f5;padding:20px 20px 22px">' +
@@ -704,7 +806,7 @@ function resumeHTML() {
     }).join("");
 
     var link = x.projectKey ?
-      '<a data-app="' + x.projectKey + '" href="#" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#fe5bac;border-bottom:1px solid rgba(254,91,172,.4);padding-bottom:3px">View project →</a>' : "";
+      '<a data-app="' + x.projectKey + '" data-from="resume" href="' + routeFor(x.projectKey) + '" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#fe5bac;border-bottom:1px solid rgba(254,91,172,.4);padding-bottom:3px">View project →</a>' : "";
 
     return '' +
       '<div style="border-bottom:1px solid #7f7f7f">' +
@@ -785,6 +887,7 @@ function contactsHTML() {
         '</div>' +
         '<div style="margin-top:8px;padding:0 12px;background:#ececf0;border-radius:13px">' +
           '<div style="padding:11px 0 10px"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">mobile</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">+1 (347) 544-1628</p></div>' +
+          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">mobile</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">+91 98207 29144</p></div>' +
           '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">work</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">tanayaagarwal11@gmail.com</p></div>' +
           '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">home</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">New York NY</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">United States</p></div>' +
           '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">other</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">Mumbai MH</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">India</p></div>' +
@@ -924,7 +1027,7 @@ function projectHTML(key) {
 function workPanelHTML() {
   var cards = ORDER.map(function (k) {
     return '' +
-      '<a data-app="' + k + '" href="#" style="display:block;width:100%;border-radius:18px;overflow:hidden;background:#c6c7ca;color:#363636;text-decoration:none">' +
+      '<a data-app="' + k + '" href="' + routeFor(k) + '" style="display:block;width:100%;border-radius:18px;overflow:hidden;background:#c6c7ca;color:#363636;text-decoration:none">' +
         '<span style="position:relative;display:block;width:100%;height:0;padding-top:100%;background:#ececef;overflow:hidden">' +
           '<img src="' + thumbFor(k) + '" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top">' +
         '</span>' +
@@ -938,7 +1041,7 @@ function workPanelHTML() {
     '<div data-work-backdrop="1" style="position:absolute;inset:0;z-index:8;background:rgba(20,20,20,.32)"></div>' +
     '<div style="position:absolute;right:0;top:0;bottom:0;z-index:9;width:84%;display:flex;flex-direction:column;padding:14px;background:rgba(255,255,255,.22);border-left:1px solid rgba(255,255,255,.35);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top-left-radius:20px;border-bottom-left-radius:20px;box-shadow:-14px 0 28px rgba(20,20,20,.24);animation:panelIn 240ms cubic-bezier(0,.55,.45,1) both">' +
       '<div style="margin:4px 0 12px;font-family:\'Bebas Neue\',sans-serif;font-size:60px;line-height:.78;color:#f2f2f2">WORKS</div>' +
-      '<div style="flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;padding:5px 2px 26px">' + cards + '</div>' +
+      '<div style="flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:max-content;gap:22px 16px;align-items:start;padding:14px 2px 26px">' + cards + '</div>' +
     '</div>';
 }
 
@@ -1042,16 +1145,20 @@ function unlock() {
   }, 950);
 }
 
-function open(key) {
+function open(key, from) {
   state.screen = key;
+  state.from = from || null;
   state.workOpen = false;
   renderWindow();
+  syncRoute();
 }
 
 function closeWindow() {
   state.screen = null;
+  state.from = null;
   state.workOpen = false;
   renderWindow();
+  syncRoute();
 }
 
 function toggleExp(id) {
@@ -1084,7 +1191,19 @@ function onClick(e) {
   }
 
   var back = t.closest("[data-allwork-back]");
-  if (back) { e.preventDefault(); state.allWork = false; renderAllWork(); return; }
+  if (back) { e.preventDefault(); state.allWork = false; renderAllWork(); syncRoute(); return; }
+
+  var winBack = t.closest("[data-back]");
+  if (winBack) {
+    e.preventDefault();
+    if (state.from === "resume") { open("resume"); return; }
+    closeWindow();   /* All Work is still underneath */
+    return;
+  }
+
+  /* Modified clicks on links go to the browser (open in new tab). */
+  var link = t.closest("a[href^='#/']");
+  if (link && isNewTabClick(e)) return;
 
   var workBackdrop = t.closest("[data-work-backdrop]");
   if (workBackdrop) { e.preventDefault(); state.workOpen = false; renderWorkPanel(); return; }
@@ -1093,8 +1212,10 @@ function onClick(e) {
   if (app) {
     e.preventDefault();
     var key = app.getAttribute("data-app");
-    if (key === "allwork") { state.allWork = true; renderAllWork(); return; }
-    open(key);
+    if (key === "allwork") { state.allWork = true; renderAllWork(); syncRoute(); return; }
+    var from = app.getAttribute("data-from");
+    if (!from && state.allWork && !state.screen) from = "allwork";
+    open(key, from);
     return;
   }
 
@@ -1150,6 +1271,9 @@ function mount() {
     timers.type = setTimeout(autoType, 650);
   }
   initEther(0);
+
+  window.addEventListener("popstate", applyRoute);
+  if (location.hash && location.hash !== "#") applyRoute();
 }
 
 if (document.readyState === "loading") {

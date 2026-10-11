@@ -54,6 +54,10 @@ body {
   text-wrap: pretty;
 }
 
+.about-copy + .about-copy {
+  margin-top: 14px;
+}
+
 }
 
 .about-photo {

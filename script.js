@@ -32,6 +32,8 @@ const aboutTab      = document.getElementById("headerTabAbout");
 const resumeTab     = document.getElementById("headerTabResume");
 const contactTab    = document.getElementById("headerTabContact");
 const referencesTab = document.getElementById("headerTabReferences");
+const windowBack    = document.getElementById("windowBack");
+const windowBackLabel = document.getElementById("windowBackLabel");
 const workPanel     = document.getElementById("workPanel");
 const workGrid      = document.getElementById("workGrid");
 
@@ -77,6 +79,64 @@ const DESKTOP_GROUP_PROJECTS = {
 };
 
 const PROJECTS_BY_NUMBER = new Map(PROJECTS.map((project) => [project.projectNum, project]));
+
+/* =========================================================
+   ROUTES — every page has its own shareable URL
+   index.html#/about, #/experiences, #/references, #/contact,
+   #/projects/<slug>, #/all-work, #/all-work/<slug>.
+   Links carry these hrefs, so right-click "Open in New Tab"
+   and cmd/ctrl-click work everywhere.
+========================================================= */
+const PROJECT_SLUGS = {
+  "1": "men-of-platinum",
+  "3": "digital-illustrations",
+  "4": "artsy-design-co",
+  "5": "dream-journals",
+  "6": "lost-in-translation",
+  "7": "black-hole",
+  "8": "paintings",
+  "9": "black-n-white",
+  "10": "pottery",
+  "11": "installations",
+  "12": "the-borges-stories",
+  "13": "the-upside-down",
+  "14": "bindaas"
+};
+const PROJECT_BY_SLUG = Object.fromEntries(Object.entries(PROJECT_SLUGS).map(([n, s]) => [s, n]));
+const TAB_ROUTES = { about: "about", resume: "experiences", references: "references", contact: "contact" };
+const ROUTE_TABS = { about: "about", experiences: "resume", resume: "resume", references: "references", contact: "contact", contacts: "contact" };
+
+function projectRoute(num){ return PROJECT_SLUGS[num] ? `#/projects/${PROJECT_SLUGS[num]}` : ""; }
+function allWorkRoute(num){ return num && PROJECT_SLUGS[num] ? `#/all-work/${PROJECT_SLUGS[num]}` : "#/all-work"; }
+function tabRoute(key){ return TAB_ROUTES[key] ? `#/${TAB_ROUTES[key]}` : ""; }
+
+let routeSyncPaused = false;
+
+/* Push (or replace) the address-bar hash without reloading. */
+function setRoute(hash, replace = false){
+  if (routeSyncPaused) return;
+  const target = hash || "";
+  if (target === location.hash) return;
+  const url = target || (location.pathname + location.search);
+  try {
+    history[replace ? "replaceState" : "pushState"](null, "", url);
+  } catch (e) { /* some file:// contexts refuse history writes */ }
+}
+
+function parseRoute(hash = location.hash){
+  const parts = String(hash || "").replace(/^#\/?/, "").split("/").filter(Boolean).map((p) => p.toLowerCase());
+  if (!parts.length) return null;
+  if (parts[0] === "projects" && PROJECT_BY_SLUG[parts[1]]) return { type: "project", num: PROJECT_BY_SLUG[parts[1]] };
+  if (parts[0] === "all-work") return { type: "allwork", num: PROJECT_BY_SLUG[parts[1]] || null };
+  if (ROUTE_TABS[parts[0]]) return { type: "tab", key: ROUTE_TABS[parts[0]] };
+  return null;
+}
+
+/* A plain left-click is handled in-app; modifier / middle clicks fall
+   through to the browser so links can open in a new tab or window. */
+function isNewTabClick(e){
+  return !!(e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button !== undefined && e.button !== 0)));
+}
 
 
 /* =========================================================
@@ -270,7 +330,7 @@ let frameScrollDetach = null;
 
 const WINDOW_HEADER_TABS = {
   about: { title: "About", src: "dock/about/index.html" },
-  resume: { title: "Resume", src: "dock/resume/index.html" },
+  resume: { title: "Experiences", src: "dock/resume/index.html" },
   contact: { title: "Contact", src: "dock/contacts/index.html" },
   references: { title: "References", src: "dock/references/index.html" }
 };
@@ -455,7 +515,30 @@ function trackFrameHeight() {
   } catch(e) { /* cross-origin */ }
 }
 
+function routeForSource(src = ""){
+  const num = extractProjectNumberFromPath(src);
+  if (num) return projectRoute(num);
+  const tabKey = getHeaderTabKeyForSource(src);
+  return tabKey ? tabRoute(tabKey) : "";
+}
+
+/* "Back to Experiences" — only shown when a project was opened from the
+   Experiences page's "View project" link. */
+function setWindowBack(targetKey){
+  if (!windowBack || !windowBar) return;
+  const tab = targetKey ? WINDOW_HEADER_TABS[targetKey] : null;
+  windowBack.dataset.target = tab ? targetKey : "";
+  windowBack.hidden = !tab;
+  windowBar.classList.toggle("has-back", !!tab);
+  if (tab) {
+    if (windowBackLabel) windowBackLabel.textContent = tab.title;
+    windowBack.setAttribute("aria-label", `Back to ${tab.title}`);
+  }
+}
+
 function loadWindowContent(title, iframeSrc){
+  setWindowBack(null);
+  setRoute(routeForSource(iframeSrc));
   if(windowTitle) windowTitle.textContent = title || "Window";
   if(windowBlank) windowBlank.style.display = "grid";
   clearFrameScrollTracking();
@@ -500,6 +583,7 @@ function syncWindowStateFromFrame(){
   if(projectNum){
     const project = PROJECTS_BY_NUMBER.get(projectNum);
     if(project?.title && windowTitle) windowTitle.textContent = project.title;
+    if(!windowLayer.classList.contains("is-hidden")) setRoute(projectRoute(projectNum), true);
     setActiveWorkProject(projectNum);
     setWindowHeaderTabActive(null);
     return;
@@ -613,7 +697,9 @@ function openWindow(title, iframeSrc){
   mainWindow.style.animation = "";
 }
 
-function closeWindow(){
+function closeWindow(options = {}){
+  if(!options.keepRoute) setRoute("");
+  setWindowBack(null);
   endWindowDrag();
   setWorkPanelOpen(false);
   setActiveWorkProject(null);
@@ -920,9 +1006,10 @@ async function hydrateWorkCardPreview(project, image){
 }
 
 function createWorkCard(project, index){
-  const card = document.createElement("button");
+  const card = document.createElement(project.soon ? "button" : "a");
   card.className = "work-card";
-  card.type = "button";
+  if (project.soon) card.type = "button";
+  else card.href = projectRoute(project.projectNum);
   card.dataset.project = project.projectNum;
   card.style.setProperty("--work-delay", `${index * 38}ms`);
 
@@ -969,7 +1056,9 @@ function createWorkCard(project, index){
   card.append(inner);
 
   if (!project.soon) {
-    card.addEventListener("click", () => {
+    card.addEventListener("click", (e) => {
+      if (isNewTabClick(e)) return;
+      e.preventDefault();
       openProjectWindow(project.projectNum);
       setWorkPanelOpen(false);
     });
@@ -1017,27 +1106,38 @@ function initWorkPanel(){
   }
 
   aboutTab?.addEventListener("click", (e) => {
+    if (isNewTabClick(e)) return;
     e.preventDefault();
     e.stopPropagation();
     openWindowHeaderTab("about");
   });
 
   resumeTab?.addEventListener("click", (e) => {
+    if (isNewTabClick(e)) return;
     e.preventDefault();
     e.stopPropagation();
     openWindowHeaderTab("resume");
   });
 
   contactTab?.addEventListener("click", (e) => {
+    if (isNewTabClick(e)) return;
     e.preventDefault();
     e.stopPropagation();
     openWindowHeaderTab("contact");
   });
 
   referencesTab?.addEventListener("click", (e) => {
+    if (isNewTabClick(e)) return;
     e.preventDefault();
     e.stopPropagation();
     openWindowHeaderTab("references");
+  });
+
+  windowBack?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const target = windowBack.dataset.target;
+    if (target) openWindowHeaderTab(target);
   });
 
   windowContent?.addEventListener("click", (e) => {
@@ -1557,14 +1657,16 @@ dockTray?.addEventListener("mouseleave", resetDockMag);
 ========================================================= */
 const DOCK_WINDOWS = {
   "dock-about":           { title: "About",           src: "dock/about/index.html" },
-  "dock-resume":          { title: "Resume",          src: "dock/resume/index.html" },
+  "dock-resume":          { title: "Experiences",     src: "dock/resume/index.html" },
   "dock-references": { title: "References", src: "dock/references/index.html" },
   "dock-contacts":        { title: "Contacts",        src: "dock/contacts/index.html" },
   "dock-photos":          { title: "Photos",          src: "dock/photos/index.html" }
 };
 
 document.querySelectorAll(".dock-app[data-window]").forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    if (isNewTabClick(e)) return;
+    e.preventDefault();
     const key = btn.dataset.window;
     const cfg = DOCK_WINDOWS[key];
     if(!cfg) return;
@@ -1605,6 +1707,7 @@ window.addEventListener("message", (e) => {
         if (btn) { selectAllProjectsItem(num, btn); return; }
       }
       openProjectWindow(num);
+      if (e.data.from === "experiences") setWindowBack("resume");
     }
     return;
   }
@@ -1670,8 +1773,9 @@ function buildAllProjectsList() {
       const li = document.createElement("li");
       li.className = "all-projects-list-item";
 
-      const btn = document.createElement("button");
-      btn.type = "button";
+      const btn = document.createElement(project.soon ? "button" : "a");
+      if (project.soon) btn.type = "button";
+      else btn.href = allWorkRoute(project.num);
       btn.className = "all-projects-list-btn";
       btn.dataset.project = project.num;
 
@@ -1692,7 +1796,11 @@ function buildAllProjectsList() {
         btn.appendChild(soonEl);
       } else {
         btn.setAttribute("aria-label", `View ${project.title}`);
-        btn.addEventListener("click", () => selectAllProjectsItem(project.num, btn));
+        btn.addEventListener("click", (e) => {
+          if (isNewTabClick(e)) return;
+          e.preventDefault();
+          selectAllProjectsItem(project.num, btn);
+        });
       }
 
       li.appendChild(btn);
@@ -1705,6 +1813,7 @@ function selectAllProjectsItem(projectNum, btn) {
   // Deactivate all
   allProjectsList.querySelectorAll(".all-projects-list-btn").forEach(b => b.classList.remove("is-active"));
   btn.classList.add("is-active");
+  setRoute(allWorkRoute(projectNum));
 
   // Load into frame
   const src = `projects/${projectNum}/index.html`;
@@ -1720,7 +1829,8 @@ function openPage2() {
   isPage2Open = true;
 
   // Close any open window first
-  if (!windowLayer.classList.contains("is-hidden")) closeWindow();
+  if (!windowLayer.classList.contains("is-hidden")) closeWindow({ keepRoute: true });
+  setRoute(allWorkRoute(null));
 
   desktop.classList.add("is-page2");
   allProjectsPage.removeAttribute("hidden");
@@ -1729,9 +1839,10 @@ function openPage2() {
   document.body.style.overflow = "hidden";
 }
 
-function closePage2() {
+function closePage2(options = {}) {
   if (!isPage2Open) return;
   isPage2Open = false;
+  if (!options.keepRoute) setRoute("");
 
   desktop.classList.remove("is-page2");
   document.body.style.overflow = "";
@@ -1752,10 +1863,14 @@ function closePage2() {
 }
 
 // Back button
-allProjectsBack?.addEventListener("click", closePage2);
+allProjectsBack?.addEventListener("click", () => closePage2());
 
 // Dock All Work button
-document.getElementById("dockAllWork")?.addEventListener("click", openPage2);
+document.getElementById("dockAllWork")?.addEventListener("click", (e) => {
+  if (isNewTabClick(e)) return;
+  e.preventDefault();
+  openPage2();
+});
 
 // Escape key closes page 2
 document.addEventListener("keydown", (e) => {
@@ -1798,3 +1913,45 @@ document.addEventListener("keydown", (e) => {
 
 // Build the list once
 buildAllProjectsList();
+
+
+/* =========================================================
+   ROUTING — open whatever the URL points at, and follow the
+   browser's back / forward buttons.
+========================================================= */
+function applyRoute(){
+  const route = parseRoute();
+  routeSyncPaused = true;
+  try {
+    if (!route) {
+      if (isPage2Open) closePage2();
+      if (!windowLayer.classList.contains("is-hidden")) closeWindow();
+      return;
+    }
+    if (lockscreenIsActive()) unlockNow();
+    if (route.type === "allwork") {
+      openPage2();
+      if (route.num) {
+        const btn = allProjectsList?.querySelector(`.all-projects-list-btn[data-project="${route.num}"]`);
+        if (btn) selectAllProjectsItem(route.num, btn);
+      }
+      return;
+    }
+    if (isPage2Open) closePage2();
+    if (route.type === "project") {
+      openProjectWindow(route.num);
+      return;
+    }
+    if (route.type === "tab") {
+      const tab = WINDOW_HEADER_TABS[route.key];
+      if (!tab) return;
+      if (windowLayer.classList.contains("is-hidden")) openWindow(tab.title, tab.src);
+      else openWindowHeaderTab(route.key);
+    }
+  } finally {
+    routeSyncPaused = false;
+  }
+}
+
+window.addEventListener("popstate", applyRoute);
+if (parseRoute()) applyRoute();

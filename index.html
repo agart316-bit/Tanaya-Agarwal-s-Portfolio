@@ -6,7 +6,7 @@
   <title>Tanaya Agarwal</title>
   <!-- Desktop styles apply from 560px up; below that the mobile version takes over. -->
   <link rel="stylesheet" href="shared/base.css?v=1" media="(min-width: 560px)" />
-  <link rel="stylesheet" href="styles.css?v=5" media="(min-width: 560px)" />
+  <link rel="stylesheet" href="styles.css?v=6" media="(min-width: 560px)" />
   <link rel="stylesheet" href="mobile.css?v=1" media="(max-width: 559px)" />
   <script>
     /* Which build of the site runs. Re-checked on resize (see foot of body). */
@@ -121,27 +121,27 @@
       <div class="desktop-icons-canvas" id="desktopIconsCanvas">
 
         <!-- 5 Featured project apps -->
-        <a class="desktop-icon" data-group="p1" href="projects/1/index.html">
+        <a class="desktop-icon" data-group="p1" href="#/projects/men-of-platinum">
           <img class="desktop-icon-img" src="assets/thumbs/icon-1.webp" alt="Men of Platinum app icon" draggable="false" />
           <span class="desktop-icon-label">Men of Platinum</span>
         </a>
 
-        <a class="desktop-icon" data-group="p5" href="projects/5/index.html">
+        <a class="desktop-icon" data-group="p5" href="#/projects/dream-journals">
           <img class="desktop-icon-img" src="assets/thumbs/icon-5.webp" alt="Dream Journals app icon" draggable="false" />
           <span class="desktop-icon-label">Dream Journals</span>
         </a>
 
-        <a class="desktop-icon" data-group="p6" href="projects/6/index.html">
+        <a class="desktop-icon" data-group="p6" href="#/projects/lost-in-translation">
           <img class="desktop-icon-img" src="assets/thumbs/icon-6.webp" alt="Lost in Translation app icon" draggable="false" />
           <span class="desktop-icon-label">Lost in Translation</span>
         </a>
 
-        <a class="desktop-icon" data-group="p13" href="projects/13/index.html">
+        <a class="desktop-icon" data-group="p13" href="#/projects/the-upside-down">
           <img class="desktop-icon-img" src="assets/thumbs/icon-13.webp" alt="The Upside Down app icon" draggable="false" />
           <span class="desktop-icon-label">The Upside Down</span>
         </a>
 
-        <a class="desktop-icon" data-group="p12" href="projects/12/index.html">
+        <a class="desktop-icon" data-group="p12" href="#/projects/the-borges-stories">
           <img class="desktop-icon-img" src="assets/thumbs/icon-12.webp" alt="The Borges Stories app icon" draggable="false" />
           <span class="desktop-icon-label">The Borges Stories</span>
         </a>
@@ -162,22 +162,22 @@
 
         <div class="dock-item">
           <div class="dock-tooltip">About</div>
-          <button class="dock-app" type="button" aria-label="About" data-window="dock-about"></button>
+          <a class="dock-app" href="#/about" aria-label="About" data-window="dock-about"></a>
         </div>
 
         <div class="dock-item">
-          <div class="dock-tooltip">Resume</div>
-          <button class="dock-app" type="button" aria-label="Resume" data-window="dock-resume"></button>
+          <div class="dock-tooltip">Experiences</div>
+          <a class="dock-app" href="#/experiences" aria-label="Experiences" data-window="dock-resume"></a>
         </div>
 
         <div class="dock-item">
           <div class="dock-tooltip">References</div>
-          <button class="dock-app" type="button" aria-label="References" data-window="dock-references"></button>
+          <a class="dock-app" href="#/references" aria-label="References" data-window="dock-references"></a>
         </div>
 
         <div class="dock-item">
           <div class="dock-tooltip">Contacts</div>
-          <button class="dock-app" type="button" aria-label="Contacts" data-window="dock-contacts"></button>
+          <a class="dock-app" href="#/contact" aria-label="Contacts" data-window="dock-contacts"></a>
         </div>
 
         <!-- Photos app - temporarily removed, to be added back later
@@ -191,14 +191,14 @@
 
         <div class="dock-item">
           <div class="dock-tooltip">All Work</div>
-          <button class="dock-app dock-app--allwork" type="button" aria-label="All Work" id="dockAllWork">
+          <a class="dock-app dock-app--allwork" href="#/all-work" aria-label="All Work" id="dockAllWork">
             <svg class="dock-allwork-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="4" y="4" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
               <rect x="20" y="4" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
               <rect x="4" y="20" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
               <rect x="20" y="20" width="12" height="12" rx="3" fill="currentColor" opacity="0.85"/>
             </svg>
-          </button>
+          </a>
         </div>
 
       </div>
@@ -214,6 +214,13 @@
             <button class="window-dot dot--green"  data-action="max"   aria-label="Maximize"></button>
           </div>
 
+          <button id="windowBack" class="window-back" type="button" hidden>
+            <svg width="8" height="12" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+              <path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="windowBackLabel">Experiences</span>
+          </button>
+
           <div id="windowTitle" class="window-title">Project</div>
           <div class="window-barRight">
             <button
@@ -227,42 +234,42 @@
               <span class="window-navTab-dot" aria-hidden="true"></span>
               <span class="window-navTab-label">Work</span>
             </button>
-            <button
+            <a
               id="headerTabAbout"
               class="window-navTab"
-              type="button"
+              href="#/about"
               aria-label="About"
             >
               <span class="window-navTab-dot" aria-hidden="true"></span>
               <span class="window-navTab-label">About</span>
-            </button>
-            <button
+            </a>
+            <a
               id="headerTabResume"
               class="window-navTab"
-              type="button"
-              aria-label="Resume"
+              href="#/experiences"
+              aria-label="Experiences"
             >
               <span class="window-navTab-dot" aria-hidden="true"></span>
-              <span class="window-navTab-label">Resume</span>
-            </button>
-            <button
+              <span class="window-navTab-label">Experiences</span>
+            </a>
+            <a
               id="headerTabReferences"
               class="window-navTab"
-              type="button"
+              href="#/references"
               aria-label="References"
             >
               <span class="window-navTab-dot" aria-hidden="true"></span>
               <span class="window-navTab-label">References</span>
-            </button>
-            <button
+            </a>
+            <a
               id="headerTabContact"
               class="window-navTab"
-              type="button"
+              href="#/contact"
               aria-label="Contact"
             >
               <span class="window-navTab-dot" aria-hidden="true"></span>
               <span class="window-navTab-label">Contact</span>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -399,7 +406,7 @@
   <script>
     (function () {
       var s = document.createElement('script');
-      s.src = window.__IS_MOBILE__ ? 'mobile.js?v=1' : 'script.js?v=3';
+      s.src = window.__IS_MOBILE__ ? 'mobile.js?v=2' : 'script.js?v=4';
       document.body.appendChild(s);
 
       /* Crossing the breakpoint (rotation, window resize) swaps builds. */

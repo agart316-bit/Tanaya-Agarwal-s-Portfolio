@@ -858,6 +858,57 @@ body {
 
 .window-controls { display: flex; gap: 8px; }
 
+/* Window bar gains a column for the back button only while it is shown. */
+.window-bar.has-back {
+  grid-template-columns: 84px auto 1fr auto;
+  column-gap: 8px;
+}
+
+.window-back {
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 13px 0 11px;
+  border-radius: 15px;
+  border: 1px solid var(--ios-frost-border);
+  background: var(--ios-frost-bg);
+  backdrop-filter: blur(var(--ios-frost-blur));
+  -webkit-backdrop-filter: blur(var(--ios-frost-blur));
+  color: #111;
+  font-family: var(--font-display);
+  font-size: clamp(13px, 0.95vw, 15px);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.window-back[hidden] { display: none; }
+
+.window-back:hover,
+.window-back:focus-visible {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.window-back:active { transform: scale(.97); }
+
+.window-back:focus-visible {
+  outline: 2px solid rgba(254, 91, 172, 0.9);
+  outline-offset: 1px;
+}
+
+/* Tabs, dock icons and list rows are real links now (so they can be opened
+   in a new tab) — strip the default link styling. */
+a.window-navTab,
+a.work-card,
+a.all-projects-list-btn,
+a.dock-app {
+  text-decoration: none;
+  -webkit-user-drag: none;
+}
+
 .window.is-dragging .window-bar {
   cursor: grabbing;
 }
@@ -1109,12 +1160,14 @@ body {
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-  padding: 12px 18px 26px;
+  gap: 30px 24px;
+  padding: 22px 18px 30px;
   /* Never let a card stretch to its row height — each sizes to its own
      square and the gap stays intact between rows. */
   align-items: start;
-  grid-auto-rows: auto;
+  /* max-content, not auto: Safari otherwise shrinks every row to fit the
+     scroll box's height and the cards pile on top of each other. */
+  grid-auto-rows: max-content;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -1354,6 +1407,10 @@ body {
   .window-bar {
     grid-template-columns: 72px 1fr auto;
     padding: 0 8px 0 10px;
+  }
+
+  .window-bar.has-back {
+    grid-template-columns: 72px auto 1fr auto;
   }
 
   .window-title {
