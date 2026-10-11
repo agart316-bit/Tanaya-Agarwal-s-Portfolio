@@ -1,3 +1,9 @@
+const PROJECT_SLUGS = {
+  "1": "men-of-platinum", "3": "digital-illustrations", "4": "artsy-design-co",
+  "5": "dream-journals", "6": "lost-in-translation", "7": "black-hole",
+  "8": "paintings", "9": "black-n-white", "10": "pottery", "11": "installations",
+  "12": "the-borges-stories", "13": "the-upside-down", "14": "bindaas"
+};
 const GROUPS = {
   motion: {
     title: "Digital Illustration & Motion",
@@ -200,7 +206,7 @@ function createProjectItem(project, index, observer) {
   frame.setAttribute("allow", "autoplay; fullscreen");
   frame.title = `${project.title} content`;
   frame.loading = index === 0 ? "eager" : "lazy";
-  frame.src = `../../projects/${project.id}/index.html`;
+  frame.src = `../../projects/${PROJECT_SLUGS[project.id] || project.id}/index.html`;
 
   attachFrame(frame, item);
   item.append(frame);

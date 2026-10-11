@@ -1,3 +1,9 @@
+const PROJECT_SLUGS = {
+  "1": "men-of-platinum", "3": "digital-illustrations", "4": "artsy-design-co",
+  "5": "dream-journals", "6": "lost-in-translation", "7": "black-hole",
+  "8": "paintings", "9": "black-n-white", "10": "pottery", "11": "installations",
+  "12": "the-borges-stories", "13": "the-upside-down", "14": "bindaas"
+};
 const experienceList = document.getElementById("experienceList");
 const experienceItems = Array.from(document.querySelectorAll("[data-experience]"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -121,7 +127,7 @@ function resolveImagePath(src) {
 async function resolveFirstProjectImage(projectNum) {
   for (const imageIndex of PROJECT_IMAGE_INDEXES) {
     for (const ext of PROJECT_IMAGE_EXTENSIONS) {
-      const candidate = `../../projects/${projectNum}/project-${projectNum}-${imageIndex}.${ext}`;
+      const candidate = `../../projects/${PROJECT_SLUGS[projectNum]}/${PROJECT_SLUGS[projectNum]}-${imageIndex}.${ext}`;
       const resolved = await resolveImagePath(candidate);
       if (resolved) return resolved;
     }

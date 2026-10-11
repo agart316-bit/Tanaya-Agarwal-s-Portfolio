@@ -47,27 +47,27 @@ const dockTray      = document.getElementById("dockTray");
 const dock          = document.querySelector(".dock");
 
 const PROJECTS = [
-  { projectNum: "1",  title: "Men of Platinum",    url: "projects/1/index.html" },
-  { projectNum: "3",  title: "Digital Illustrations", url: "projects/3/index.html" },
-  { projectNum: "4",  title: "ArtsyDesign. co",    url: "projects/4/index.html" },
-  { projectNum: "5",  title: "Dream Journals",     url: "projects/5/index.html" },
-  { projectNum: "6",  title: "Lost in Translation", url: "projects/6/index.html" },
-  { projectNum: "7",  title: "Black Hole",         url: "projects/7/index.html" },
-  { projectNum: "8",  title: "Paintings",          url: "projects/8/index.html" },
-  { projectNum: "9",  title: "Black N White",      url: "projects/9/index.html" },
-  { projectNum: "13", title: "The Upside Down",    url: "projects/13/index.html" },
-  { projectNum: "10", title: "Pottery",            url: "projects/10/index.html" },
-  { projectNum: "11", title: "Installations",      url: "projects/11/index.html" },
-  { projectNum: "12", title: "The Borges Stories", url: "projects/12/index.html" },
-  { projectNum: "14", title: "Bindaas",            url: "projects/14/index.html" }
+  { projectNum: "1",  title: "Men of Platinum",    url: "projects/men-of-platinum/index.html" },
+  { projectNum: "3",  title: "Digital Illustrations", url: "projects/digital-illustrations/index.html" },
+  { projectNum: "4",  title: "ArtsyDesign. co",    url: "projects/artsy-design-co/index.html" },
+  { projectNum: "5",  title: "Dream Journals",     url: "projects/dream-journals/index.html" },
+  { projectNum: "6",  title: "Lost in Translation", url: "projects/lost-in-translation/index.html" },
+  { projectNum: "7",  title: "Black Hole",         url: "projects/black-hole/index.html" },
+  { projectNum: "8",  title: "Paintings",          url: "projects/paintings/index.html" },
+  { projectNum: "9",  title: "Black N White",      url: "projects/black-n-white/index.html" },
+  { projectNum: "13", title: "The Upside Down",    url: "projects/the-upside-down/index.html" },
+  { projectNum: "10", title: "Pottery",            url: "projects/pottery/index.html" },
+  { projectNum: "11", title: "Installations",      url: "projects/installations/index.html" },
+  { projectNum: "12", title: "The Borges Stories", url: "projects/the-borges-stories/index.html" },
+  { projectNum: "14", title: "Bindaas",            url: "projects/bindaas/index.html" }
 ];
 
 const DESKTOP_GROUP_WINDOWS = {
-  p1:  { title: "Men of Platinum",    src: "projects/1/index.html" },
-  p5:  { title: "Dream Journals",     src: "projects/5/index.html" },
-  p6:  { title: "Lost in Translation", src: "projects/6/index.html" },
-  p13: { title: "The Upside Down",   src: "projects/13/index.html" },
-  p12: { title: "The Borges Stories", src: "projects/12/index.html" }
+  p1:  { title: "Men of Platinum",    src: "projects/men-of-platinum/index.html" },
+  p5:  { title: "Dream Journals",     src: "projects/dream-journals/index.html" },
+  p6:  { title: "Lost in Translation", src: "projects/lost-in-translation/index.html" },
+  p13: { title: "The Upside Down",   src: "projects/the-upside-down/index.html" },
+  p12: { title: "The Borges Stories", src: "projects/the-borges-stories/index.html" }
 };
 
 const DESKTOP_GROUP_PROJECTS = {
@@ -105,6 +105,10 @@ const PROJECT_SLUGS = {
 const PROJECT_BY_SLUG = Object.fromEntries(Object.entries(PROJECT_SLUGS).map(([n, s]) => [s, n]));
 const TAB_ROUTES = { about: "about", resume: "experiences", references: "references", contact: "contact" };
 const ROUTE_TABS = { about: "about", experiences: "resume", resume: "resume", references: "references", contact: "contact", contacts: "contact" };
+
+/* Folder and file names are the project's slug: projects/<slug>/<slug>-1.webp */
+function projectSlug(num){ return PROJECT_SLUGS[String(num)] || String(num); }
+function projectDir(num){ return `projects/${projectSlug(num)}`; }
 
 function projectRoute(num){ return PROJECT_SLUGS[num] ? `#/projects/${PROJECT_SLUGS[num]}` : ""; }
 function allWorkRoute(num){ return num && PROJECT_SLUGS[num] ? `#/all-work/${PROJECT_SLUGS[num]}` : "#/all-work"; }
@@ -330,16 +334,16 @@ let frameScrollDetach = null;
 
 const WINDOW_HEADER_TABS = {
   about: { title: "About", src: "dock/about/index.html" },
-  resume: { title: "Experiences", src: "dock/resume/index.html" },
-  contact: { title: "Contact", src: "dock/contacts/index.html" },
+  resume: { title: "Experiences", src: "dock/experiences/index.html" },
+  contact: { title: "Contact", src: "dock/contact/index.html" },
   references: { title: "References", src: "dock/references/index.html" }
 };
 
 function getHeaderTabKeyForSource(src = ""){
   const normalized = String(src).toLowerCase();
   if (normalized.includes("/about/") || normalized.includes("dock/about")) return "about";
-  if (normalized.includes("/resume/") || normalized.includes("dock/resume")) return "resume";
-  if (normalized.includes("/contacts/") || normalized.includes("dock/contacts")) return "contact";
+  if (normalized.includes("dock/experiences") || normalized.includes("/experiences/")) return "resume";
+  if (normalized.includes("dock/contact/") || normalized.includes("/contact/")) return "contact";
   if (normalized.includes("/references/") || normalized.includes("dock/references")) return "references";
   return null;
 }
@@ -562,8 +566,11 @@ function loadWindowContent(title, iframeSrc){
 
 function extractProjectNumberFromPath(input = ""){
   const text = String(input || "");
-  const match = text.match(/projects\/(\d+)\/index\.html/i) || text.match(/projects\/(\d+)\b/i);
-  return match ? String(match[1]) : null;
+  const match = text.match(/projects\/([a-z0-9-]+)\//i);
+  if (!match) return null;
+  const key = match[1].toLowerCase();
+  if (PROJECT_BY_SLUG[key]) return PROJECT_BY_SLUG[key];
+  return PROJECT_SLUGS[key] ? key : null;
 }
 
 function syncWindowStateFromFrame(){
@@ -797,7 +804,7 @@ function openProjectWindow(projectNum){
   closeDesktopContextMenu();
   const project = PROJECTS_BY_NUMBER.get(String(projectNum));
   const title = project?.title || `Project ${projectNum}`;
-  const src = project?.url || `projects/${projectNum}/index.html`;
+  const src = project?.url || `${projectDir(projectNum)}/index.html`;
   openWindow(title, src);
   setActiveWorkProject(String(projectNum));
 }
@@ -867,19 +874,19 @@ function resolveIconImage(basePath){
 
 const STACKED_PROJECT_IMAGE_MANIFEST = {
   "3": [
-    "projects/3/project-3-1.webp",
-    "projects/3/project-3-2.webp",
-    "projects/3/project-3-3.webp",
-    "projects/3/project-3-4.webp",
-    "projects/3/project-3-5.webp"
+    "projects/digital-illustrations/digital-illustrations-1.webp",
+    "projects/digital-illustrations/digital-illustrations-2.webp",
+    "projects/digital-illustrations/digital-illustrations-3.webp",
+    "projects/digital-illustrations/digital-illustrations-4.webp",
+    "projects/digital-illustrations/digital-illustrations-5.webp"
   ],
   "8": [
-    "projects/8/project-8-1.webp",
-    "projects/8/project-8-2.webp",
-    "projects/8/project-8-3.webp",
-    "projects/8/project-8-4.webp",
-    "projects/8/project-8-5.webp",
-    "projects/8/project-8-6.webp"
+    "projects/paintings/paintings-1.webp",
+    "projects/paintings/paintings-2.webp",
+    "projects/paintings/paintings-3.webp",
+    "projects/paintings/paintings-4.webp",
+    "projects/paintings/paintings-5.webp",
+    "projects/paintings/paintings-6.webp"
   ]
 };
 
@@ -903,35 +910,35 @@ async function resolveManifestStackImages(paths = []){
 }
 
 const WORK_PREVIEW_MANIFEST = {
-  "1": ["projects/1/project-1-1.png", "assets/project-1.png"],
-  "3": ["projects/3/project-3-1.jpg"],
-  "4": ["projects/4/project-4-1.jpg", "assets/project-4.png"],
-  "5": ["projects/5/project-5-3.jpg", "assets/project-5.png"],
-  "6": ["projects/6/project-6-1.png"],
-  "7": ["projects/7/project-7-1.png"],
-  "8": ["projects/8/project-8-1.jpg"],
-  "9": ["projects/9/project-9-1.jpg", "assets/project-9.png"],
-  "10": ["projects/10/project-10-1.jpg", "assets/project-10.png"],
-  "11": ["projects/11/project-11-1.jpg", "assets/project-11.png"],
-  "12": ["projects/12/project-12-1.png", "assets/project-12.png"],
-  "13": ["projects/13/project-13-2.jpg", "projects/13/project-13-1.jpg"],
-  "14": ["projects/14/project-14-1.png"]
+  "1": ["projects/men-of-platinum/men-of-platinum-1.png", "assets/covers/men-of-platinum.png"],
+  "3": ["projects/digital-illustrations/digital-illustrations-1.jpg"],
+  "4": ["projects/artsy-design-co/artsy-design-co-1.jpg", "assets/covers/artsy-design-co.png"],
+  "5": ["projects/dream-journals/dream-journals-3.jpg", "assets/covers/dream-journals.png"],
+  "6": ["projects/lost-in-translation/lost-in-translation-1.png"],
+  "7": ["projects/black-hole/black-hole-1.png"],
+  "8": ["projects/paintings/paintings-1.jpg"],
+  "9": ["projects/black-n-white/black-n-white-1.jpg", "assets/covers/black-n-white.png"],
+  "10": ["projects/pottery/pottery-1.jpg", "assets/covers/pottery.png"],
+  "11": ["projects/installations/installations-1.jpg", "assets/covers/installations.png"],
+  "12": ["projects/the-borges-stories/the-borges-stories-1.png", "assets/covers/the-borges-stories.png"],
+  "13": ["projects/the-upside-down/the-upside-down-2.jpg", "projects/the-upside-down/the-upside-down-1.jpg"],
+  "14": ["projects/bindaas/bindaas-1.png"]
 };
 
 const DESKTOP_ICON_MANIFEST = {
-  "1": "assets/project-1.png",
-  "3": "projects/3/project-3-1.jpg",
-  "4": "assets/project-4.png",
-  "5": "assets/project-5.png",
-  "6": "projects/6/project-6-1.png",
-  "7": "projects/7/project-7-1.png",
-  "8": "projects/8/project-8-1.jpg",
-  "9": "assets/project-9.png",
-  "10": "assets/project-10.png",
-  "11": "assets/project-11.png",
-  "12": "assets/project-12.png",
-  "13": "projects/13/project-13-2.jpg",
-  "14": "projects/14/project-14-1.png"
+  "1": "assets/covers/men-of-platinum.png",
+  "3": "projects/digital-illustrations/digital-illustrations-1.jpg",
+  "4": "assets/covers/artsy-design-co.png",
+  "5": "assets/covers/dream-journals.png",
+  "6": "projects/lost-in-translation/lost-in-translation-1.png",
+  "7": "projects/black-hole/black-hole-1.png",
+  "8": "projects/paintings/paintings-1.jpg",
+  "9": "assets/covers/black-n-white.png",
+  "10": "assets/covers/pottery.png",
+  "11": "assets/covers/installations.png",
+  "12": "assets/covers/the-borges-stories.png",
+  "13": "projects/the-upside-down/the-upside-down-2.jpg",
+  "14": "projects/bindaas/bindaas-1.png"
 };
 
 function setWorkPanelOpen(shouldOpen){
@@ -966,19 +973,19 @@ function setActiveWorkProject(projectNum){
 }
 
 function getProjectPreviewCandidates(projectNum){
-  const base = `projects/${projectNum}/project-${projectNum}-1`;
+  const base = `${projectDir(projectNum)}/${projectSlug(projectNum)}-1`;
   const manifest = WORK_PREVIEW_MANIFEST[projectNum] || [];
   const candidates = [
     // 400px WebP thumbs first — the WORKS cards render at ~120px, so the
     // full-size sources below are only a fallback if a thumb is missing.
-    `assets/thumbs/project-${projectNum}.webp`,
+    `assets/thumbs/${projectSlug(projectNum)}.webp`,
     ...manifest,
     `${base}.png`,
     `${base}.jpg`,
     `${base}.jpeg`,
     `${base}.JPG`,
     `${base}.JPEG`,
-    `assets/project-${projectNum}.png`,
+    `assets/covers/${projectSlug(projectNum)}.png`,
     "assets/desktop-bg.jpg"
   ];
   return Array.from(new Set(candidates));
@@ -1204,12 +1211,12 @@ async function setDesktopIconImages(){
     }
 
     // 400px WebP thumb first; the manifest originals are the fallback.
-    let iconSrc = await resolveImagePath(`assets/thumbs/icon-${projectNum}.webp`);
+    let iconSrc = await resolveImagePath(`assets/thumbs/${projectSlug(projectNum)}-icon.webp`);
     if (!iconSrc) {
       iconSrc = await resolveImagePath(DESKTOP_ICON_MANIFEST[projectNum]);
     }
     if (!iconSrc) {
-      iconSrc = await resolveIconImage(`assets/project-${projectNum}`);
+      iconSrc = await resolveIconImage(`assets/covers/${projectSlug(projectNum)}`);
     }
     if (!iconSrc) {
       iconSrc = await resolveImagePath("assets/work.jpg");
@@ -1218,7 +1225,7 @@ async function setDesktopIconImages(){
 
     thumb.src = iconSrc;
 
-    const hoverSrc = await resolveIconImage(`assets/project-${projectNum}-hover`);
+    const hoverSrc = await resolveIconImage(`assets/covers/${projectSlug(projectNum)}-hover`);
     if (!hoverSrc || icon.dataset.hoverBound === "1") return;
 
     icon.addEventListener("mouseenter", () => {
@@ -1657,9 +1664,9 @@ dockTray?.addEventListener("mouseleave", resetDockMag);
 ========================================================= */
 const DOCK_WINDOWS = {
   "dock-about":           { title: "About",           src: "dock/about/index.html" },
-  "dock-resume":          { title: "Experiences",     src: "dock/resume/index.html" },
+  "dock-resume":          { title: "Experiences",     src: "dock/experiences/index.html" },
   "dock-references": { title: "References", src: "dock/references/index.html" },
-  "dock-contacts":        { title: "Contacts",        src: "dock/contacts/index.html" },
+  "dock-contacts":        { title: "Contacts",        src: "dock/contact/index.html" },
   "dock-photos":          { title: "Photos",          src: "dock/photos/index.html" }
 };
 
@@ -1816,7 +1823,7 @@ function selectAllProjectsItem(projectNum, btn) {
   setRoute(allWorkRoute(projectNum));
 
   // Load into frame
-  const src = `projects/${projectNum}/index.html`;
+  const src = `${projectDir(projectNum)}/index.html`;
   if (allProjectsPlaceholder) allProjectsPlaceholder.style.display = "none";
   if (allProjectsFrame) {
     allProjectsFrame.removeAttribute("hidden");

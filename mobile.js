@@ -21,7 +21,7 @@ const PROJECTS = {
     num: "1", index: "01 / 13", cat: "Illustration & Motion", title: "Men Of Platinum",
     kicker: "Illustration & Motion", accent: "#4a525e",
     lede: "A social campaign for the MS Dhoni Signature Collection that shows the platinum before it becomes jewellery — blueprint to finished piece.",
-    hero: "projects/1/project-1-1.webp", heroAlt: "Men of Platinum campaign key visual",
+    hero: "projects/men-of-platinum/men-of-platinum-1.webp", heroAlt: "Men of Platinum campaign key visual",
     rail: [
       { label: "Role", value: "Concept, research & illustration" },
       { label: "Year", value: "2025" },
@@ -31,11 +31,11 @@ const PROJECTS = {
     tags: ["Illustration", "Campaign", "Motion"],
     blocks: [
       L("Men of Platinum is a platinum jewellery brand by PGI India, and this collection was a collaboration with MS Dhoni built around composure, self-belief and quiet strength. I led ideation, research and execution. The concept was to take viewers from blueprint to finished piece — making the craftsmanship visible rather than only the result."),
-      I("projects/1/project-1-4.webp", "Illustrated product, finished state"),
+      I("projects/men-of-platinum/men-of-platinum-4.webp", "Illustrated product, finished state"),
       H("Hand-illustrated, handed off", "I illustrated every product in the collection across multiple versions and angles, then handed the files to the video team, who used them as the base for reels and social posts. Working in illustration rather than product photography meant the construction of each piece could stay visible — the blueprint reads as a drawing, not a render."),
-      G(["projects/1/project-1-2.webp", "Illustration, blueprint stage"], ["projects/1/project-1-11.webp", "Illustration, finished stage"], ["projects/1/project-1-7.webp", "Product illustration, alternate angle"], ["projects/1/project-1-5.webp", "Product illustration, detail"])
+      G(["projects/men-of-platinum/men-of-platinum-2.webp", "Illustration, blueprint stage"], ["projects/men-of-platinum/men-of-platinum-11.webp", "Illustration, finished stage"], ["projects/men-of-platinum/men-of-platinum-7.webp", "Product illustration, alternate angle"], ["projects/men-of-platinum/men-of-platinum-5.webp", "Product illustration, detail"])
     ],
-    band: { label: "Live", bg: "#e0e4e9", ink: "#2b323c", note: "Published across Men of Platinum’s social channels during the collection launch.", cols: "1fr", images: [{ src: "projects/1/project-1-13-poster.webp", alt: "Campaign video still" }] },
+    band: { label: "Live", bg: "#e0e4e9", ink: "#2b323c", note: "Published across Men of Platinum’s social channels during the collection launch.", cols: "1fr", images: [{ src: "projects/men-of-platinum/men-of-platinum-13-poster.webp", alt: "Campaign video still" }] },
     credits: "Credits — Made at Famous Innovations, Mumbai, for Men of Platinum (PGI India). Video editing by the in-house motion team.",
     nextKey: "p3", nextTitle: "Digital Illustrations"
   },
@@ -44,7 +44,7 @@ const PROJECTS = {
     num: "3", index: "02 / 13", cat: "Illustration & Motion", title: "Digital Illustrations",
     kicker: "Illustration", accent: "#1f7fa8",
     lede: "Two series — five postcards that walk you into Santorini, and two recipe cards for the cakes I kept coming back to.",
-    hero: "projects/3/project-3-1.webp", heroAlt: "Santorini postcard series, opening piece",
+    hero: "projects/digital-illustrations/digital-illustrations-1.webp", heroAlt: "Santorini postcard series, opening piece",
     rail: [
       { label: "Role", value: "Illustration" },
       { label: "Year", value: "2022 – 2024" },
@@ -54,9 +54,9 @@ const PROJECTS = {
     tags: ["Illustration", "Colour", "Series"],
     blocks: [
       H("Santorini in 5", "Five digital postcards, each capturing a different aspect of the place and pulling the viewer closer with every piece. The first introduces it by name; after that the text steps back and lets the imagery do the work. The palette stays in one world throughout — powder blue skies, white plaster, cobalt shutters, the occasional burst of magenta bougainvillea — while the scale shifts from wide landscape views down to a church bell and a vase of flowers. The idea was to make someone feel like they had been there, not just seen a photo of it."),
-      G(["projects/3/project-3-2.webp", "Santorini postcard two"], ["projects/3/project-3-3.webp", "Santorini postcard three"], ["projects/3/project-3-4.webp", "Santorini postcard four"], ["projects/3/project-3-5.webp", "Santorini postcard five"]),
+      G(["projects/digital-illustrations/digital-illustrations-2.webp", "Santorini postcard two"], ["projects/digital-illustrations/digital-illustrations-3.webp", "Santorini postcard three"], ["projects/digital-illustrations/digital-illustrations-4.webp", "Santorini postcard four"], ["projects/digital-illustrations/digital-illustrations-5.webp", "Santorini postcard five"]),
       H("Comfort Food", "During lockdown I started baking and turned it into a small business, Truffle and Hustle. Carrot cake and lemon cake were the two recipes I kept returning to, and for a long time my references were a photo on my phone or measurements scrawled on paper. I illustrated them instead — hand-lettered ingredients built around the finished dish — so they could go up in the kitchen and actually be used."),
-      G(["projects/3/project-3-6.webp", "Carrot cake recipe card"], ["projects/3/project-3-7.webp", "Lemon cake recipe card"])
+      G(["projects/digital-illustrations/digital-illustrations-6.webp", "Carrot cake recipe card"], ["projects/digital-illustrations/digital-illustrations-7.webp", "Lemon cake recipe card"])
     ],
     band: null,
     credits: "Credits — Illustration and lettering: Tanaya Agarwal.",
@@ -67,7 +67,7 @@ const PROJECTS = {
     num: "4", index: "03 / 13", cat: "Print & Editorial", title: "Artsy Design.co",
     kicker: "Illustration & Product", accent: "#bf6484",
     lede: "A unicorn-themed stationery line for teenagers — illustrated, then styled and shot for launch.",
-    hero: "projects/4/project-4-1.webp", heroAlt: "Stationery brand composition",
+    hero: "projects/artsy-design-co/artsy-design-co-1.webp", heroAlt: "Stationery brand composition",
     rail: [
       { label: "Role", value: "Illustration, styling & photography" },
       { label: "Year", value: "2020" },
@@ -77,11 +77,11 @@ const PROJECTS = {
     tags: ["Illustration", "Product", "Photography"],
     blocks: [
       L("The target audience was teenage girls, so everything about the line needed to feel bold, playful and full of colour: hot pinks, purples, gold accents, bold stripes and patterns — the kind of stationery that actually makes you want to use it. I was involved across the whole process, from research and illustration through to the product shoot and social."),
-      I("projects/4/project-4-2.webp", "Notebook and stationery flat lay"),
+      I("projects/artsy-design-co/artsy-design-co-2.webp", "Notebook and stationery flat lay"),
       H("Illustrated, then shot", "I drew the artwork for the collection and then styled and photographed the promotional imagery myself, which kept the colour of the print and the colour of the photograph in the same register. The sets were built to be shot from above so the patterns stay flat and readable at social crop."),
-      G(["projects/4/project-4-3.webp", "Gift set with notebook and stationery"], ["projects/4/project-4-4.webp", "Stationery in open presentation box"])
+      G(["projects/artsy-design-co/artsy-design-co-3.webp", "Gift set with notebook and stationery"], ["projects/artsy-design-co/artsy-design-co-4.webp", "Stationery in open presentation box"])
     ],
-    band: { label: "In market", bg: "#f7e3e7", ink: "#6a3346", note: "The line launched to market as a boxed stationery set.", cols: "1fr", images: [{ src: "projects/4/project-4-5.webp", alt: "Pastel pens and stationery arrangement" }] },
+    band: { label: "In market", bg: "#f7e3e7", ink: "#6a3346", note: "The line launched to market as a boxed stationery set.", cols: "1fr", images: [{ src: "projects/artsy-design-co/artsy-design-co-5.webp", alt: "Pastel pens and stationery arrangement" }] },
     credits: "Credits — Made at ArtsyDesign.co. Illustration, styling and product photography: Tanaya Agarwal.",
     nextKey: "p5", nextTitle: "Dream Journals"
   },
@@ -90,7 +90,7 @@ const PROJECTS = {
     num: "5", index: "04 / 13", cat: "Print & Editorial", title: "Dream Journals",
     kicker: "Print & Product", accent: "#3d8f95",
     lede: "A 200-page bullet journal for students — hand-illustrated month by month and sold in hardcover and leather-bound editions.",
-    hero: "projects/5/project-5-3.webp", heroAlt: "Dream Journals hero image",
+    hero: "projects/dream-journals/dream-journals-3.webp", heroAlt: "Dream Journals hero image",
     rail: [
       { label: "Role", value: "Founder, design & illustration" },
       { label: "Year", value: "2020" },
@@ -100,25 +100,25 @@ const PROJECTS = {
     tags: ["Editorial", "Illustration", "Product"],
     blocks: [
       L("Dream Journals started from something I was already doing: hand-drawing my own journal every year. Friends kept asking me to make them one, and eventually I wanted a way to make it available to anyone who wanted one but did not have the time or inclination to draw it themselves. I founded it through the Young Entrepreneurship Academy programme and took it to production."),
-      I("projects/5/project-5-6.webp", "Dream Journals, cover"),
+      I("projects/dream-journals/dream-journals-6.webp", "Dream Journals, cover"),
       H("Built around what students actually need", "Each month is hand-illustrated around its own theme, but the layout is fixed and practical: monthly and weekly calendars, a homework and project tracker, a budget tracker, sleep, mood and habit trackers. The illustration changes twelve times; the grid never does — which is what makes a 200-page book usable for a full academic year."),
-      G(["projects/5/project-5-4.webp", "Illustrated month opener"], ["projects/5/project-5-5.webp", "Illustrated month opener"]),
-      I("projects/5/project-5-1.webp", "Planner page, tracker spread"),
-      G(["projects/5/project-5-7.webp", "Weekly spread"], ["projects/5/project-5-9.webp", "Journal interior detail"])
+      G(["projects/dream-journals/dream-journals-4.webp", "Illustrated month opener"], ["projects/dream-journals/dream-journals-5.webp", "Illustrated month opener"]),
+      I("projects/dream-journals/dream-journals-1.webp", "Planner page, tracker spread"),
+      G(["projects/dream-journals/dream-journals-7.webp", "Weekly spread"], ["projects/dream-journals/dream-journals-9.webp", "Journal interior detail"])
     ],
     band: {
       label: "In hand", bg: "#daecec", ink: "#23494c",
       note: "Produced in hardcover and leather-bound editions and sold to students. Eight of the illustrated spreads — swipe through.",
       cols: "1fr",
       images: [
-        { src: "projects/5/project-5-11.webp", alt: "Illustrated spread 1 of 8" },
-        { src: "projects/5/project-5-12.webp", alt: "Illustrated spread 2 of 8" },
-        { src: "projects/5/project-5-13.webp", alt: "Illustrated spread 3 of 8" },
-        { src: "projects/5/project-5-14.webp", alt: "Illustrated spread 4 of 8" },
-        { src: "projects/5/project-5-15.webp", alt: "Illustrated spread 5 of 8" },
-        { src: "projects/5/project-5-16.webp", alt: "Illustrated spread 6 of 8" },
-        { src: "projects/5/project-5-17.webp", alt: "Illustrated spread 7 of 8" },
-        { src: "projects/5/project-5-18.webp", alt: "Illustrated spread 8 of 8" }
+        { src: "projects/dream-journals/dream-journals-11.webp", alt: "Illustrated spread 1 of 8" },
+        { src: "projects/dream-journals/dream-journals-12.webp", alt: "Illustrated spread 2 of 8" },
+        { src: "projects/dream-journals/dream-journals-13.webp", alt: "Illustrated spread 3 of 8" },
+        { src: "projects/dream-journals/dream-journals-14.webp", alt: "Illustrated spread 4 of 8" },
+        { src: "projects/dream-journals/dream-journals-15.webp", alt: "Illustrated spread 5 of 8" },
+        { src: "projects/dream-journals/dream-journals-16.webp", alt: "Illustrated spread 6 of 8" },
+        { src: "projects/dream-journals/dream-journals-17.webp", alt: "Illustrated spread 7 of 8" },
+        { src: "projects/dream-journals/dream-journals-18.webp", alt: "Illustrated spread 8 of 8" }
       ]
     },
     credits: "Credits — Founded through the Young Entrepreneurship Academy. Design, illustration and production: Tanaya Agarwal.",
@@ -129,7 +129,7 @@ const PROJECTS = {
     num: "6", index: "05 / 13", cat: "Print & Editorial", title: "Lost in Translation",
     kicker: "Print & Editorial", accent: "#5b6068",
     lede: "A self-published booklet about Indian craft rebranded as Western trend — typeset so the footnotes carry more weight than the headlines.",
-    hero: "projects/6/project-6-1.webp", heroAlt: "Lost in Translation, two copies of the printed cover",
+    hero: "projects/lost-in-translation/lost-in-translation-1.webp", heroAlt: "Lost in Translation, two copies of the printed cover",
     rail: [
       { label: "Role", value: "Interviews, design & typesetting" },
       { label: "Year", value: "2026" },
@@ -139,14 +139,14 @@ const PROJECTS = {
     tags: ["Editorial", "Typography", "Publishing"],
     blocks: [
       L("Indian culture has been trending for a while now — turmeric lattes, Prada sandals, mangal sutras rebranded as minimalist jewellery — and the closer you look, the harder it is to find the people who actually made any of it. This book sits with that gap. Three conversations across fashion, wellness and jewellery ask the people who work closest to these traditions what gets taken, what gets renamed, and what gets left behind."),
-      I("projects/6/project-6-2.webp", "Abstract page, centred monospace text on an otherwise empty spread"),
+      I("projects/lost-in-translation/lost-in-translation-2.webp", "Abstract page, centred monospace text on an otherwise empty spread"),
       H("Hierarchy, set in type", "The argument of the book is about who gets to speak first. A Western brand takes centre stage and the origin is reduced to an aesthetic, so the typography reverses that order. Questions are set in Chandira, a display face that references Devanagari letterforms without borrowing them, and they interrupt the page rather than introduce it. The answers sit in plain monospace, unembellished, so the voices are never dramatised. Where a conversation turns, a single phrase is pulled out at full scale and left alone."),
-      G(["projects/6/project-6-3.webp", "WORN, the opening section with Akshata Bhojania, illuminated capitals in pink"], ["projects/6/project-6-4.webp", "Question spread, the question in Chandira and the answer in monospace with footnotes below"]),
-      I("projects/6/project-6-5.webp", "A pulled quote at full scale facing the running answer"),
+      G(["projects/lost-in-translation/lost-in-translation-3.webp", "WORN, the opening section with Akshata Bhojania, illuminated capitals in pink"], ["projects/lost-in-translation/lost-in-translation-4.webp", "Question spread, the question in Chandira and the answer in monospace with footnotes below"]),
+      I("projects/lost-in-translation/lost-in-translation-5.webp", "A pulled quote at full scale facing the running answer"),
       H("Footnotes as the foundation", "Kolhapuri chappals, chikankari, vastu, ayurveda, turmeric, kanji — each term is struck through where it appears and rebuilt underneath. The footnotes are not small academic asides; they are given size and space, because context is the first thing that gets cut. Each interview carries its own colour over one restrained structure, and nothing bleeds off the page, which keeps the whole thing printable at home. The white space is doing the same work as the footnotes: it marks what is missing."),
-      G(["projects/6/project-6-7.webp", "Wellness section, a phrase from the interview built across the spread in type and image"], ["projects/6/project-6-9.webp", "ADORNED, the jewellery section with Neetu Agarwal, illuminated capitals in blue"])
+      G(["projects/lost-in-translation/lost-in-translation-7.webp", "Wellness section, a phrase from the interview built across the spread in type and image"], ["projects/lost-in-translation/lost-in-translation-9.webp", "ADORNED, the jewellery section with Neetu Agarwal, illuminated capitals in blue"])
     ],
-    band: { label: "In hand", bg: "#e3e5e7", ink: "#33373c", note: "Printed two-up on standard copy paper, folded, stapled and glued — the assembly instructions are bound into the back. It is published through Invisible Press, a distributed DIY imprint that only exists when someone prints it: the reader becomes the publisher.", cols: "1fr", images: [{ src: "projects/6/project-6-12.webp", alt: "Assembly instructions facing the colophon at the end of the book" }] },
+    band: { label: "In hand", bg: "#e3e5e7", ink: "#33373c", note: "Printed two-up on standard copy paper, folded, stapled and glued — the assembly instructions are bound into the back. It is published through Invisible Press, a distributed DIY imprint that only exists when someone prints it: the reader becomes the publisher.", cols: "1fr", images: [{ src: "projects/lost-in-translation/lost-in-translation-12.webp", alt: "Assembly instructions facing the colophon at the end of the book" }] },
     credits: "Credits — Published through Invisible Press, New York City, 2026. Interviews with Akshata Bhojania and Neetu Agarwal. Typefaces: Chandira, DejaVu Sans Mono, Zapfino. Design and typesetting: Tanaya Agarwal.",
     nextKey: "p7", nextTitle: "Black Hole"
   },
@@ -155,7 +155,7 @@ const PROJECTS = {
     num: "7", index: "06 / 13", cat: "Print & Editorial", title: "Black Hole",
     kicker: "Print & Editorial", accent: "#33406e",
     lede: "A Wikipedia article rebuilt as a printed book — designed as a single gradual descent, where every spread pulls the reader further in.",
-    hero: "projects/7/project-7-1.webp", heroAlt: "Black Hole, matte black cover with a glossy black title that only appears when light hits it",
+    hero: "projects/black-hole/black-hole-1.webp", heroAlt: "Black Hole, matte black cover with a glossy black title that only appears when light hits it",
     rail: [
       { label: "Role", value: "Design & typesetting" },
       { label: "Year", value: "2022" },
@@ -166,12 +166,12 @@ const PROJECTS = {
     blocks: [
       L("A Wikipedia article set as a printed book, thinking about how typography, layout and imagery shape the way something is read. I chose black holes because the subject already carries scale and mystery, and I wanted to see whether design could reflect an idea rather than only organise it."),
       H("The whole book as one descent", "It opens with a bright white index that asks questions instead of listing chapters — navigating the descent. From there the book moves into full-bleed black pages with images running across every one, and never comes back up. New topics open on a wide single column before dropping into two narrower ones, so the measure tightens as the reader goes deeper."),
-      G(["projects/7/project-7-4.webp", "The white index spread, questions instead of chapter titles"], ["projects/7/project-7-5.webp", "Opening chapter spread, wide column dropping into two narrower ones"]),
-      I("projects/7/project-7-6.webp", "Etymology spread, full-bleed black with handwritten annotation across the recto"),
-      G(["projects/7/project-7-8.webp", "Observational evidence chapter opener"], ["projects/7/project-7-9.webp", "Alternatives spread, body text facing handwritten equations"]),
+      G(["projects/black-hole/black-hole-4.webp", "The white index spread, questions instead of chapter titles"], ["projects/black-hole/black-hole-5.webp", "Opening chapter spread, wide column dropping into two narrower ones"]),
+      I("projects/black-hole/black-hole-6.webp", "Etymology spread, full-bleed black with handwritten annotation across the recto"),
+      G(["projects/black-hole/black-hole-8.webp", "Observational evidence chapter opener"], ["projects/black-hole/black-hole-9.webp", "Alternatives spread, body text facing handwritten equations"]),
       H("Definitions kept out of the way", "Terms set in italics are carried into a separate glossary booklet, so a definition never interrupts the flow of a page. The references and notes return to white at the end, closing the descent where it started. The cover is matte black with a glossy black title that only appears when light hits it.")
     ],
-    band: { label: "In hand", bg: "#dee2ef", ink: "#1e2848", note: "The glossary booklet sits alongside the book, white against matte black — the only place the descent lets up.", cols: "1fr", images: [{ src: "projects/7/project-7-10.webp", alt: "The glossary booklet resting on the matte black book" }] },
+    band: { label: "In hand", bg: "#dee2ef", ink: "#1e2848", note: "The glossary booklet sits alongside the book, white against matte black — the only place the descent lets up.", cols: "1fr", images: [{ src: "projects/black-hole/black-hole-10.webp", alt: "The glossary booklet resting on the matte black book" }] },
     credits: "Credits — Source text from the Wikipedia article “Black hole,” CC BY-SA. Design, typesetting and photography: Tanaya Agarwal.",
     nextKey: "p8", nextTitle: "Paintings"
   },
@@ -180,7 +180,7 @@ const PROJECTS = {
     num: "8", index: "07 / 13", cat: "Fine Art", title: "Paintings",
     kicker: "Fine Art", accent: "#c4622e",
     lede: "Four canvases about being partly seen, and about the places that hold what you remember.",
-    hero: "projects/8/project-8-1.webp", heroAlt: "Eclipsed Gaze, acrylic on canvas",
+    hero: "projects/paintings/paintings-1.webp", heroAlt: "Eclipsed Gaze, acrylic on canvas",
     rail: [
       { label: "Role", value: "Painting" },
       { label: "Year", value: "2022 – 2024" },
@@ -191,11 +191,11 @@ const PROJECTS = {
     blocks: [
       H("Eclipsed Gaze", "A portrait where the eyes are covered — not by accident but by the painting itself. A loose sweep of blue and green cuts across her face and drips down. She is still, calm, chin resting in her hand. The eclipse is the point: something is hidden and she does not seem to mind. I was interested in what it looks like to be seen partially, and how much of a person still comes through."),
       H("Refuge", "Home as the place that holds every memory you make in it. The painting layers two gardens: my grandmother’s childhood home and the one I grew up in. The dense overgrowth was intentional — the leaves spill toward the viewer to pull you into the space rather than show it to you. The canvas is large for the same reason. Safety feels immersive, not distant."),
-      I("projects/8/project-8-2.webp", "Refuge, acrylic on canvas"),
+      I("projects/paintings/paintings-2.webp", "Refuge, acrylic on canvas"),
       H("Escape to the Edge", "Nostalgia pulls you back to places, not only times. For me it has always been beaches — Mumbai, Abu Dhabi, Koh Samui. This triptych, inspired by the work of Hema Upadhyay, looks at those coastlines from a bird’s-eye view: shapes, textures, the way land and water meet. The urge to drop into a place that makes you feel alright the moment you see it."),
-      S(["projects/8/project-8-3.webp", "Escape to the Edge, left panel"], ["projects/8/project-8-4.webp", "Escape to the Edge, centre panel"], ["projects/8/project-8-5.webp", "Escape to the Edge, right panel"]),
+      S(["projects/paintings/paintings-3.webp", "Escape to the Edge, left panel"], ["projects/paintings/paintings-4.webp", "Escape to the Edge, centre panel"], ["projects/paintings/paintings-5.webp", "Escape to the Edge, right panel"]),
       H("Boulevard of Broken Tattoos", "Ideas collect — tattoo concepts, images, lines you want to put on your body but never quite do. Mine kept accumulating. This painting is what that pile looks like when it is all put onto one canvas. Tattoos are how I process identity, and this is that process with nowhere to go but inward, in colours that stick with you."),
-      I("projects/8/project-8-6.webp", "Boulevard of Broken Tattoos, acrylic on canvas")
+      I("projects/paintings/paintings-6.webp", "Boulevard of Broken Tattoos, acrylic on canvas")
     ],
     band: null,
     credits: "Credits — Acrylic on canvas. Painting and photography: Tanaya Agarwal.",
@@ -206,7 +206,7 @@ const PROJECTS = {
     num: "9", index: "08 / 13", cat: "Fine Art", title: "Black N White",
     kicker: "Fine Art", accent: "#26221e",
     lede: "Two series in stippling and charcoal, all about what memory keeps and what it flattens.",
-    hero: "projects/9/project-9-2.webp", heroAlt: "Vehicles of Memory, stippled objects",
+    hero: "projects/black-n-white/black-n-white-2.webp", heroAlt: "Vehicles of Memory, stippled objects",
     rail: [
       { label: "Role", value: "Drawing" },
       { label: "Year", value: "2022 – 2024" },
@@ -216,10 +216,10 @@ const PROJECTS = {
     tags: ["Fine Art", "Drawing"],
     blocks: [
       H("Vehicles of Memory", "You cannot hold onto moments, only the things that remind you of them. This piece collects objects I kept over the years, each one carrying a memory I was not ready to let go of. Drawn in stippling: a thousand dots forming one image, the same way a thousand small moments form one memory."),
-      G(["projects/9/project-9-2-rose.webp", "Stippled rose, drawn at full size"], ["projects/9/project-9-2-elephant.webp", "Stippled elephant toy, drawn at full size"]),
+      G(["projects/black-n-white/black-n-white-2-rose.webp", "Stippled rose, drawn at full size"], ["projects/black-n-white/black-n-white-2-elephant.webp", "Stippled elephant toy, drawn at full size"]),
       C("Detail — two plates at full size, where the dots stop resolving into objects."),
       H("Slides from Juhu", "Juhu is my childhood neighbourhood and still the place I think of as home. I went back to the same spots and drew them live, letting charcoal do what a photograph cannot — carry the weight of what those places mean. The grid reads like flipping through an old photo album, in black and white because memory has its own rawness."),
-      I("projects/9/project-9-3.webp", "Slides from Juhu, charcoal collage")
+      I("projects/black-n-white/black-n-white-3.webp", "Slides from Juhu, charcoal collage")
     ],
     band: null,
     credits: "Credits — Ink on paper (stippling) and charcoal. Drawing and photography: Tanaya Agarwal.",
@@ -230,7 +230,7 @@ const PROJECTS = {
     num: "10", index: "10 / 13", cat: "Fine Art", title: "Pottery",
     kicker: "Ceramics", accent: "#a4553a",
     lede: "Two clay collections: a Winnie the Pooh set you can actually hold, and a studio tool that stops being clutter.",
-    hero: "projects/10/project-10-1.webp", heroAlt: "Pottery collection on black ground",
+    hero: "projects/pottery/pottery-1.webp", heroAlt: "Pottery collection on black ground",
     rail: [
       { label: "Role", value: "Making & glazing" },
       { label: "Year", value: "2022 – 2024" },
@@ -240,11 +240,11 @@ const PROJECTS = {
     tags: ["Ceramics", "Product", "Craft"],
     blocks: [
       H("Pooh-tery", "A pottery collection inspired by Winnie the Pooh. The story is set in the English countryside and each piece pulls from a different part of it: a honey pot, Piglet, tree-bark texture, Eeyore. Jars, mugs and bowls, all in clay and glaze. It started from a genuine love for the story and became an excuse to translate something nostalgic into something you can hold."),
-      I("projects/10/project-10-2.webp", "Pooh-tery, lidded vessel"),
+      I("projects/pottery/pottery-2.webp", "Pooh-tery, lidded vessel"),
       H("Pot!", "Pot! is a multifunctional studio tool — brush holder, water cup and palette in one. As an artist I was always looking for a palette that did not disrupt the feel of my workspace; most of them do. Pot! was the answer: something that blends into a desk rather than cluttering it, and works just as well for anything else you need it for."),
-      I("projects/10/project-10-4.webp", "Pot!, studio multitool with brush")
+      I("projects/pottery/pottery-4.webp", "Pot!, studio multitool with brush")
     ],
-    band: { label: "In hand", bg: "#eddfd6", ink: "#4e2418", note: "Thrown, glazed and used — the scale is set by the hand that holds it.", cols: "1fr", images: [{ src: "projects/10/project-10-3.webp", alt: "Hand holding ceramic bowl and cup" }] },
+    band: { label: "In hand", bg: "#eddfd6", ink: "#4e2418", note: "Thrown, glazed and used — the scale is set by the hand that holds it.", cols: "1fr", images: [{ src: "projects/pottery/pottery-3.webp", alt: "Hand holding ceramic bowl and cup" }] },
     credits: "Credits — Hand-built and wheel-thrown clay, glazed. Making and photography: Tanaya Agarwal.",
     nextKey: "p11", nextTitle: "Installations"
   },
@@ -253,7 +253,7 @@ const PROJECTS = {
     num: "11", index: "11 / 13", cat: "Spatial / Installation", title: "Installations",
     kicker: "Installation", accent: "#b8830f",
     lede: "Three installations about food, shame and the things you carry — painted, printed and braided.",
-    hero: "projects/11/project-11-1.webp", heroAlt: "Eat Up!, painted wooden blocks",
+    hero: "projects/installations/installations-1.webp", heroAlt: "Eat Up!, painted wooden blocks",
     rail: [
       { label: "Role", value: "Concept & making" },
       { label: "Year", value: "2022 – 2024" },
@@ -264,11 +264,11 @@ const PROJECTS = {
     blocks: [
       H("Eat Up!", "This piece is about the relationship between food and how we are taught to think about it. The food pyramid gets reconstructed in our heads as we grow up, and health takes a back seat to what is expected of us. I painted that shift onto wooden blocks in the colours and format of a children’s toy, because that is often where it starts — bright, familiar, and a little unsettling up close."),
       H("Airing out your Dirty Laundry", "My relationship with food has been an emotional one, and growing up I was taught to keep that quiet. This work pushes back. Using cyanotype I printed food directly onto garments — touching it, working with it — and hand-stitched labels that read like fashion tags but carry the phrases people hear when they are battling issues with food. Clothes on a rack, displayed without apology."),
-      G(["projects/11/project-11-3.webp", "Cyanotype textile detail"], ["projects/11/project-11-4.webp", "Garments with stitched labels on rack"]),
+      G(["projects/installations/installations-3.webp", "Cyanotype textile detail"], ["projects/installations/installations-4.webp", "Garments with stitched labels on rack"]),
       H("Fabrication", "Textiles from different parts of my life, braided and knotted together. Every memory, experience and turning point is literally tied in, and the wire and knots mark the moments where things changed. The colours reference other works in my practice, each carrying its own story. It keeps extending, because the story is not finished — a non-representational version of me, in progress."),
-      I("projects/11/project-11-5.webp", "Fabrication, braided textile on pedestal")
+      I("projects/installations/installations-5.webp", "Fabrication, braided textile on pedestal")
     ],
-    band: { label: "Installed", bg: "#f6e9cf", ink: "#54390a", note: "Airing out your Dirty Laundry, shown on a garment rack at exhibition scale.", cols: "1fr", images: [{ src: "projects/11/project-11-2.webp", alt: "Dyed garments on rack, installed" }] },
+    band: { label: "Installed", bg: "#f6e9cf", ink: "#54390a", note: "Airing out your Dirty Laundry, shown on a garment rack at exhibition scale.", cols: "1fr", images: [{ src: "projects/installations/installations-2.webp", alt: "Dyed garments on rack, installed" }] },
     credits: "Credits — Cyanotype, textile, acrylic and mixed media. Concept, making and documentation: Tanaya Agarwal.",
     nextKey: "p12", nextTitle: "The Borges Stories"
   },
@@ -277,7 +277,7 @@ const PROJECTS = {
     num: "12", index: "12 / 13", cat: "Web & App Design", title: "The Borges Stories",
     kicker: "Web Design", accent: "#2f6f6b",
     lede: "Three Borges stories rebuilt as three websites, each interface designed to behave the way its story behaves.",
-    hero: "projects/12/project-12-1.webp", heroAlt: "Entry screen asking the reader one question",
+    hero: "projects/the-borges-stories/the-borges-stories-1.webp", heroAlt: "Entry screen asking the reader one question",
     rail: [
       { label: "Role", value: "Concept, design & build" },
       { label: "Year", value: "2024" },
@@ -287,13 +287,13 @@ const PROJECTS = {
     tags: ["Interaction", "Narrative systems", "Type"],
     blocks: [
       L("The obvious move — illustrate the stories, wrap them in a scrolling e-book — would have made three pretty pages and adapted nothing. So the interface itself became the adaptation, and the entry screen asks one question before you read: what do you believe about how stories move. The three answers route to the three stories, which is how three unrelated worlds ended up sharing a single door."),
-      I("projects/12/project-12-2.webp", "The Book of Sand card grid"),
+      I("projects/the-borges-stories/the-borges-stories-2.webp", "The Book of Sand card grid"),
       H("Three malfunctions", "Each story breaks a different rule of its own interface. The Book of Sand has no first or last page, so the reader draws its cards at random, like tarot — only once all of them are drawn does the grid flip into the intended sequence. The Circular Ruins is about a dreamer who is himself dreamt, so the screen tears itself down and rebuilds as you navigate. The Garden of Forking Paths branches on selection — two readers never take the same route. None of it is decoration: each behaviour is a deliberate malfunction, tuned to feel tactile but slightly wrong."),
-      G(["projects/12/project-12-3.webp", "Book of Sand, card open in place"], ["projects/12/project-12-5.webp", "The Circular Ruins, the screen reached twice"]),
-      I("projects/12/project-12-6.webp", "The Garden of Forking Paths, branching route"),
+      G(["projects/the-borges-stories/the-borges-stories-3.webp", "Book of Sand, card open in place"], ["projects/the-borges-stories/the-borges-stories-5.webp", "The Circular Ruins, the screen reached twice"]),
+      I("projects/the-borges-stories/the-borges-stories-6.webp", "The Garden of Forking Paths, branching route"),
       H("One typeface holding it together", "Three worlds behaving this differently read as three separate projects unless something is unyielding, so every world is stripped to one monospace face, black on off-white — no colour, no imagery, no per-story logo. It shipped as a live site and all three stories read end to end on desktop and mobile. What I would change: the malfunctions are legible to a reader who already trusts the piece, and the Book of Sand draw loses everyone else. The flip into sequence should announce itself.")
     ],
-    band: { label: "In use", bg: "#d7e8e6", ink: "#22403e", note: "Each world holds its behaviour at phone width. The malfunctions had to survive a thumb, not just a cursor.", cols: "1fr 1fr", images: [{ src: "projects/12/project-12-8.webp", alt: "Book of Sand on mobile" }, { src: "projects/12/project-12-9.webp", alt: "Circular Ruins on mobile" }] },
+    band: { label: "In use", bg: "#d7e8e6", ink: "#22403e", note: "Each world holds its behaviour at phone width. The malfunctions had to survive a thumb, not just a cursor.", cols: "1fr 1fr", images: [{ src: "projects/the-borges-stories/the-borges-stories-8.webp", alt: "Book of Sand on mobile" }, { src: "projects/the-borges-stories/the-borges-stories-9.webp", alt: "Circular Ruins on mobile" }] },
     credits: "Credits — Stories by Jorge Luis Borges. Concept, design and build: Tanaya Agarwal.",
     nextKey: "p14", nextTitle: "Bindaas"
   },
@@ -302,7 +302,7 @@ const PROJECTS = {
     num: "13", index: "09 / 13", cat: "Fine Art", title: "The Upside Down",
     kicker: "Fine Art", accent: "#26221e",
     lede: "Candy Land redrawn in ink for a generation raised on collapsing certainties — a playable board where the thing waiting at the end is an empty wrapper.",
-    hero: "projects/13/project-13-2.webp", heroAlt: "The Upside Down game board, ink and hatching",
+    hero: "projects/the-upside-down/the-upside-down-2.webp", heroAlt: "The Upside Down game board, ink and hatching",
     rail: [
       { label: "Role", value: "Drawing & game design" },
       { label: "Year", value: "2024" },
@@ -312,13 +312,13 @@ const PROJECTS = {
     tags: ["Fine Art", "Drawing", "Game design"],
     blocks: [
       L("Candy Land was my favourite childhood board game, and this is a version of it made after the fact. As we grow up the things we loved early get overwritten by what happens later, and the softer part of a person ends up sealed under something harder. I redrew the board in ink, using hatching to hold two registers at once: what is visible on the surface, and what has been buried beneath it."),
-      I("projects/13/project-13-1.webp", "The Upside Down, the original ink drawing"),
+      I("projects/the-upside-down/the-upside-down-1.webp", "The Upside Down, the original ink drawing"),
       H("No moves, only cards", "The original has no player agency: you draw, you follow, you win or lose on luck. I kept that intact because it mirrors how we move through most things now — trends, feeds, peer pressure — without actually choosing any of it. The card structure stays identical to Candy Land. What changes is the board, which is deliberately chaotic, because the overwhelm is the point."),
-      I("projects/13/project-13-3.webp", "The full deck: colour cards and landmark cards"),
+      I("projects/the-upside-down/the-upside-down-3.webp", "The full deck: colour cards and landmark cards"),
       H("What wears a person down", "The landmarks along the path are the things that actually do the wearing now — recession, pandemic, climate anxiety, algorithmic surveillance — drawn as Weeping Bough, Doomscroll Patch, Burnout Bog, The Drip, Side Hustle, Block and The Slump. The goal at the end of the road is The Empty Wrapper, because the prescribed path of school, job, house, retirement no longer promises anything worth arriving at."),
-      I("projects/13/project-13-4.webp", "Landmark cards and the printed deck box")
+      I("projects/the-upside-down/the-upside-down-4.webp", "Landmark cards and the printed deck box")
     ],
-    band: { label: "In hand", bg: "#e6e4e0", ink: "#26221e", note: "Printed as a deck and a folding board. At table size the hatching stops reading as texture and starts reading as weather.", cols: "1fr", images: [{ src: "projects/13/project-13-5.webp", alt: "The deck and colour cards laid out" }] },
+    band: { label: "In hand", bg: "#e6e4e0", ink: "#26221e", note: "Printed as a deck and a folding board. At table size the hatching stops reading as texture and starts reading as weather.", cols: "1fr", images: [{ src: "projects/the-upside-down/the-upside-down-5.webp", alt: "The deck and colour cards laid out" }] },
     credits: "Credits — Ink on paper, with the board and card deck produced digitally. After Candy Land (Eleanor Abbott, 1949). Drawing, game design and photography: Tanaya Agarwal.",
     nextKey: "p10", nextTitle: "Pottery"
   },
@@ -327,7 +327,7 @@ const PROJECTS = {
     num: "14", index: "13 / 13", cat: "Web & App Design", title: "Bindaas",
     kicker: "App Design", accent: "#16309b",
     lede: "A travel guide for girls backpacking solo across India, where every listing is verified by a girl who went there herself.",
-    hero: "projects/14/project-14-1.webp", heroAlt: "Home screen, Rishikesh",
+    hero: "projects/bindaas/bindaas-1.webp", heroAlt: "Home screen, Rishikesh",
     rail: [
       { label: "Role", value: "Concept, UX & UI" },
       { label: "Year", value: "2026" },
@@ -338,16 +338,16 @@ const PROJECTS = {
     blocks: [
       L("What a girl travelling alone in India actually wants to know is not on any listing page. Is the dorm floor women-only, how late does that street stay lit, how far is the nearest auto, and has anyone like me slept here. That information exists, but it is scattered across group chats and comment threads, and it expires. Bindaas is built on one rule: nothing appears on a listing unless a girl who went there put it there."),
       H("Four fields, always in the same order", "Every listing in the app — a hostel, a café, a 4am jeep — carries the same strip: dorm type, how late the street stays lit, distance to autos, and how many girls have confirmed it. Same four, same order, so you learn to read it in a glance and can compare two places without re-reading either. When a field has no answer it says not confirmed yet rather than filling in a plausible guess, and every price carries the date it was last confirmed, because a stale fare is what gets you overcharged at the station."),
-      G(["projects/14/project-14-2.webp", "Sleep list, strip leading each row"], ["projects/14/project-14-3.webp", "Eat list with a benchmark price plaque"]),
+      G(["projects/bindaas/bindaas-2.webp", "Sleep list, strip leading each row"], ["projects/bindaas/bindaas-3.webp", "Eat list with a benchmark price plaque"]),
       C("The strip leads the row on sleep, where it matters most; on eat it sits under a benchmark price, so an overcharge is obvious before you order."),
       H("Backup, and where the paint stops", "Backup sits in the same corner of every screen: two chosen contacts, a one-tap check-in before 10pm, a fake incoming call, offline copies of documents, and a hold-to-send SOS. Setting it up once is the whole interaction — after that it just sits there. It is also the one screen where the truck-art language drops out entirely. No extruded titles, no Hindi second line, no painted plaques. If you are opening this screen you are not in the mood for a personality, so it stays flat, dark and calm."),
-      I("projects/14/project-14-4.webp", "Backup screen, calm and unpainted"),
+      I("projects/bindaas/bindaas-4.webp", "Backup screen, calm and unpainted"),
       H("A city as an issue", "The home screen went through two readings. The first is a feed. The second treats each city as an issue of a zine — numbered sections, a contents page, a monsoon note across the bottom — which gave the guide a reason to have an editorial voice instead of a ranking algorithm. Both keep the four fields intact; only the framing around them changes."),
-      G(["projects/14/project-14-5.webp", "City home read as a zine issue"], ["projects/14/project-14-6.webp", "Do list, each listing marked alone-ok"]),
+      G(["projects/bindaas/bindaas-5.webp", "City home read as a zine issue"], ["projects/bindaas/bindaas-6.webp", "Do list, each listing marked alone-ok"]),
       H("Fares, finds, and the longer route", "The map offers a route that is four minutes longer and stays on lit road the whole way, and says how many girls walked it this month. Drops is the week's traffic from girls in town — fare corrections, a tailor behind the post office, two spare seats in a jeep — the stuff that is true for a week and then is not. The trip planner shares cities and dates with home, and only cities and dates: a plan your mother can follow without a live dot on a map."),
-      S(["projects/14/project-14-7.webp", "Map with lit-route option"], ["projects/14/project-14-8.webp", "Drops feed of fare corrections and finds"], ["projects/14/project-14-9.webp", "Trip planner, cities and dates shared"]),
+      S(["projects/bindaas/bindaas-7.webp", "Map with lit-route option"], ["projects/bindaas/bindaas-8.webp", "Drops feed of fare corrections and finds"], ["projects/bindaas/bindaas-9.webp", "Trip planner, cities and dates shared"]),
       H("Stamps, not a score", "The profile counts states crossed as painted roundels rather than points or levels — travel is the reward, and a leaderboard would push girls to move faster than they should. The visual language throughout borrows from Indian truck art: painted tin plaques, hand-lettered extruded titles, Hindi set beside English. What I would change: the strip is dense at four fields, and on the smallest phones the fourth wraps to its own line — it wants a compressed variant before this gets built."),
-      I("projects/14/project-14-10.webp", "Profile, stamps as painted roundels")
+      I("projects/bindaas/bindaas-10.webp", "Profile, stamps as painted roundels")
     ],
     band: null,
     credits: "Credits — Concept, UX and UI: Tanaya Agarwal. Wireframes in Figma.",
@@ -451,7 +451,7 @@ function esc(s) {
 }
 
 function thumbFor(key) {
-  return "assets/thumbs/project-" + PROJECTS[key].num + ".webp";
+  return "assets/thumbs/" + PROJECT_SLUGS[PROJECTS[key].num] + ".webp";
 }
 
 function $(sel) {
@@ -540,11 +540,11 @@ function isNewTabClick(e) {
    ========================================================================== */
 
 var HOME_ICONS = [
-  { key: "p1",  left: "38%", top: "22%", icon: "assets/thumbs/icon-1.webp",  alt: "Men of Platinum app icon",     label: "Men of Platinum" },
-  { key: "p6",  left: "62%", top: "31%", icon: "assets/thumbs/icon-6.webp",  alt: "Lost in Translation app icon", label: "Lost in Translation" },
-  { key: "p5",  left: "12%", top: "31%", icon: "assets/thumbs/icon-5.webp",  alt: "Dream Journals app icon",      label: "Dream Journals" },
-  { key: "p13", left: "74%", top: "48%", icon: "assets/thumbs/icon-13.webp", alt: "The Upside Down app icon",     label: "The Upside Down" },
-  { key: "p12", left: "0%",  top: "48%", icon: "assets/thumbs/icon-12.webp", alt: "The Borges Stories app icon",  label: "The Borges Stories" }
+  { key: "p1",  left: "38%", top: "22%", icon: "assets/thumbs/men-of-platinum-icon.webp",  alt: "Men of Platinum app icon",     label: "Men of Platinum" },
+  { key: "p6",  left: "62%", top: "31%", icon: "assets/thumbs/lost-in-translation-icon.webp",  alt: "Lost in Translation app icon", label: "Lost in Translation" },
+  { key: "p5",  left: "12%", top: "31%", icon: "assets/thumbs/dream-journals-icon.webp",  alt: "Dream Journals app icon",      label: "Dream Journals" },
+  { key: "p13", left: "74%", top: "48%", icon: "assets/thumbs/the-upside-down-icon.webp", alt: "The Upside Down app icon",     label: "The Upside Down" },
+  { key: "p12", left: "0%",  top: "48%", icon: "assets/thumbs/the-borges-stories-icon.webp", alt: "The Borges Stories app icon",  label: "The Borges Stories" }
 ];
 
 var DOCK_APPS = [
@@ -687,19 +687,18 @@ function tabsHTML() {
   }).join("");
 }
 
-/* Back button under the tabs, only when the project was opened from
-   All Work or from Experiences. It sits in the header (not over content). */
-function backRowHTML() {
+/* Back link, shown only when the project was opened from All Work or from
+   Experiences. It sits on the project's index line ("01 / 13"), in the page
+   flow, so it never covers content. */
+function backLinkHTML() {
   if (!PROJECTS[state.screen]) return "";
   var label = state.from === "allwork" ? "All Work" : state.from === "resume" ? "Experiences" : null;
-  if (!label) return "";
+  if (!label) return "<span></span>";
   return '' +
-    '<div style="padding:0 10px 9px">' +
-      '<button type="button" data-back="1" aria-label="Back to ' + label + '" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 14px;border-radius:22px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.3);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-family:\'Bebas Neue\',sans-serif;font-size:16px;letter-spacing:.04em;color:#111;cursor:pointer">' +
-        '<svg width="8" height="13" viewBox="0 0 9 14" fill="none" aria-hidden="true"><path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>' +
-        'Back to ' + label +
-      '</button>' +
-    '</div>';
+    '<button type="button" data-back="1" aria-label="Back to ' + label + '" style="display:inline-flex;align-items:center;gap:7px;min-height:44px;margin:-16px 0 -16px -10px;padding:0 10px;border:0;background:transparent;font:inherit;letter-spacing:inherit;text-transform:inherit;color:#1a1714;cursor:pointer">' +
+      '<svg width="6" height="10" viewBox="0 0 9 14" fill="none" aria-hidden="true"><path d="M8 1L2 7L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>' +
+      'Back to ' + label +
+    '</button>';
 }
 
 function windowHTML() {
@@ -724,7 +723,7 @@ function windowHTML() {
           '</div>' +
 
           '<div style="display:flex;gap:6px;padding:0 10px 9px;overflow-x:auto;scrollbar-width:none">' + tabsHTML() + '</div>' +
-          backRowHTML() +
+
         '</div>' +
 
         '<div id="m-content" style="flex:1 1 auto;position:relative;overflow-y:auto;overflow-x:hidden;background:#fff;-webkit-overflow-scrolling:touch">' +
@@ -756,11 +755,11 @@ function aboutHTML() {
     '<div style="min-height:100%;width:100%;display:flex;flex-direction:column;background:#fff;font-family:\'JetBrains Mono\',ui-monospace,Menlo,monospace;color:#1d1d1d">' +
       '<div style="flex:1 1 auto;padding:28px 22px 30px;display:flex;flex-direction:column;gap:28px">' +
         '<div style="display:flex;flex-direction:column;gap:12px">' +
-          '<div style="padding:10px;background:#f5f5f3;border:1px solid rgba(0,0,0,.12);width:242px;height:268px;align-self:center"><img src="dock/about/tanaya.webp" alt="Portrait of Tanaya" style="width:100%;height:250px;object-fit:cover;filter:grayscale(1) contrast(1.05)"></div>' +
+          '<div style="padding:10px;background:#f5f5f3;border:1px solid rgba(0,0,0,.12);width:242px;height:268px;align-self:center"><img src="dock/about/portrait.webp" alt="Portrait of Tanaya" style="width:100%;height:250px;object-fit:cover;filter:grayscale(1) contrast(1.05)"></div>' +
           '<div style="display:flex;justify-content:space-between;gap:12px;font-size:11px;line-height:1.8;color:#8a8a8a;width:234px;height:19px;align-self:center"><span>portrait.jpg</span><span>Manhattan, NY</span></div>' +
         '</div>' +
         '<div>' +
-          '<img src="dock/about/Name.webp" alt="Tanaya Agarwal" style="width:min(300px,100%);height:auto;margin-bottom:22px">' +
+          '<img src="dock/about/name-mark.webp" alt="Tanaya Agarwal" style="width:min(300px,100%);height:auto;margin-bottom:22px">' +
           '<p style="margin:0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">I’m a creative design student at Parsons School of Design, and my work spans branding, visual storytelling, digital content, and self-initiated ventures. My foundation is classical craft: a trained eye for composition, typography, and narrative that shows up whether I’m sketching by hand or directing a generative workflow.</p><p style="margin:12px 0 0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">For me, AI is an amplifier rather than an author. It lets me explore more directions, iterate faster, and push ideas further than traditional methods allow, while my instincts decide what’s worth keeping and every final choice remains mine. The result is work that moves at the speed of new tools without losing the intent, taste, and point of view behind it.</p><p style="margin:12px 0 0;font-size:13.6px;line-height:1.85;color:#4a4a4a;text-wrap:pretty">I’m drawn to design and creative technology roles that balance concept, strategy, and execution, with the long-term aim of becoming a creative director, and I collaborate easily across design, branding, and front-end-adjacent teams.</p>' +
         '</div>' +
         '<div style="display:flex;flex-direction:column;gap:16px">' +
@@ -903,10 +902,10 @@ function photosHTML() {
   var shots = [
     ["assets/about.webp", "About cover"],
     ["assets/user.webp", "Portrait"],
-    ["assets/project-1.webp", "Project 1 cover"],
-    ["assets/project-5.webp", "Project 5 cover"],
-    ["projects/8/project-8-1.webp", "Paintings cover"],
-    ["assets/project-10.webp", "Project 10 cover"]
+    ["assets/covers/men-of-platinum.webp", "Project 1 cover"],
+    ["assets/covers/dream-journals.webp", "Project 5 cover"],
+    ["projects/paintings/paintings-1.webp", "Paintings cover"],
+    ["assets/covers/pottery.webp", "Project 10 cover"]
   ].map(function (x) {
     return '<figure style="margin:0;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#ececec"><img src="' + x[0] + '" alt="' + esc(x[1]) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"></figure>';
   }).join("");
@@ -993,7 +992,7 @@ function projectHTML(key) {
   return '' +
     '<div style="min-height:100%;width:100%;background:#f0ece5;color:#1a1714;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif">' +
       '<div style="padding:18px 0 0">' +
-        '<div style="display:flex;justify-content:flex-end;padding:6px 22px;font-family:-apple-system,\'SF Pro Text\',sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(74,69,64,.72)">' + esc(p.index) + '</div>' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 22px;font-family:-apple-system,\'SF Pro Text\',sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(74,69,64,.72)">' + (backLinkHTML() || "<span></span>") + '<span>' + esc(p.index) + '</span></div>' +
         '<div style="padding:20px 22px 0;display:flex;flex-direction:column;gap:24px">' +
           '<div>' +
             '<p style="margin:0 0 16px;font-family:-apple-system,\'SF Pro Text\',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:' + p.accent + '">' + esc(p.kicker) + '</p>' +

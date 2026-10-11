@@ -14,7 +14,7 @@ The portfolio is a **macOS-style interactive desktop experience** built in HTML,
 - `liquid-ether-vanilla.js` — animated background (kept)
 - `shared/base.css` — shared typography and layout primitives
 - `assets/` — images (user avatar, desktop bg, lock screen bg, project thumbnails)
-- `projects/1–14/` — individual project pages, each with its own `index.html` and `style.css`
+- `projects/<project-name>/` — individual project pages (folder and images named after the project), each with its own `index.html` and `style.css`
 - `projects/project-layout.css` — shared layout system for all project pages
 
 ### Features Implemented
