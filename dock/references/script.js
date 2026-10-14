@@ -1,100 +1,46 @@
-const scenes = Array.from(document.querySelectorAll("[data-scene]"));
-const BASE_COPY_SIZE = 7.1;
-const BASE_WIDTH = 312;
-const TARGET_RATIO = 0.65;
-const MIN_ZOOM = 0.8;
-const MAX_ZOOM = 2.5;
-const PROJECT_MAX_WIDTH = 1400;
-const APP_WINDOW_WIDTH_RATIO = 0.84;
-const APP_WINDOW_MAX_WIDTH = 1000;
+const items = Array.from(document.querySelectorAll("[data-letter]"));
+const messages = Array.from(document.querySelectorAll("[data-message]"));
+const reader = document.querySelector(".mail-reader");
+const narrow = window.matchMedia("(max-width: 720px)");
 
-function getHostMainWindow() {
-  if (window.self === window.top) return null;
-
-  try {
-    return window.top.document.getElementById("mainWindow");
-  } catch {
-    return null;
-  }
-}
-
-function getNormalWindowWidth() {
-  try {
-    const topWidth = window.top.innerWidth;
-    return Math.min(topWidth * APP_WINDOW_WIDTH_RATIO, APP_WINDOW_MAX_WIDTH);
-  } catch {
-    return window.innerWidth;
-  }
-}
-
-function getLayoutWidth() {
-  const hostWindow = getHostMainWindow();
-  if (!hostWindow || !hostWindow.classList.contains("is-maximised")) {
-    return window.innerWidth;
-  }
-
-  return getNormalWindowWidth();
-}
-
-function syncLayoutWidth() {
-  document.documentElement.style.setProperty(
-    "--contact-layout-width",
-    `${getLayoutWidth()}px`
-  );
-}
-
-function syncProjectCopySize() {
-  const effectiveWidth = Math.min(getLayoutWidth(), PROJECT_MAX_WIDTH);
-  const zoom = (effectiveWidth * TARGET_RATIO) / BASE_WIDTH;
-  const clampedZoom = Math.max(MIN_ZOOM, Math.min(zoom, MAX_ZOOM));
-  const scaledCopySize = BASE_COPY_SIZE * clampedZoom;
-
-  document.documentElement.style.setProperty(
-    "--project-copy-size",
-    `${scaledCopySize}px`
-  );
-}
-
-function syncContactSizing() {
-  syncLayoutWidth();
-  syncProjectCopySize();
-}
-
-function setSceneState(scene, open) {
-  const trigger = scene.querySelector("[data-scene-trigger]");
-  scene.classList.toggle("is-open", open);
-  trigger?.setAttribute("aria-pressed", String(open));
-}
-
-function toggleScene(scene) {
-  setSceneState(scene, !scene.classList.contains("is-open"));
-}
-
-scenes.forEach((scene) => {
-  const trigger = scene.querySelector("[data-scene-trigger]");
-  setSceneState(scene, false);
-
-  trigger?.addEventListener("click", () => {
-    toggleScene(scene);
+function selectLetter(id, { focus = false, scroll = false } = {}) {
+  items.forEach((item) => {
+    const active = item.dataset.letter === id;
+    item.classList.toggle("is-selected", active);
+    item.setAttribute("aria-selected", String(active));
+    item.tabIndex = active ? 0 : -1;
+    if (active) {
+      item.classList.remove("is-unread");
+      if (focus) item.focus();
+    }
   });
 
-  trigger?.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter" && event.key !== " ") return;
+  messages.forEach((message) => {
+    message.hidden = message.dataset.message !== id;
+  });
+
+  if (reader) reader.scrollTop = 0;
+
+  if (scroll && narrow.matches) {
+    document.getElementById(`letter-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+items.forEach((item, index) => {
+  item.addEventListener("click", () => {
+    selectLetter(item.dataset.letter, { scroll: true });
+  });
+
+  item.addEventListener("keydown", (event) => {
+    let next = null;
+    if (event.key === "ArrowDown") next = items[Math.min(index + 1, items.length - 1)];
+    if (event.key === "ArrowUp") next = items[Math.max(index - 1, 0)];
+    if (event.key === "Home") next = items[0];
+    if (event.key === "End") next = items[items.length - 1];
+    if (!next) return;
     event.preventDefault();
-    toggleScene(scene);
+    selectLetter(next.dataset.letter, { focus: true });
   });
 });
 
-window.addEventListener("resize", syncContactSizing);
-window.addEventListener("load", syncContactSizing);
-
-const hostWindow = getHostMainWindow();
-if (hostWindow) {
-  const hostWindowObserver = new MutationObserver(syncContactSizing);
-  hostWindowObserver.observe(hostWindow, {
-    attributes: true,
-    attributeFilter: ["class"]
-  });
-}
-
-syncContactSizing();
+if (items.length) selectLetter(items[0].dataset.letter);

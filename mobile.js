@@ -387,7 +387,21 @@ const EXPERIENCES = [
 ];
 
 const LETTERS = [
-  { id:"anika", from:"Anika Gupta Goenka", role:"College counsellor & art educator",
+  { id:"eugene", from:"Eugene Gladun", role:"Faculty, Parsons School of Design", to:"Administrator", date:"October 14, 2026",
+    salutation:"Dear Administrator,",
+    paras:[
+      "I have known Tanaya since January 2026, when she was a student in the second year interaction design class I taught in Spring 2026 at Parsons School of Design, The New School.",
+      "In my interaction design class at The New School, I observed her navigate a fast-paced studio setting that demands high self-direction, discipline, and a strong tolerance for ambiguity.",
+      "Throughout the semester, Tanaya demonstrated exceptional personal maturity, curiosity, and a drive to excellence. She is remarkably flexible when receiving feedback, and she approaches unexpected challenges with a positive, solutions-oriented attitude. Rather than being discouraged by setbacks or steep learning curves, she adapts quickly and views them as opportunities to grow.",
+      "Crucially, Tanaya's adaptability is elevated by her global outlook. She consistently pushes past a standard, US-centric viewpoint, looking at challenges through a broad, international lens.",
+      "Tanaya's deep curiosity about other cultures also directly shapes her design process. She doesn't just design for a single demographic; she actively researches diverse user behaviors to ensure her UX solutions are inclusive and socially aware.",
+      "Intellectually, Tanaya is one of the smartest students I have taught, pairing her intellect with an outstanding work ethic and dedication. Her productivity is remarkable, but what truly sets her apart is her proactive academic hunger: she consistently sought out additional readings, extra feedback, and advanced design challenges beyond our syllabus requirements.",
+      "She also pivots seamlessly when faced with complex design constraints or technical obstacles. In the studio, she treats challenges not as frustrating obstacles, but as interesting puzzles to solve, showing a level of creative problem-solving and grace under pressure that is rare for an undergraduate.",
+      "I cannot think of a student more naturally suited for the field of interaction design and the future challenges this field will go through. She possesses the rare blend of rigorous analytical thinking and sharp aesthetic intuition.",
+      "Artistically, she is highly talented and never satisfied with \"good enough.\" This commitment to quality extends directly to her presentation skills; she communicates her design concepts and decisions with a high degree of clarity, structure, and confidence."
+    ],
+    signoff:"Sincerely,\nEugene Gladun\nFaculty, Parsons School of Design, The New School" },
+  { id:"anika", from:"Anika Gupta Goenka", role:"College counsellor & art educator", to:"Administrator",
     salutation:"Dear Administrator,",
     paras:[
       "This is to certify that I have taught Tanaya Agarwal from December 2022 through October 2023. I have been mentoring her through the portfolio process as a college counsellor and art educator.",
@@ -396,7 +410,7 @@ const LETTERS = [
       "Thanking you,"
     ],
     signoff:"Sincerely,\nAnika Gupta Goenka" },
-  { id:"tj", from:"TJ Thomas", role:"Head of Visual Art",
+  { id:"tj", from:"TJ Thomas", role:"Head of Visual Art", to:"Administrator",
     salutation:"Dear Administrator,",
     paras:[
       "As her visual art teacher since the beginning of 10th grade, I have watched her grow tremendously as an artist and as a person. I can attest to her dedication, passion, and ability to learn quickly.",
@@ -674,7 +688,7 @@ var TABS = [
   { tab: "about",      icon: "assets/about.webp",      label: "About" },
   { tab: "resume",     icon: "assets/resume.webp",     label: "Experiences" },
   { tab: "references", icon: "assets/references.webp", label: "References" },
-  { tab: "contacts",   icon: "assets/contact.webp",    label: "Contact" }
+  { tab: "contacts",   icon: "assets/contact.webp",    label: "Contacts" }
 ];
 
 function tabsHTML() {
@@ -801,7 +815,7 @@ function aboutHTML() {
 function resumeHTML() {
   var items = EXPERIENCES.map(function (x) {
     var tags = x.tags.map(function (t) {
-      return '<span style="font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif;font-size:10px;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:#131313;opacity:.92">' + esc(t) + '</span>';
+      return '<span style="font-family:-apple-system,BlinkMacSystemFont,\'SF Pro Text\',\'Helvetica Neue\',Arial,sans-serif;font-size:10px;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:#131313;opacity:.92;padding:7px 8px;white-space:nowrap">' + esc(t) + '</span>';
     }).join("");
 
     var link = x.projectKey ?
@@ -809,14 +823,14 @@ function resumeHTML() {
 
     return '' +
       '<div style="border-bottom:1px solid #7f7f7f">' +
-        '<button type="button" data-exp="' + x.id + '" style="width:100%;border:0;background:transparent;text-align:left;cursor:pointer;padding:15px 18px;display:flex;flex-direction:column;gap:8px">' +
-          '<span style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:100%">' +
-            '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:27px;line-height:1;text-transform:uppercase;color:#fe5bac">' + esc(x.company) + '</span>' +
-            '<span style="flex:0 0 auto;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif;font-size:13px;line-height:1;color:#151515">' + esc(x.date) + '</span>' +
+        '<button type="button" data-exp="' + x.id + '" style="width:100%;border:0;background:transparent;text-align:left;cursor:pointer;padding:14px 12px 14px 18px;display:flex;flex-direction:column;align-items:flex-start;gap:7px">' +
+          '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:27px;line-height:1;text-transform:uppercase;color:#fe5bac">' + esc(x.company) + '</span>' +
+          '<span style="display:flex;flex-wrap:wrap;align-items:center;row-gap:2px;width:100%">' +
+            '<span style="flex:0 0 auto;font-family:-apple-system,BlinkMacSystemFont,\'SF Pro Text\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:1;letter-spacing:.02em;color:#151515;margin-right:10px">' + esc(x.date) + '</span>' +
+            '<span style="display:flex;flex-wrap:nowrap;margin-left:auto;margin-right:-8px">' + tags + '</span>' +
           '</span>' +
-          '<span style="display:flex;flex-wrap:wrap;gap:6px 10px">' + tags + '</span>' +
         '</button>' +
-        '<div data-exp-panel="' + x.id + '" style="display:none;padding:0 20px 20px">' +
+        '<div data-exp-panel="' + x.id + '" style="display:none;padding:8px 12px 18px 18px">' +
           '<p style="margin:0;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif;font-size:14px;line-height:1.6;color:#171717">' + esc(x.body) + '</p>' +
           link +
         '</div>' +
@@ -826,48 +840,67 @@ function resumeHTML() {
   return '' +
     '<div style="min-height:100%;width:100%;background:#fff;color:#171717">' +
       '<div style="padding:22px 0 40px">' +
-        '<div style="padding:8px 16px 20px;text-align:center;font-family:\'Bebas Neue\',sans-serif;font-size:52px;line-height:.9;text-transform:uppercase;color:#FE5BAC">Experiences</div>' +
+        '<div style="padding:8px 16px 20px;text-align:center;font-family:\'Bebas Neue\',sans-serif;font-size:52px;line-height:.9;text-transform:uppercase;color:#111111">Experiences</div>' +
         '<div style="border-top:1px solid #7f7f7f">' + items + '</div>' +
       '</div>' +
     '</div>';
 }
 
 function referencesHTML() {
-  var items = LETTERS.map(function (x) {
-    var paras = x.paras.map(function (p) {
-      return '<p style="margin:13px 0 0;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif;font-size:14px;line-height:1.62;color:#2b2b2b;text-wrap:pretty">' + esc(p) + '</p>';
+  var UI = "font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;";
+  var items = LETTERS.map(function (x, i) {
+    var body = (x.salutation ? [x.salutation] : []).concat(x.paras);
+    var paras = body.map(function (p, j) {
+      return '<p style="margin:' + (j ? '14px' : '0') + ' 0 0;font-size:15px;line-height:1.5;color:#171717">' + esc(p) + '</p>';
     }).join("");
+    var preview = body.join(" ");
+    var open = state.openLetter === x.id;
+    var read = state.readLetters && state.readLetters[x.id];
 
     return '' +
-      '<div style="border-radius:14px;overflow:hidden;background:#f9f7ee;box-shadow:0 8px 26px rgba(0,0,0,.12);border:1px solid rgba(23,23,23,.1)">' +
-        '<button type="button" data-letter="' + x.id + '" style="width:100%;border:0;background:transparent;cursor:pointer;text-align:left;padding:16px 18px;display:flex;align-items:center;gap:14px">' +
-          '<img src="dock/references/envelope.webp" alt="" style="flex:0 0 auto;width:52px;height:auto">' +
-          '<span style="flex:1 1 auto;min-width:0">' +
-            '<span style="display:block;font-family:\'Bebas Neue\',sans-serif;font-size:22px;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#171717">' + esc(x.from) + '</span>' +
-            '<span style="display:block;margin-top:3px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(23,23,23,.55)">' + esc(x.role) + '</span>' +
+      '<div data-letter-row="' + x.id + '" style="position:relative' + (i ? ';border-top:1px solid rgba(23,23,23,.1)' : '') + '">' +
+        '<button type="button" data-letter="' + x.id + '" aria-expanded="' + open + '" style="' + UI + 'width:100%;border:0;cursor:pointer;text-align:left;padding:12px 14px 13px 6px;display:grid;grid-template-columns:18px 1fr auto;column-gap:4px;align-items:start;color:inherit;background:' + (open ? '#fe5bac' : 'transparent') + ';color:' + (open ? '#fff' : '#171717') + '">' +
+          '<span data-letter-dot="' + x.id + '" aria-hidden="true" style="margin-top:6px;justify-self:center;width:9px;height:9px;border-radius:50%;background:' + (read || open ? 'transparent' : '#fe5bac') + '"></span>' +
+          '<span style="min-width:0">' +
+            '<span style="display:block;font-size:16px;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(x.from) + '</span>' +
+            '<span style="display:block;margin-top:1px;font-size:14px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(x.role) + '</span>' +
+            '<span data-letter-preview style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px;font-size:14px;line-height:1.35;opacity:' + (open ? '.85' : '.55') + '">' + esc(preview) + '</span>' +
           '</span>' +
-          '<span data-letter-chevron="' + x.id + '" style="flex:0 0 auto;font-size:20px;color:rgba(23,23,23,.3)">›</span>' +
+          '<span data-letter-chevron="' + x.id + '" aria-hidden="true" style="font-size:18px;line-height:1.2;opacity:.45">' + (open ? '⌄' : '›') + '</span>' +
         '</button>' +
-        '<div data-letter-panel="' + x.id + '" style="display:none;padding:2px 20px 24px;border-top:1px solid rgba(23,23,23,.08)">' +
-          '<p style="margin:16px 0 0;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif;font-size:14px;line-height:1.62;font-weight:500">' + esc(x.salutation) + '</p>' +
-          paras +
-          '<p style="margin:20px 0 0;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif;font-size:14px;line-height:1.5;font-style:italic;color:#171717;white-space:pre-line">' + esc(x.signoff) + '</p>' +
+        '<div data-letter-panel="' + x.id + '" style="' + UI + (open ? '' : 'display:none;') + 'padding:16px 16px 26px;background:#fff;border-top:1px solid rgba(23,23,23,.1)">' +
+          '<div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid rgba(23,23,23,.1)">' +
+            '<span aria-hidden="true" style="flex:0 0 auto;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(180deg,#a9aec3,#7f86a1);color:#fff;font-size:18px;font-weight:600">' + esc(x.from.charAt(0)) + '</span>' +
+            '<span style="flex:1 1 auto;min-width:0">' +
+              '<span style="display:block;font-size:17px;font-weight:700;line-height:1.2">' + esc(x.from) + '</span>' +
+              '<span style="display:block;margin-top:2px;font-size:14px;color:rgba(23,23,23,.85)">' + esc(x.role) + '</span>' +
+              (x.to ? '<span style="display:block;margin-top:3px;font-size:14px;color:rgba(23,23,23,.55)"><span style="color:#171717">To:</span> ' + esc(x.to) + '</span>' : '') +
+              (x.date ? '<span style="display:block;margin-top:3px;font-size:13px;color:rgba(23,23,23,.55)">' + esc(x.date) + '</span>' : '') +
+            '</span>' +
+          '</div>' +
+          '<div style="padding-top:16px">' + paras +
+            '<p style="margin:20px 0 0;font-size:15px;line-height:1.45;color:#171717;white-space:pre-line">' + esc(x.signoff) + '</p>' +
+          '</div>' +
         '</div>' +
       '</div>';
   }).join("");
 
   return '' +
     '<div style="min-height:100%;width:100%;background:#fff;color:#171717">' +
-      '<div style="padding:22px 18px 44px">' +
+      '<div style="padding:22px 14px 44px">' +
         '<div style="padding:8px 0 22px;text-align:center;font-family:\'Bebas Neue\',sans-serif;font-size:52px;line-height:.9;text-transform:uppercase;color:#000">References</div>' +
-        '<div style="display:flex;flex-direction:column;gap:18px">' + items + '</div>' +
+        '<div style="' + UI + 'display:flex;align-items:baseline;justify-content:space-between;padding:0 4px 8px">' +
+          '<span style="font-size:20px;font-weight:700">Letters</span>' +
+          '<span style="font-size:13px;color:rgba(23,23,23,.55)">' + LETTERS.length + ' letters</span>' +
+        '</div>' +
+        '<div style="border-radius:14px;overflow:hidden;background:#f6f5f2;border:1px solid rgba(23,23,23,.1)">' + items + '</div>' +
       '</div>' +
     '</div>';
 }
 
 function contactsHTML() {
   return '' +
-    '<div style="min-height:100%;width:100%;background:#fff;color:#1f1f1f">' +
+    '<div style="min-height:100%;width:100%;background:#fff;color:#1f1f1f;font-family:\'Glypha\',\'ITC Glypha\',\'Palatino Linotype\',Palatino,serif">' +
       '<div style="padding:24px 16px 34px">' +
         '<div style="text-align:center">' +
           '<div style="width:172px;aspect-ratio:1;margin:2px auto 16px;border-radius:50%;overflow:hidden"><img src="assets/user.webp" alt="Tanaya Agarwal" style="width:100%;height:100%;object-fit:cover"></div>' +
@@ -878,22 +911,22 @@ function contactsHTML() {
           '<div style="display:flex;align-items:center;gap:10px;min-width:0">' +
             '<img src="assets/user.webp" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0">' +
             '<div style="min-width:0">' +
-              '<p style="margin:0;font-size:13.5px;line-height:1.3;font-weight:600">Shared Name and Photo</p>' +
+              '<p style="margin:0;font-size:13.5px;line-height:1.3;font-weight:700">Shared Name and Photo</p>' +
               '<p style="margin:0;font-size:12.5px;line-height:1.3;color:#72727a">Sharing Off</p>' +
             '</div>' +
           '</div>' +
           '<span style="font-size:22px;line-height:1;color:#8c8c94">›</span>' +
         '</div>' +
         '<div style="margin-top:8px;padding:0 12px;background:#ececf0;border-radius:13px">' +
-          '<div style="padding:11px 0 10px"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">mobile</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">+1 (347) 544-1628</p></div>' +
-          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">mobile</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">+91 98207 29144</p></div>' +
-          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">work</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">tanayaagarwal11@gmail.com</p></div>' +
-          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">home</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">New York NY</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">United States</p></div>' +
-          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">other</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">Mumbai MH</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">India</p></div>' +
-          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:600;color:#50505a">Notes</p></div>' +
+          '<div style="padding:11px 0 10px"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:700;color:#50505a">mobile</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">+1 (347) 544-1628</p></div>' +
+          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:700;color:#50505a">mobile</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">+91 98207 29144</p></div>' +
+          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:700;color:#50505a">work</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">tanayaagarwal11@gmail.com</p></div>' +
+          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:700;color:#50505a">home</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">New York NY</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">United States</p></div>' +
+          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:700;color:#50505a">other</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">Mumbai MH</p><p style="margin:1px 0 0;font-size:13.5px;line-height:1.3;color:#606069">India</p></div>' +
+          '<div style="padding:11px 0 10px;border-top:1px solid #dfdfe4"><p style="margin:0;font-size:13px;line-height:1.25;font-weight:700;color:#50505a">Notes</p></div>' +
         '</div>' +
-        '<a href="sms:+13475441628" style="margin-top:8px;min-height:48px;padding:0 14px;background:#ececf0;border-radius:13px;display:flex;align-items:center;text-decoration:none"><span style="font-size:15px;font-weight:600;color:#565660">Send Message</span></a>' +
-        '<a href="mailto:tanayaagarwal11@gmail.com?subject=Hello%20Tanaya" style="margin-top:8px;min-height:48px;padding:0 14px;background:#ececf0;border-radius:13px;display:flex;align-items:center;text-decoration:none"><span style="font-size:15px;font-weight:600;color:#565660">Send Email</span></a>' +
+        '<a href="sms:+13475441628" style="margin-top:8px;min-height:48px;padding:0 14px;background:#ececf0;border-radius:13px;display:flex;align-items:center;text-decoration:none"><span style="font-size:15px;font-weight:700;color:#565660">Send Message</span></a>' +
+        '<a href="mailto:tanayaagarwal11@gmail.com?subject=Hello%20Tanaya" style="margin-top:8px;min-height:48px;padding:0 14px;background:#ececf0;border-radius:13px;display:flex;align-items:center;text-decoration:none"><span style="font-size:15px;font-weight:700;color:#565660">Send Email</span></a>' +
       '</div>' +
     '</div>';
 }
@@ -1170,12 +1203,25 @@ function toggleExp(id) {
 
 function toggleLetter(id) {
   state.openLetter = state.openLetter === id ? null : id;
-  var panels = root.querySelectorAll("[data-letter-panel]");
-  Array.prototype.forEach.call(panels, function (el) {
+  if (!state.readLetters) state.readLetters = {};
+  if (state.openLetter) state.readLetters[state.openLetter] = true;
+  Array.prototype.forEach.call(root.querySelectorAll("[data-letter]"), function (btn) {
+    var key = btn.getAttribute("data-letter");
+    var open = key === state.openLetter;
+    btn.style.background = open ? "#fe5bac" : "transparent";
+    btn.style.color = open ? "#fff" : "#171717";
+    btn.setAttribute("aria-expanded", String(open));
+    var pv = btn.querySelector("[data-letter-preview]");
+    if (pv) pv.style.opacity = open ? ".85" : ".55";
+  });
+  Array.prototype.forEach.call(root.querySelectorAll("[data-letter-dot]"), function (el) {
+    var key = el.getAttribute("data-letter-dot");
+    el.style.background = state.readLetters[key] || key === state.openLetter ? "transparent" : "#fe5bac";
+  });
+  Array.prototype.forEach.call(root.querySelectorAll("[data-letter-panel]"), function (el) {
     el.style.display = el.getAttribute("data-letter-panel") === state.openLetter ? "" : "none";
   });
-  var chevrons = root.querySelectorAll("[data-letter-chevron]");
-  Array.prototype.forEach.call(chevrons, function (el) {
+  Array.prototype.forEach.call(root.querySelectorAll("[data-letter-chevron]"), function (el) {
     el.textContent = el.getAttribute("data-letter-chevron") === state.openLetter ? "⌄" : "›";
   });
 }

@@ -335,7 +335,7 @@ let frameScrollDetach = null;
 const WINDOW_HEADER_TABS = {
   about: { title: "About", src: "dock/about/index.html" },
   resume: { title: "Experiences", src: "dock/experiences/index.html" },
-  contact: { title: "Contact", src: "dock/contact/index.html" },
+  contact: { title: "Contacts", src: "dock/contact/index.html" },
   references: { title: "References", src: "dock/references/index.html" }
 };
 

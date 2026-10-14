@@ -5,115 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>References</title>
   <link rel="stylesheet" href="../../shared/base.css?v=1" />
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=12" />
 </head>
 <body>
-  <main class="contact-page">
-    <header class="contact-title">
+  <main class="references-page">
+    <header class="references-title">
       <h1>References</h1>
     </header>
 
-    <section class="letter-stack" aria-label="Reference letters">
-      <article class="scene" data-scene data-scene-index="1">
-        <div class="envelope" aria-hidden="true">
-          <div class="envelope-back"></div>
-          <div class="envelope-flap"></div>
+    <section class="mail" aria-label="Reference letters">
+      <aside class="mail-sidebar">
+        <div class="mail-sidebar-head">
+          <span class="mail-mailbox">Letters</span>
+          <span class="mail-count">3 letters</span>
         </div>
 
-        <div
-          class="rect-stage"
-          data-scene-trigger
-          role="button"
-          tabindex="0"
-          aria-pressed="false"
-          aria-label="Toggle letter 1"
-        >
-          <div class="paper paper--top">
-            <div class="paper-text">
-              <p class="paper-salutation">Dear Administrator,</p>
-              <p>
-                This is to certify that I have taught Tanaya Agarwal from December 2022 through October 2023. I have been mentoring her through the portfolio process as a college counsellor and art educator. 
-              </p>
-              <p>
-                Tanaya is a serious, organized and intelligent student whose work has moved from the cliche to layered over this past year. Her skills have also grown, adding ceramics and embroidery to the list. Even though she doesn't show it on the outside, her work reflects emotion and deeply personal anecdotes. The themes in her work are mature
-              </p>
-            </div>
-          </div>
+        <ul class="mail-list" role="listbox" aria-label="Letters" data-mail-list>
+          <li>
+            <button class="mail-item is-unread" type="button" role="option" aria-selected="false" aria-controls="letter-eugene" data-letter="eugene">
+              <span class="mail-dot" aria-hidden="true"></span>
+              <span class="mail-from">Eugene Gladun</span>
+              <span class="mail-subject">Faculty, Parsons School of Design</span>
+              <span class="mail-preview">Dear Administrator, I have known Tanaya since January 2026, when she was a student in the second year interaction design class I taught in Spring 2026 at Parsons School of Design, The New School.</span>
+            </button>
+          </li>
+          <li>
+            <button class="mail-item is-unread" type="button" role="option" aria-selected="false" aria-controls="letter-anika" data-letter="anika">
+              <span class="mail-dot" aria-hidden="true"></span>
+              <span class="mail-from">Anika Gupta Goenka</span>
+              <span class="mail-subject">College counsellor &amp; art educator</span>
+              <span class="mail-preview">Dear Administrator, This is to certify that I have taught Tanaya Agarwal from December 2022 through October 2023.</span>
+            </button>
+          </li>
+          <li>
+            <button class="mail-item is-unread" type="button" role="option" aria-selected="false" aria-controls="letter-tj" data-letter="tj">
+              <span class="mail-dot" aria-hidden="true"></span>
+              <span class="mail-from">TJ Thomas</span>
+              <span class="mail-subject">Head of Visual Art</span>
+              <span class="mail-preview">Dear Administrator, As her visual art teacher since the beginning of 10th grade, I have watched her grow tremendously as an artist and as a person.</span>
+            </button>
+          </li>
+        </ul>
+      </aside>
 
-          <div class="paper paper--bottom">
-            <div class="paper-text">
-              <p>
-                and deserve to be shared with the world. Tanaya works on ideas on her iPad, loves feedback and reworks her projects based on this. <br />
-              </p>
-              <p>
-                Tanaya will thrive in a creatively charged environment at a top art and design school where she can be pushed to explore media and concepts. She's a fairly independent person, so I'd love to see her collaborate with people from different backgrounds. I would be happy to provide further information if required. <br />
-              </p>
-              <p>
-                Thanking you,
-              </p>
-              <p class="paper-signoff">Sincerely,<br />Anika Gupta Goenka</p>
+      <div class="mail-reader" aria-live="polite">
+        <article class="mail-message" id="letter-eugene" data-message="eugene">
+          <p class="mail-meta-count">1 Message</p>
+          <header class="mail-header">
+            <span class="mail-avatar" aria-hidden="true">E</span>
+            <div class="mail-header-text">
+              <h2 class="mail-header-from">Eugene Gladun</h2>
+              <p class="mail-header-subject">Faculty, Parsons School of Design</p>
+              <p class="mail-header-to"><span>To:</span> Administrator</p>
             </div>
+            <time class="mail-header-date" datetime="2026-10-14">October 14, 2026</time>
+          </header>
+          <div class="letter">
+            <p class="letter-salutation">Dear Administrator,</p>
+            <p>I have known Tanaya since January 2026, when she was a student in the second year interaction design class I taught in Spring 2026 at Parsons School of Design, The New School.</p>
+            <p>In my interaction design class at The New School, I observed her navigate a fast-paced studio setting that demands high self-direction, discipline, and a strong tolerance for ambiguity.</p>
+            <p>Throughout the semester, Tanaya demonstrated exceptional personal maturity, curiosity, and a drive to excellence. She is remarkably flexible when receiving feedback, and she approaches unexpected challenges with a positive, solutions-oriented attitude. Rather than being discouraged by setbacks or steep learning curves, she adapts quickly and views them as opportunities to grow.</p>
+            <p>Crucially, Tanaya's adaptability is elevated by her global outlook. She consistently pushes past a standard, US-centric viewpoint, looking at challenges through a broad, international lens.</p>
+            <p>Tanaya's deep curiosity about other cultures also directly shapes her design process. She doesn't just design for a single demographic; she actively researches diverse user behaviors to ensure her UX solutions are inclusive and socially aware.</p>
+            <p>Intellectually, Tanaya is one of the smartest students I have taught, pairing her intellect with an outstanding work ethic and dedication. Her productivity is remarkable, but what truly sets her apart is her proactive academic hunger: she consistently sought out additional readings, extra feedback, and advanced design challenges beyond our syllabus requirements.</p>
+            <p>She also pivots seamlessly when faced with complex design constraints or technical obstacles. In the studio, she treats challenges not as frustrating obstacles, but as interesting puzzles to solve, showing a level of creative problem-solving and grace under pressure that is rare for an undergraduate.</p>
+            <p>I cannot think of a student more naturally suited for the field of interaction design and the future challenges this field will go through. She possesses the rare blend of rigorous analytical thinking and sharp aesthetic intuition.</p>
+            <p>Artistically, she is highly talented and never satisfied with "good enough." This commitment to quality extends directly to her presentation skills; she communicates her design concepts and decisions with a high degree of clarity, structure, and confidence.</p>
+            <p class="letter-signoff">Sincerely,<br />Eugene Gladun<br />Faculty, Parsons School of Design, The New School</p>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="scene" data-scene data-scene-index="2">
-        <div class="envelope" aria-hidden="true">
-          <div class="envelope-back"></div>
-          <div class="envelope-flap"></div>
-        </div>
-
-        <div
-          class="rect-stage"
-          data-scene-trigger
-          role="button"
-          tabindex="0"
-          aria-pressed="false"
-          aria-label="Toggle letter 2"
-        >
-          <div class="paper paper--top">
-            <div class="paper-text">
-              <p class="paper-salutation">Dear Administrator,</p>
-              <p>
-                As her visual art teacher since the beginning of 10th grade, I have watched her grow tremendously as an artist and as a person. I can attest to her dedication, passion, and ability to learn quickly.
-              </p>
-              <p>
-                She has an insatiable curiosity and an eagerness to learn new skills and techniques, which is a testament to her work ethic and thirst for knowledge. For example, Tanaya was interested in cyanotype, so with my support she learned the chemistry needed and mixed her own chemicals to create prints. Her work continues to address complex concepts and uses imagery in new ways asking the audience to re-evaluate traditional symbols in visual art.
-              </p>
-              <p>
-                Outside of school, Tanaya takes ownership of her learning while working to enhance her
-                technical skills and explore new media. She is a very hard worker both in and out of the class.
-                Tanaya launched a
-              </p>
+        <article class="mail-message" id="letter-anika" data-message="anika" hidden>
+          <p class="mail-meta-count">1 Message</p>
+          <header class="mail-header">
+            <span class="mail-avatar" aria-hidden="true">A</span>
+            <div class="mail-header-text">
+              <h2 class="mail-header-from">Anika Gupta Goenka</h2>
+              <p class="mail-header-subject">College counsellor &amp; art educator</p>
+              <p class="mail-header-to"><span>To:</span> Administrator</p>
             </div>
+          </header>
+          <div class="letter">
+            <p class="letter-salutation">Dear Administrator,</p>
+            <p>This is to certify that I have taught Tanaya Agarwal from December 2022 through October 2023. I have been mentoring her through the portfolio process as a college counsellor and art educator.</p>
+            <p>Tanaya is a serious, organized and intelligent student whose work has moved from the cliche to layered over this past year. Her skills have also grown, adding ceramics and embroidery to the list. Even though she doesn't show it on the outside, her work reflects emotion and deeply personal anecdotes. The themes in her work are mature and deserve to be shared with the world. Tanaya works on ideas on her iPad, loves feedback and reworks her projects based on this.</p>
+            <p>Tanaya will thrive in a creatively charged environment at a top art and design school where she can be pushed to explore media and concepts. She's a fairly independent person, so I'd love to see her collaborate with people from different backgrounds. I would be happy to provide further information if required.</p>
+            <p>Thanking you,</p>
+            <p class="letter-signoff">Sincerely,<br />Anika Gupta Goenka</p>
           </div>
+        </article>
 
-          <div class="paper paper--bottom">
-            <div class="paper-text">
-              <p>
-                company called Dream Journals through the YEA program, she has
-                completed an Adobe Illustrator and Photoshop course, as well as an independent pottery
-                course. She has designed her own journals that were sold online during her internship with a
-                stationary company called Artsy Design.co. Her creativity is boundless, and Tanaya always
-                strives to push the boundaries and try new things.
-              </p>
-              <p>
-                Studying visual arts has not only enhanced Tanaya's artistic skills but has also influenced her
-                personal growth. Tanaya has become more aware of her artistic voice in which Tanaya
-                incorporates into her work. Over the last two years, I have had watch Tanaya move away from
-                from the normal cliche imagery teenagers sway towards, to creating strong conceptual
-                meaning in her work. For example, she made an installation about eating disorders and
-                printed fruit on clothes, hung them on a clothesline and used the metaphor ‘Airing your Dirty
-                Laundry’.
-              </p>
-              <p class="paper-signoff">Sincerely,<br />TJ Thomas<br />Head of Visual Art</p>
+        <article class="mail-message" id="letter-tj" data-message="tj" hidden>
+          <p class="mail-meta-count">1 Message</p>
+          <header class="mail-header">
+            <span class="mail-avatar" aria-hidden="true">T</span>
+            <div class="mail-header-text">
+              <h2 class="mail-header-from">TJ Thomas</h2>
+              <p class="mail-header-subject">Head of Visual Art</p>
+              <p class="mail-header-to"><span>To:</span> Administrator</p>
             </div>
+          </header>
+          <div class="letter">
+            <p class="letter-salutation">Dear Administrator,</p>
+            <p>As her visual art teacher since the beginning of 10th grade, I have watched her grow tremendously as an artist and as a person. I can attest to her dedication, passion, and ability to learn quickly.</p>
+            <p>She has an insatiable curiosity and an eagerness to learn new skills and techniques, which is a testament to her work ethic and thirst for knowledge. For example, Tanaya was interested in cyanotype, so with my support she learned the chemistry needed and mixed her own chemicals to create prints. Her work continues to address complex concepts and uses imagery in new ways asking the audience to re-evaluate traditional symbols in visual art.</p>
+            <p>Outside of school, Tanaya takes ownership of her learning while working to enhance her technical skills and explore new media. She is a very hard worker both in and out of the class. Tanaya launched a company called Dream Journals through the YEA program, she has completed an Adobe Illustrator and Photoshop course, as well as an independent pottery course. She has designed her own journals that were sold online during her internship with a stationary company called Artsy Design.co. Her creativity is boundless, and Tanaya always strives to push the boundaries and try new things.</p>
+            <p>Studying visual arts has not only enhanced Tanaya's artistic skills but has also influenced her personal growth. Tanaya has become more aware of her artistic voice in which Tanaya incorporates into her work. Over the last two years, I have had watch Tanaya move away from from the normal cliche imagery teenagers sway towards, to creating strong conceptual meaning in her work. For example, she made an installation about eating disorders and printed fruit on clothes, hung them on a clothesline and used the metaphor ‘Airing your Dirty Laundry’.</p>
+            <p class="letter-signoff">Sincerely,<br />TJ Thomas<br />Head of Visual Art</p>
           </div>
-        </div>
-      </article>
+        </article>
+      </div>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
